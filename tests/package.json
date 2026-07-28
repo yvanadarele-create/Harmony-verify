@@ -1,0 +1,21 @@
+{
+  "name": "@harmony/tests",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && node --test dist/engines.test.js"
+  },
+  "dependencies": {
+    "@harmony/shared": "workspace:*",
+    "@harmony/database": "workspace:*",
+    "@harmony/verification-engine": "workspace:*",
+    "@harmony/expert-matching": "workspace:*",
+    "@harmony/pricing-engine": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2"
+  }
+}

@@ -1,25 +1,32 @@
 /**
- * Domain types shared across every Harmony Verify app and package.
+ * Domain types for the Harmony Verify platform.
  *
- * These mirror the persisted schema in @harmony/database. Keeping them here — rather
- * than in the database package — lets the browser apps import types without pulling in
- * a database driver.
+ * Field names and enum values follow the Phase 2 architecture spec exactly, so the
+ * database columns, API payloads and UI all speak one vocabulary.
  */
 
 export type Id = string;
 export type IsoDateTime = string;
 
-/* --- People ------------------------------------------------------------- */
+/* --- Users -------------------------------------------------------------- */
 
-export type UserRole = "customer" | "expert" | "admin";
+export const USER_ROLES = ["customer", "expert", "admin"] as const;
+export type UserRole = (typeof USER_ROLES)[number];
 
 export interface User {
   id: Id;
+  name: string;
   email: string;
-  fullName: string;
   role: UserRole;
   organisation?: string;
   createdAt: IsoDateTime;
+}
+
+/** Never leaves the database layer. */
+export interface UserCredentials {
+  userId: Id;
+  passwordHash: string;
+  passwordSalt: string;
 }
 
 /* --- Clinical taxonomy -------------------------------------------------- */
@@ -27,60 +34,63 @@ export interface User {
 export const SPECIALTIES = [
   "cardiology",
   "oncology",
-  "emergency-medicine",
-  "primary-care",
-  "nephrology",
   "neurology",
-  "psychiatry",
-  "paediatrics",
-  "obstetrics-gynaecology",
-  "pharmacology",
   "radiology",
-  "surgery",
+  "general-medicine",
+  "other",
 ] as const;
-
 export type Specialty = (typeof SPECIALTIES)[number];
 
-/** The product surface an output came from. Drives which rubric weighting applies. */
-export const TASK_TYPES = [
-  "clinical-decision-support",
-  "documentation",
-  "coding",
-  "patient-facing",
-  "utilisation-review",
+export const SPECIALTY_LABELS: Record<Specialty, string> = {
+  cardiology: "Cardiology",
+  oncology: "Oncology",
+  neurology: "Neurology",
+  radiology: "Radiology",
+  "general-medicine": "General Medicine",
+  other: "Other",
+};
+
+export const REVIEW_TYPES = [
+  "single-verification",
+  "deep-clinical-review",
+  "continuous-monitoring",
 ] as const;
+export type ReviewType = (typeof REVIEW_TYPES)[number];
 
-export type TaskType = (typeof TASK_TYPES)[number];
+export const REVIEW_TYPE_LABELS: Record<ReviewType, string> = {
+  "single-verification": "Single verification",
+  "deep-clinical-review": "Deep clinical review",
+  "continuous-monitoring": "Continuous monitoring",
+};
 
-export type RiskLevel = "low" | "medium" | "high";
-export type Urgency = "standard" | "priority" | "urgent";
+export const PRIORITIES = ["standard", "urgent", "critical"] as const;
+export type Priority = (typeof PRIORITIES)[number];
 
-/** Single reviewer, or two independent reviewers with adjudication on disagreement. */
-export type ReviewMode = "single" | "double";
+export const LEVELS = ["low", "medium", "high"] as const;
+export type Complexity = (typeof LEVELS)[number];
+export type RiskLevel = (typeof LEVELS)[number];
 
 /* --- Experts ------------------------------------------------------------ */
 
-export type ExpertStatus = "pending" | "active" | "suspended" | "removed";
-export type AvailabilityTier = "standard" | "extended" | "on-call";
+export const EXPERT_STATUSES = ["pending", "active", "suspended"] as const;
+export type ExpertStatus = (typeof EXPERT_STATUSES)[number];
+
+export const AVAILABILITY = ["available", "busy", "unavailable"] as const;
+export type Availability = (typeof AVAILABILITY)[number];
 
 export interface Expert {
   id: Id;
   userId: Id;
-  fullName: string;
+  name: string;
   specialty: Specialty;
-  subSpecialties: Specialty[];
-  status: ExpertStatus;
-  licenceNumber: string;
-  licenceJurisdiction: string;
-  licenceVerifiedAt?: IsoDateTime;
-  boardCertified: boolean;
+  subSpecialty?: string;
+  credentials: string;
   yearsExperience: number;
-  availabilityTier: AvailabilityTier;
-  /** Cents per review, before urgency multipliers. */
-  payRateCents: number;
+  availability: Availability;
   rating: number;
   ratingCount: number;
-  /** Employers/vendors this expert must never be routed cases from. */
+  status: ExpertStatus;
+  /** Vendors or organisations this expert must never review for. */
   conflictsOfInterest: string[];
   activeCaseCount: number;
   maxConcurrentCases: number;
@@ -89,186 +99,141 @@ export interface Expert {
 
 /* --- Submissions -------------------------------------------------------- */
 
-export type SubmissionStatus =
-  | "draft"
-  | "awaiting-payment"
-  | "queued"
-  | "assigned"
-  | "in-review"
-  | "adjudicating"
-  | "completed"
-  | "cancelled";
+export const SUBMISSION_STATUSES = [
+  "submitted",
+  "analyzing",
+  "expert-assigned",
+  "under-review",
+  "completed",
+  "cancelled",
+] as const;
+export type SubmissionStatus = (typeof SUBMISSION_STATUSES)[number];
 
-export type PaymentStatus = "unpaid" | "paid" | "refunded" | "failed";
+export const SUBMISSION_STATUS_LABELS: Record<SubmissionStatus, string> = {
+  submitted: "Submitted",
+  analyzing: "Analyzing",
+  "expert-assigned": "Expert Assigned",
+  "under-review": "Under Review",
+  completed: "Completed",
+  cancelled: "Cancelled",
+};
 
 export interface Submission {
   id: Id;
   customerId: Id;
   title: string;
-  /** The AI-generated output under review. */
-  outputText: string;
-  /** The clinical context the output was generated from. */
-  contextText?: string;
+  /** Name of the AI system that produced the output, e.g. "CardioAssist v3". */
+  aiSystem: string;
+  content: string;
   fileUrl?: string;
   specialty: Specialty;
-  taskType: TaskType;
-  urgency: Urgency;
-  reviewMode: ReviewMode;
-  status: SubmissionStatus;
-  paymentStatus: PaymentStatus;
+  reviewType: ReviewType;
+  priority: Priority;
+  complexity?: Complexity;
   riskLevel?: RiskLevel;
-  complexityScore?: number;
+  status: SubmissionStatus;
+  assignedExpertId?: Id;
+  /** Cents. Integer arithmetic only — never floats for money. */
   priceCents?: number;
-  slaHours?: number;
-  assignedExpertIds: Id[];
+  /** Promised delivery time. */
+  eta?: IsoDateTime;
   reportUrl?: string;
   createdAt: IsoDateTime;
-  dueAt?: IsoDateTime;
-  completedAt?: IsoDateTime;
+  updatedAt: IsoDateTime;
 }
 
 /* --- Reviews ------------------------------------------------------------ */
 
-/** The six rubric dimensions every review is scored against. */
-export const RUBRIC_DIMENSIONS = [
-  "factualAccuracy",
-  "guidelineConcordance",
-  "safety",
-  "completeness",
-  "calibration",
-  "scope",
-] as const;
+export const ACCURACY = ["accurate", "minor-issues", "incorrect"] as const;
+export type Accuracy = (typeof ACCURACY)[number];
 
-export type RubricDimension = (typeof RUBRIC_DIMENSIONS)[number];
+export const SAFETY_LEVELS = ["safe", "needs-revision", "unsafe"] as const;
+export type SafetyLevel = (typeof SAFETY_LEVELS)[number];
 
-/** 1 = unacceptable, 5 = no issues found. */
-export type RubricScore = 1 | 2 | 3 | 4 | 5;
+export const REASONING_QUALITY = ["strong", "questionable", "poor"] as const;
+export type ClinicalReasoning = (typeof REASONING_QUALITY)[number];
 
-export type FailureCategory =
-  | "unsupported-claim"
-  | "guideline-drift"
-  | "interaction-missed"
-  | "overconfidence"
-  | "omission"
-  | "unsafe-dose"
-  | "scope-creep"
-  | "missed-red-flag";
+export const VERDICTS = ["verified", "needs-revision", "unsafe"] as const;
+export type Verdict = (typeof VERDICTS)[number];
 
-export type Severity = "minor" | "moderate" | "severe" | "critical";
-
-export interface Correction {
-  id: Id;
-  category: FailureCategory;
-  severity: Severity;
-  /** Character offsets into Submission.outputText. */
-  spanStart?: number;
-  spanEnd?: number;
-  quotedText?: string;
-  explanation: string;
-  suggestedReplacement?: string;
-}
-
-export type EvidenceKind = "guideline" | "drug-label" | "literature" | "policy";
-
-export interface Evidence {
-  id: Id;
-  kind: EvidenceKind;
-  citation: string;
-  url?: string;
-  /** Which correction or dimension this evidence supports. */
-  supports?: string;
-}
-
-export type Verdict =
-  | "verified"
-  | "verified-with-amendment"
-  | "corrected"
-  | "rejected";
-
-export type ReviewStatus = "assigned" | "accepted" | "submitted" | "expired" | "declined";
+export const REVIEW_STATUSES = ["assigned", "accepted", "rejected", "submitted"] as const;
+export type ReviewStatus = (typeof REVIEW_STATUSES)[number];
 
 export interface Review {
   id: Id;
   submissionId: Id;
   expertId: Id;
   status: ReviewStatus;
-  scores: Partial<Record<RubricDimension, RubricScore>>;
+  accuracy?: Accuracy;
+  hallucinationDetected?: boolean;
+  hallucinationDetails?: string;
+  missingInformation?: boolean;
+  missingInformationDetails?: string;
+  safetyLevel?: SafetyLevel;
+  clinicalReasoning?: ClinicalReasoning;
   verdict?: Verdict;
-  riskLevel?: RiskLevel;
-  corrections: Correction[];
-  evidence: Evidence[];
   comments?: string;
-  /** Reviewer's own confidence, used to trigger escalation. */
-  confidence?: number;
   assignedAt: IsoDateTime;
   acceptedAt?: IsoDateTime;
   submittedAt?: IsoDateTime;
 }
 
-/* --- Verification record (the deliverable) ------------------------------ */
+/* --- Reports ------------------------------------------------------------ */
 
-export interface ReviewerAttribution {
-  expertId: Id;
-  fullName: string;
-  specialty: Specialty;
-  boardCertified: boolean;
-  licenceJurisdiction: string;
-}
-
-export interface VerificationRecord {
+export interface Report {
   id: Id;
   submissionId: Id;
-  verdict: Verdict;
-  riskLevel: RiskLevel;
-  scores: Record<RubricDimension, RubricScore>;
-  corrections: Correction[];
-  evidence: Evidence[];
-  reviewers: ReviewerAttribution[];
-  /** Set when two reviewers disagreed and the case was adjudicated. */
-  adjudicated: boolean;
-  disagreements?: string[];
-  receivedAt: IsoDateTime;
-  completedAt: IsoDateTime;
-  turnaroundMinutes: number;
-  /** Hash over the record body, so tampering is detectable. */
-  signature: string;
+  /** 0–100 reliability score derived from the review. */
+  verificationScore: number;
+  summary: string;
+  pdfUrl?: string;
+  createdAt: IsoDateTime;
 }
 
-/* --- Money -------------------------------------------------------------- */
+/* --- Payments ----------------------------------------------------------- */
 
-export interface PriceBreakdown {
-  baseCents: number;
-  complexityCents: number;
-  urgencyCents: number;
-  reviewModeCents: number;
-  totalCents: number;
-  currency: "USD";
-  slaHours: number;
-  explanation: string[];
-}
-
-export interface Wallet {
-  id: Id;
-  expertId: Id;
-  balanceCents: number;
-  totalEarnedCents: number;
-  pendingPayoutCents: number;
-  totalWithdrawnCents: number;
-}
-
-export type PaymentType = "charge" | "payout" | "refund";
+export const PAYMENT_STATUSES = ["pending", "paid", "failed", "refunded"] as const;
+export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
 
 export interface Payment {
   id: Id;
-  type: PaymentType;
+  submissionId: Id;
   amountCents: number;
   currency: "USD";
-  payerId?: Id;
-  payeeId?: Id;
-  relatedId?: Id;
-  status: "pending" | "succeeded" | "failed";
+  status: PaymentStatus;
+  provider: string;
   reference?: string;
   createdAt: IsoDateTime;
+}
+
+/* --- Engine outputs ----------------------------------------------------- */
+
+/** What processVerificationRequest() returns. */
+export interface VerificationAnalysis {
+  specialty: Specialty;
+  complexity: Complexity;
+  risk: RiskLevel;
+  recommendedExpert: {
+    specialty: Specialty;
+    minYearsExperience: number;
+    minRating: number;
+  };
+  /** Turnaround in hours. */
+  estimatedTimeHours: number;
+  estimatedPrice: { minCents: number; maxCents: number };
+  /** Human-readable reasons, surfaced in the UI and the audit trail. */
+  rationale: string[];
+}
+
+export interface PriceQuote {
+  baseCents: number;
+  complexityCents: number;
+  priorityCents: number;
+  reviewTypeCents: number;
+  totalCents: number;
+  currency: "USD";
+  slaHours: number;
+  breakdown: string[];
 }
 
 /* --- Audit -------------------------------------------------------------- */
@@ -282,4 +247,13 @@ export interface AuditEntry {
   targetId: Id;
   metadata?: Record<string, unknown>;
   at: IsoDateTime;
+}
+
+/* --- Sessions ----------------------------------------------------------- */
+
+export interface Session {
+  token: string;
+  userId: Id;
+  role: UserRole;
+  expiresAt: IsoDateTime;
 }
