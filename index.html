@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harmony Verify — Clinical verification for healthcare AI</title>
+<meta name="description" content="Harmony Verify is the clinical verification layer for healthcare AI. Board-certified clinicians review AI-generated output against source evidence and return a signed, auditable record — built for clinical decision support vendors and healthcare AI teams.">
+<link rel="canonical" href="https://harmonyverify.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Harmony Verify">
+<meta property="og:title" content="Harmony Verify — Clinical verification for healthcare AI">
+<meta property="og:description" content="Board-certified clinicians review AI-generated clinical output against source evidence and return a signed, auditable record.">
+<meta property="og:url" content="https://harmonyverify.com/">
+<meta property="og:image" content="https://harmonyverify.com/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#050F24">
+
+<link rel="preload" href="assets/fonts/newsreader-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/main.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Harmony Verify",
+  "url": "https://harmonyverify.com/",
+  "logo": "https://harmonyverify.com/assets/img/apple-touch-icon.png",
+  "description": "Clinical verification infrastructure for healthcare AI. Board-certified clinician review of AI-generated clinical output, with evidence linking and a signed audit record.",
+  "founder": { "@type": "Person", "name": "Affriee Darele Yvana", "jobTitle": "Founder & CEO" },
+  "industry": "Health technology",
+  "email": "hello@harmonyverify.com"
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <a class="brand" href="index.html">
+    <img src="assets/img/mark.svg" alt="" width="30" height="30">
+    <span class="brand-name">Harmony <b>Verify</b>
+      <span class="brand-sub">Clinical AI Assurance</span>
+    </span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="platform.html">Platform</a></li>
+    <li><a href="solutions.html">Solutions</a></li>
+    <li><a href="trust.html">Trust</a></li>
+    <li><a href="company.html">Company</a></li>
+    <li><a class="btn btn--ghost btn--sm" href="contact.html">Request access</a></li>
+  </ul>
+</header>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero field">
+    <div class="wrap hero-inner">
+      <div data-reveal="0">
+        <p class="eyebrow">Clinical verification infrastructure</p>
+        <h1>Ship clinical AI you can <em>defend</em>.</h1>
+        <p class="lede">
+          Harmony Verify is the verification layer between your model and the clinician using it.
+          Board-certified reviewers check AI-generated clinical output against source evidence and
+          return a signed record — so your customers, your regulators and your legal team can all
+          see exactly how a recommendation was reached.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--gold" href="contact.html">Request access</a>
+          <a class="btn btn--plain" href="platform.html">See how it works</a>
+        </div>
+        <div class="hero-marks">
+          <span class="tag">Built for CDS vendors</span>
+          <span class="tag">Specialty-matched reviewers</span>
+          <span class="tag tag--ok">Signed audit record</span>
+        </div>
+      </div>
+
+      <!-- Signature component: a live verification record -->
+      <div data-reveal="1">
+        <article class="record" aria-label="Example verification record">
+          <div class="record-bar">
+            <span class="dot dot--pulse" aria-hidden="true"></span>
+            <span class="chip chip--review" data-chip>Awaiting review</span>
+            <span class="ref">REC-4471-CARD</span>
+          </div>
+          <div class="record-body">
+            <div class="note" data-note data-corrected="false">
+              <div class="note-head">
+                <span>AI draft · Discharge summary</span>
+                <span>Cardiology</span>
+              </div>
+              <p>
+                72&nbsp;y/o male, post-MI, discharged on dual antiplatelet therapy. Continue
+                <mark>clopidogrel 75&nbsp;mg daily for 3 months</mark>, then reassess bleeding risk.
+              </p>
+              <p>
+                Patient is concurrently prescribed omeprazole for reflux.
+                <ins>Reviewer note: omeprazole reduces clopidogrel activation via CYP2C19 —
+                switch to pantoprazole. DAPT duration should be 12 months per current guidance.</ins>
+              </p>
+            </div>
+
+            <ol class="steps" data-steps>
+              <li data-state="active">
+                <span class="tick" aria-hidden="true">1</span>
+                Output received via API
+                <time>00:00</time>
+              </li>
+              <li>
+                <span class="tick" aria-hidden="true">2</span>
+                Routed — interventional cardiology
+                <time>00:04</time>
+              </li>
+              <li>
+                <span class="tick" aria-hidden="true">3</span>
+                Evidence checked, correction issued
+                <time>01:22</time>
+              </li>
+              <li>
+                <span class="tick" aria-hidden="true">4</span>
+                Signed record returned
+                <time>01:29</time>
+              </li>
+            </ol>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Commitments band -->
+  <section class="band">
+    <div class="wrap">
+      <dl class="band-grid">
+        <div class="band-item" data-reveal="0">
+          <dt>Reviewers</dt>
+          <dd>Credentialed, licence-verified clinicians matched to the specialty of the case</dd>
+        </div>
+        <div class="band-item" data-reveal="1">
+          <dt>Evidence</dt>
+          <dd>Every judgement cites the guideline, label or literature it rests on</dd>
+        </div>
+        <div class="band-item" data-reveal="2">
+          <dt>Record</dt>
+          <dd>Every reviewed output returns a timestamped, attributable audit record</dd>
+        </div>
+        <div class="band-item" data-reveal="3">
+          <dt>Privacy</dt>
+          <dd>HIPAA-aligned architecture, BAA available, PHI minimised by default</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Problem -->
+  <section class="section field">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">The problem</p>
+        <h2>A confident answer is not a correct one.</h2>
+        <p>
+          Clinical language models are fluent by construction. They produce dosing, coding and
+          triage recommendations in the register of an experienced physician whether or not the
+          underlying reasoning holds — and the failures that matter most are the ones that read
+          perfectly.
+        </p>
+      </div>
+
+      <div class="grid grid--3">
+        <div class="card" data-reveal="0">
+          <span class="ref">01 — Fluency</span>
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8h14M7 16h10"/></svg>
+          </div>
+          <h3>Errors that read as expertise</h3>
+          <p>
+            A fabricated citation, an inverted contraindication or a plausible-but-wrong dose
+            carries the same confident tone as a correct one. Clinicians under time pressure have
+            no signal to separate them.
+          </p>
+        </div>
+        <div class="card" data-reveal="1">
+          <span class="ref">02 — Accountability</span>
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3.5v5c0 4.4-3.2 8.2-8 9.5-4.8-1.3-8-5.1-8-9.5v-5L12 3z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3>No one can say who decided</h3>
+          <p>
+            When an AI-assisted recommendation is questioned months later, "the model produced it"
+            is not an answer a health system, a payer or a court will accept. Someone has to be
+            accountable, by name.
+          </p>
+        </div>
+        <div class="card" data-reveal="2">
+          <span class="ref">03 — Procurement</span>
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+          </div>
+          <h3>Deals stall at clinical governance</h3>
+          <p>
+            Your product survives the demo and then meets the safety committee. Without evidence
+            of how outputs are validated and by whom, pilots stretch into quarters and contracts
+            stay unsigned.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section section--mid section--line">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">How it works</p>
+        <h2>Four steps from model output to defensible record.</h2>
+        <p>
+          Harmony Verify runs alongside your product. You choose which outputs to route — all of
+          them, a sampled share, or only those your own confidence scoring flags.
+        </p>
+      </div>
+
+      <div class="grid grid--2">
+        <div class="step-card" data-reveal="0">
+          <div class="step-num">01</div>
+          <h3>Submit</h3>
+          <p>
+            Your application posts the AI output, the clinical context it was generated from and
+            the question being asked. One API call. PHI can be tokenised or redacted before it
+            ever reaches us.
+          </p>
+        </div>
+        <div class="step-card" data-reveal="1">
+          <div class="step-num">02</div>
+          <h3>Route</h3>
+          <p>
+            The case is matched to a licence-verified clinician in the relevant specialty, with
+            conflict-of-interest and workload checks applied. Urgency tiers determine turnaround.
+          </p>
+        </div>
+        <div class="step-card" data-reveal="2">
+          <div class="step-num">03</div>
+          <h3>Verify</h3>
+          <p>
+            The reviewer works through a structured rubric — factual accuracy, guideline
+            concordance, safety, completeness, appropriate hedging — and links each judgement to
+            the source that supports it.
+          </p>
+        </div>
+        <div class="step-card" data-reveal="3">
+          <div class="step-num">04</div>
+          <h3>Return</h3>
+          <p>
+            You receive a verdict, any corrections, the supporting citations and a signed audit
+            record — through the API and in your dashboard. Disagreements escalate to a second
+            reviewer.
+          </p>
+        </div>
+      </div>
+
+      <div class="btn-row" data-reveal="0">
+        <a class="link-arrow" href="platform.html">Read the platform detail <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities -->
+  <section class="section field">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">What you get</p>
+        <h2>Verification, and the paperwork to prove it.</h2>
+      </div>
+
+      <div class="feature" data-reveal="0">
+        <div>
+          <h3>A record that survives scrutiny</h3>
+          <p>
+            Each verification returns an immutable record: the original output, the reviewer's
+            credentials and licence state, the rubric scores, the corrections, the cited sources
+            and the timestamps. Exportable for your quality file, your customers' governance
+            reviews and your own incident investigations.
+          </p>
+          <ul class="checklist">
+            <li>Attributable to a named, credentialed reviewer</li>
+            <li>Evidence links to guideline, drug label or literature</li>
+            <li>Immutable, timestamped and exportable</li>
+          </ul>
+        </div>
+        <div>
+          <div class="record">
+            <div class="record-bar">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="chip chip--verified">Verified</span>
+              <span class="ref">REC-9013-ONC</span>
+            </div>
+            <div class="record-body">
+              <div class="table-scroll">
+                <table>
+                  <caption class="visually-hidden">Fields contained in a verification record</caption>
+                  <tbody>
+                    <tr><td>Reviewer</td><td>Board-certified, medical oncology · licence verified</td></tr>
+                    <tr><td>Rubric</td><td>Accuracy · Guideline concordance · Safety · Completeness</td></tr>
+                    <tr><td>Evidence</td><td>2 guideline citations · 1 drug label section</td></tr>
+                    <tr><td>Outcome</td><td>Verified with one clarifying amendment</td></tr>
+                    <tr><td>Turnaround</td><td>Within the tier committed for this case</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature feature--flip" data-reveal="0">
+        <div>
+          <h3>Signal back into your model</h3>
+          <p>
+            Verification is only worth the cost if it makes the next output better. Corrections are
+            returned as structured data — failure category, severity, clinical domain, the specific
+            span that was wrong — so your team can see where the model degrades and feed that into
+            evaluation sets, prompt changes and retraining.
+          </p>
+          <ul class="checklist">
+            <li>Failure taxonomy by category and severity</li>
+            <li>Error rates segmented by specialty and task type</li>
+            <li>Reviewer agreement to keep the reviewers honest too</li>
+          </ul>
+        </div>
+        <div>
+          <div class="record">
+            <div class="record-bar">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="ref">Failure taxonomy — illustrative</span>
+            </div>
+            <div class="record-body">
+              <div class="table-scroll">
+                <table>
+                  <caption class="visually-hidden">Illustrative failure categories returned with corrections</caption>
+                  <thead>
+                    <tr><th scope="col">Category</th><th scope="col">Example</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Unsupported claim</td><td>Assertion with no source in the provided context</td></tr>
+                    <tr><td>Guideline drift</td><td>Recommendation against current society guidance</td></tr>
+                    <tr><td>Interaction missed</td><td>Co-prescribed agent not accounted for</td></tr>
+                    <tr><td>Overconfidence</td><td>Definitive phrasing where the evidence is uncertain</td></tr>
+                    <tr><td>Omission</td><td>Material contraindication or follow-up left out</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who it's for -->
+  <section class="section section--mid section--line">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Who we build for</p>
+        <h2>Teams putting AI in front of clinicians.</h2>
+        <p>
+          We work with the companies building the tools, not with individual clinicians. Your
+          product stays your product — Harmony Verify is infrastructure underneath it.
+        </p>
+      </div>
+
+      <div class="grid grid--2">
+        <div class="card" data-reveal="0">
+          <span class="ref">Segment 01</span>
+          <h3>Clinical decision support vendors</h3>
+          <p>
+            Diagnostic assistance, treatment recommendation, risk stratification. Verification gives
+            your safety committee reviewers something concrete to evaluate, and gives you evidence
+            when a recommendation is challenged.
+          </p>
+        </div>
+        <div class="card" data-reveal="1">
+          <span class="ref">Segment 02</span>
+          <h3>Ambient documentation &amp; coding</h3>
+          <p>
+            Notes, summaries and codes generated from encounters. Sampled clinician review measures
+            the error rate you are actually shipping, rather than the one your benchmark suggests.
+          </p>
+        </div>
+        <div class="card" data-reveal="2">
+          <span class="ref">Segment 03</span>
+          <h3>Patient-facing health AI</h3>
+          <p>
+            Triage, symptom guidance and medication questions, where the reader has no clinical
+            training and no way to catch an error. Higher stakes, tighter review criteria.
+          </p>
+        </div>
+        <div class="card" data-reveal="3">
+          <span class="ref">Segment 04</span>
+          <h3>Health system &amp; payer AI teams</h3>
+          <p>
+            Internal models for utilisation, prior authorisation and care management, where an
+            independent clinical check is the difference between a pilot and a deployment.
+          </p>
+        </div>
+      </div>
+
+      <div class="btn-row" data-reveal="0">
+        <a class="link-arrow" href="solutions.html">Explore solutions <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder note -->
+  <section class="section section--deep section--line">
+    <div class="wrap cols cols--split">
+      <div data-reveal="0">
+        <p class="eyebrow">Why we exist</p>
+        <figure class="quote">
+          <blockquote>
+            AI will become infrastructure in medicine. Trust cannot be the optional part.
+          </blockquote>
+          <figcaption>
+            <b>Affriee Darele Yvana</b>
+            Founder &amp; CEO, Harmony Verify
+          </figcaption>
+        </figure>
+      </div>
+      <div data-reveal="1">
+        <p class="lede">
+          Harmony Verify started from a straightforward observation: the healthcare AI market is
+          racing to make models more capable while the mechanism for establishing that any given
+          output is correct has barely moved.
+        </p>
+        <p class="lede" style="margin-top:16px">
+          Capability without verification does not reach the bedside — it stalls in procurement,
+          in safety review, in the quiet decision by a clinician not to trust the tool. We are
+          building the layer that closes that gap, starting where the cost of error is highest.
+        </p>
+        <div class="btn-row">
+          <a class="link-arrow" href="company.html">About Harmony Verify <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta field">
+    <div class="wrap">
+      <img class="cta-mark" src="assets/img/mark.svg" alt="" width="62" height="62" data-reveal="0">
+      <p class="eyebrow" data-reveal="0">Early access</p>
+      <h2 data-reveal="1">Put a clinician behind every output.</h2>
+      <p data-reveal="2">
+        We are onboarding a small number of clinical AI teams as design partners. Tell us what you
+        are building and what you need to prove about it.
+      </p>
+      <div class="btn-row" data-reveal="3">
+        <a class="btn btn--gold" href="contact.html">Request access</a>
+        <a class="btn btn--ghost" href="trust.html">Review our trust posture</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/img/mark.svg" alt="" width="30" height="30">
+          <span class="brand-name">Harmony <b>Verify</b>
+            <span class="brand-sub">Clinical AI Assurance</span>
+          </span>
+        </a>
+        <p>Clinical verification infrastructure for healthcare AI.</p>
+      </div>
+      <div>
+        <h3>Product</h3>
+        <ul>
+          <li><a href="platform.html">Platform</a></li>
+          <li><a href="platform.html#api">API</a></li>
+          <li><a href="platform.html#rubric">Review rubric</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="company.html">About</a></li>
+          <li><a href="company.html#clinicians">For clinicians</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Trust</h3>
+        <ul>
+          <li><a href="trust.html">Security &amp; privacy</a></li>
+          <li><a href="trust.html#regulatory">Regulatory context</a></li>
+          <li><a href="trust.html#claims">How we word claims</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; <span data-year>2026</span> Harmony Verify. All rights reserved.</span>
+      <span>Harmony Verify does not practise medicine and does not provide medical advice.</span>
+      <span class="ref">Built for high-stakes care</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Platform — Harmony Verify</title>
+<meta name="description" content="How the Harmony Verify clinical verification layer works: submission API, specialty-matched reviewer routing, structured clinical review rubric, evidence linking and a signed audit record returned to your application.">
+<link rel="canonical" href="https://harmonyverify.com/platform.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Harmony Verify">
+<meta property="og:title" content="Platform — Harmony Verify">
+<meta property="og:description" content="Submission API, specialty-matched routing, a structured clinical rubric and a signed audit record for every AI output you route.">
+<meta property="og:url" content="https://harmonyverify.com/platform.html">
+<meta property="og:image" content="https://harmonyverify.com/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#050F24">
+
+<link rel="preload" href="assets/fonts/newsreader-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav">
+  <a class="brand" href="index.html">
+    <img src="assets/img/mark.svg" alt="" width="30" height="30">
+    <span class="brand-name">Harmony <b>Verify</b>
+      <span class="brand-sub">Clinical AI Assurance</span>
+    </span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="platform.html" aria-current="page">Platform</a></li>
+    <li><a href="solutions.html">Solutions</a></li>
+    <li><a href="trust.html">Trust</a></li>
+    <li><a href="company.html">Company</a></li>
+    <li><a class="btn btn--ghost btn--sm" href="contact.html">Request access</a></li>
+  </ul>
+</header>
+
+<main id="main">
+
+  <section class="page-head field">
+    <div class="wrap">
+      <p class="crumbs"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Platform</p>
+      <h1>The verification layer, in detail.</h1>
+      <p class="lede">
+        Harmony Verify sits between your model and the clinician reading its output. You decide what
+        gets routed and how fast it must come back; we handle reviewer matching, structured clinical
+        review, evidence linking and the record that proves it happened.
+      </p>
+    </div>
+  </section>
+
+  <!-- Pipeline -->
+  <section class="section field">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Pipeline</p>
+        <h2>What happens to a routed output.</h2>
+      </div>
+
+      <div class="grid grid--2">
+        <div class="step-card" data-reveal="0">
+          <div class="step-num">01</div>
+          <h3>Submission</h3>
+          <p>
+            Your application posts the generated output together with the clinical context it was
+            derived from, the task type and the urgency tier. Identifiers can be tokenised on your
+            side so that direct identifiers never reach us.
+          </p>
+        </div>
+        <div class="step-card" data-reveal="1">
+          <div class="step-num">02</div>
+          <h3>Triage &amp; routing</h3>
+          <p>
+            Cases are classified by clinical domain and complexity, then matched to a reviewer whose
+            licence, board certification and scope of practice fit the case. Conflict-of-interest and
+            workload rules apply before assignment.
+          </p>
+        </div>
+        <div class="step-card" data-reveal="2">
+          <div class="step-num">03</div>
+          <h3>Structured review</h3>
+          <p>
+            The reviewer works a fixed rubric rather than writing free prose. Every dimension is
+            scored, every correction is attached to the exact span it applies to, and every clinical
+            judgement is linked to its source.
+          </p>
+        </div>
+        <div class="step-card" data-reveal="3">
+          <div class="step-num">04</div>
+          <h3>Adjudication</h3>
+          <p>
+            Cases that meet escalation criteria — reviewer uncertainty, high severity, or a customer
+            rule you define — go to a second independent reviewer. Disagreements are recorded, not
+            silently resolved.
+          </p>
+        </div>
+        <div class="step-card" data-reveal="4">
+          <div class="step-num">05</div>
+          <h3>Return</h3>
+          <p>
+            The verdict, corrections, citations and reviewer attribution come back over the API and
+            appear in your dashboard. Your application decides what to do next: block, amend, warn or
+            release.
+          </p>
+        </div>
+        <div class="step-card" data-reveal="5">
+          <div class="step-num">06</div>
+          <h3>Aggregate signal</h3>
+          <p>
+            Every record feeds your quality view: error rates by specialty and task type, severity
+            distribution, drift over model versions, and reviewer agreement to keep the review layer
+            itself measurable.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Review rubric -->
+  <section class="section section--mid section--line" id="rubric">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Review rubric</p>
+        <h2>Judgement, made comparable.</h2>
+        <p>
+          Free-text clinical opinion does not aggregate and cannot be audited. Every Harmony Verify
+          review is scored against the same dimensions, so results are consistent between reviewers
+          and meaningful in bulk.
+        </p>
+      </div>
+
+      <div class="table-scroll" data-reveal="0">
+        <table>
+          <caption class="visually-hidden">Dimensions scored in every clinical review</caption>
+          <thead>
+            <tr>
+              <th scope="col">Dimension</th>
+              <th scope="col">The reviewer is asking</th>
+              <th scope="col">Failure signal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Factual accuracy</td>
+              <td>Is every clinical assertion correct and supported by the provided context?</td>
+              <td>Unsupported claim, fabricated citation</td>
+            </tr>
+            <tr>
+              <td>Guideline concordance</td>
+              <td>Does this align with current society guidance and the approved label?</td>
+              <td>Guideline drift, off-label without flag</td>
+            </tr>
+            <tr>
+              <td>Safety</td>
+              <td>Could acting on this cause harm — interaction, contraindication, dose?</td>
+              <td>Interaction missed, unsafe dose</td>
+            </tr>
+            <tr>
+              <td>Completeness</td>
+              <td>Is anything material to the decision missing?</td>
+              <td>Omission of contraindication or follow-up</td>
+            </tr>
+            <tr>
+              <td>Calibration</td>
+              <td>Is the confidence expressed proportionate to the evidence?</td>
+              <td>Overconfidence, false certainty</td>
+            </tr>
+            <tr>
+              <td>Scope</td>
+              <td>Has the model answered beyond what it was asked or is competent to answer?</td>
+              <td>Scope creep, unrequested diagnosis</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="form-note" style="margin-top:22px" data-reveal="0">
+        Rubric weighting is configured per deployment — a coding assistant and a triage assistant do
+        not fail in the same ways, and should not be scored as though they do.
+      </p>
+    </div>
+  </section>
+
+  <!-- Integration -->
+  <section class="section field" id="api">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Integration</p>
+        <h2>One call in, one record out.</h2>
+        <p>
+          Harmony Verify runs asynchronously alongside your product. Submit an output, receive a
+          verification identifier immediately, and take the completed record by webhook or by polling.
+        </p>
+      </div>
+
+      <div class="feature" data-reveal="0">
+        <div>
+          <h3>Choose what gets verified</h3>
+          <p>
+            Full review of every output is rarely the right economic answer. Most teams start with a
+            sampled share to establish a baseline error rate, then move to targeted review — routing
+            only what their own confidence scoring, task type or risk tier marks as worth a
+            clinician's time.
+          </p>
+          <ul class="checklist">
+            <li><b>Sampled</b> — a fixed share, for measurement and quality evidence</li>
+            <li><b>Triggered</b> — routed when your own signals flag risk</li>
+            <li><b>Comprehensive</b> — every output, for the highest-stakes surfaces</li>
+          </ul>
+        </div>
+        <div>
+          <div class="record">
+            <div class="record-bar">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="ref">Verification record — response shape</span>
+            </div>
+            <div class="record-body">
+              <div class="table-scroll">
+                <table>
+                  <caption class="visually-hidden">Fields returned on a completed verification</caption>
+                  <tbody>
+                    <tr><td>verification_id</td><td>Stable identifier for the record</td></tr>
+                    <tr><td>verdict</td><td>verified · verified_with_amendment · corrected · rejected</td></tr>
+                    <tr><td>rubric_scores</td><td>Score per review dimension</td></tr>
+                    <tr><td>corrections[]</td><td>Span, category, severity, replacement text</td></tr>
+                    <tr><td>evidence[]</td><td>Source cited for each clinical judgement</td></tr>
+                    <tr><td>reviewer</td><td>Credential, specialty, licence state, signature</td></tr>
+                    <tr><td>timestamps</td><td>Received, assigned, completed</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature feature--flip" data-reveal="0">
+        <div>
+          <h3>Built to fit an existing stack</h3>
+          <p>
+            Verification is a service call, not a platform migration. Nothing about your model,
+            hosting or interface has to change — you keep your product, your data flows and your
+            customer relationship.
+          </p>
+          <ul class="checklist">
+            <li>REST submission with webhook callback, or polling if you prefer</li>
+            <li>Runs asynchronously — your user-facing latency is unaffected</li>
+            <li>Reviewer workspace for your own clinical staff, if you have them</li>
+            <li>Record export for quality files and customer governance reviews</li>
+          </ul>
+        </div>
+        <div>
+          <div class="record">
+            <div class="record-bar">
+              <span class="dot dot--pulse" aria-hidden="true"></span>
+              <span class="chip chip--verified">Verified</span>
+              <span class="ref">REC-2208-EM</span>
+            </div>
+            <div class="record-body">
+              <div class="note">
+                <div class="note-head">
+                  <span>AI draft · Triage guidance</span>
+                  <span>Emergency medicine</span>
+                </div>
+                <p>
+                  Adult presenting with unilateral calf swelling and pleuritic chest pain.
+                  Draft advised routine outpatient follow-up within one week.
+                </p>
+                <p>
+                  <ins>Reviewer: presentation is consistent with possible pulmonary embolism.
+                  Routine follow-up is unsafe here — guidance amended to immediate emergency
+                  assessment.</ins>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviewer network -->
+  <section class="section section--mid section--line" id="network">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Reviewer network</p>
+        <h2>Who is actually reading your output.</h2>
+        <p>
+          The value of this layer is only as good as the clinicians in it. Reviewer quality is
+          something we treat as a measured, ongoing obligation rather than a claim made once at
+          onboarding.
+        </p>
+      </div>
+
+      <div class="grid grid--3">
+        <div class="card" data-reveal="0">
+          <span class="ref">Standard 01</span>
+          <h3>Verified credentials</h3>
+          <p>
+            Licence and board certification are verified at source before a reviewer sees a single
+            case, and re-checked on a schedule. Practice scope is recorded so routing can respect it.
+          </p>
+        </div>
+        <div class="card" data-reveal="1">
+          <span class="ref">Standard 02</span>
+          <h3>Specialty matching</h3>
+          <p>
+            A cardiology case goes to a cardiologist. Routing is on demonstrated specialty and
+            subspecialty, not on general availability — the common failure mode of generic expert
+            marketplaces.
+          </p>
+        </div>
+        <div class="card" data-reveal="2">
+          <span class="ref">Standard 03</span>
+          <h3>Calibration &amp; audit</h3>
+          <p>
+            Reviewers are periodically given cases with established answers, and inter-reviewer
+            agreement is tracked continuously. Reviewers who drift are recalibrated or removed.
+          </p>
+        </div>
+      </div>
+
+      <div class="btn-row" data-reveal="0">
+        <a class="link-arrow" href="company.html#clinicians">Clinicians: join the network <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section field">
+    <div class="wrap wrap-narrow">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Questions</p>
+        <h2>The ones buyers actually ask.</h2>
+      </div>
+
+      <div class="faq" data-reveal="0">
+        <details>
+          <summary>Does this slow our product down?</summary>
+          <div>
+            <p>
+              No — verification runs asynchronously and out of band. Your user gets your response at
+              your normal latency. The verification record arrives afterwards, and your application
+              decides what to do with it: annotate, amend, escalate, or hold a specific class of
+              output until it clears.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>Do you need protected health information?</summary>
+          <div>
+            <p>
+              We need enough clinical context for a reviewer to judge the output — but that is rarely
+              the same as needing identifiers. Most integrations tokenise or strip direct identifiers
+              before submission. Where PHI is genuinely required, it is handled under a business
+              associate agreement with access limited to the assigned reviewer. See
+              <a href="trust.html">Trust</a> for the detail.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>Is Harmony Verify a medical device?</summary>
+          <div>
+            <p>
+              Harmony Verify is a verification and quality assurance service for the companies
+              building clinical AI. We do not generate clinical recommendations and we do not
+              practise medicine. Whether <em>your</em> product is a regulated device depends on what
+              it does and where you sell it — that determination stays with you, and our records are
+              designed to support the evidence you need for it.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>What happens when a reviewer is wrong?</summary>
+          <div>
+            <p>
+              We assume it will happen, and instrument for it. Escalation criteria send high-severity
+              and low-confidence cases to a second independent reviewer, disagreement rates are
+              tracked per reviewer, and every record is attributable — so a bad judgement can be
+              found, corrected and learned from rather than quietly absorbed.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>How is this priced?</summary>
+          <div>
+            <p>
+              Per verification, with rates that vary by specialty, review depth and turnaround tier,
+              plus a platform fee at volume. Design partners are onboarded on terms agreed case by
+              case. <a href="contact.html">Tell us your volume and task mix</a> and we will come back
+              with concrete numbers.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>Who owns the verification records?</summary>
+          <div>
+            <p>
+              You do. Records are yours to export, retain and present to your customers and
+              regulators. We retain what we need to run the service and to measure reviewer quality,
+              under the retention terms in your agreement.
+            </p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta field">
+    <div class="wrap">
+      <img class="cta-mark" src="assets/img/mark.svg" alt="" width="62" height="62" data-reveal="0">
+      <p class="eyebrow" data-reveal="0">Early access</p>
+      <h2 data-reveal="1">See it against your own output.</h2>
+      <p data-reveal="2">
+        The fastest way to judge this is to route a sample of your real output through it. Send us
+        your task mix and we will scope a pilot.
+      </p>
+      <div class="btn-row" data-reveal="3">
+        <a class="btn btn--gold" href="contact.html">Request access</a>
+        <a class="btn btn--ghost" href="solutions.html">See solutions by segment</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/img/mark.svg" alt="" width="30" height="30">
+          <span class="brand-name">Harmony <b>Verify</b>
+            <span class="brand-sub">Clinical AI Assurance</span>
+          </span>
+        </a>
+        <p>Clinical verification infrastructure for healthcare AI.</p>
+      </div>
+      <div>
+        <h3>Product</h3>
+        <ul>
+          <li><a href="platform.html">Platform</a></li>
+          <li><a href="platform.html#api">API</a></li>
+          <li><a href="platform.html#rubric">Review rubric</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="company.html">About</a></li>
+          <li><a href="company.html#clinicians">For clinicians</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Trust</h3>
+        <ul>
+          <li><a href="trust.html">Security &amp; privacy</a></li>
+          <li><a href="trust.html#regulatory">Regulatory context</a></li>
+          <li><a href="trust.html#claims">How we word claims</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; <span data-year>2026</span> Harmony Verify. All rights reserved.</span>
+      <span>Harmony Verify does not practise medicine and does not provide medical advice.</span>
+      <span class="ref">Built for high-stakes care</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
