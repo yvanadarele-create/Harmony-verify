@@ -1,96 +1,115 @@
-# Harmony Verify — website
+# Harmony Verify
 
-Marketing site for Harmony Verify, clinical verification infrastructure for healthcare AI.
-
-Static HTML, CSS and vanilla JavaScript. No build step, no dependencies, no framework. Open
-`index.html` in a browser and it works.
+Clinical verification infrastructure for healthcare AI — a monorepo containing the public
+marketing site, the customer and expert applications, the internal admin console, the backend
+API, and the domain engines they all share.
 
 ## Structure
 
 ```
-index.html          Home
-platform.html       How verification works — pipeline, rubric, API, reviewer network, FAQ
-solutions.html      Four buyer segments: CDS, documentation, patient-facing, health system/payer
-trust.html          Data handling, reviewer integrity, regulatory context, claims discipline
-company.html        Thesis, principles, founder, clinician recruitment
-contact.html        Access request form
-404.html            Not found
+apps/
+  web             Marketing site — static HTML/CSS/JS, no build step        ✅ complete
+  dashboard       Customer application                                      ⏳ planned
+  expert-portal   Expert review application                                 ⏳ planned
+  admin           Internal admin console                                    ⏳ planned
+  api             Backend API                                               ⏳ planned
 
-assets/css/main.css Design system — tokens, components, responsive, reduced motion
-assets/js/main.js   Nav, scroll reveals, verification-record walkthrough, form handling
-assets/img/         Logo mark (SVG), favicon, apple touch icon, OG image, original logo
+packages/
+  design-system   Canonical design tokens (source of truth for all CSS)     ✅ complete
+  shared          Domain types, typed errors, id + signing helpers          ✅ complete
+  ui              Shared React components                                   ⏳ planned
+  database        Schema, repositories, migrations                          ⏳ planned
+  verification-engine  Submission triage, rubric scoring, record assembly   ⏳ planned
+  expert-matching Specialty routing, conflict and capacity rules            ⏳ planned
+  pricing-engine  Price and SLA calculation                                 ⏳ planned
+  ai-engine       LLM classification and drafting                           ⏳ planned
+  analytics       Aggregate quality metrics                                 ⏳ planned
+  notifications   Email and in-app delivery                                 ⏳ planned
+  cognitive-data  Failure taxonomy and evaluation datasets                  ⏳ planned
 
-robots.txt
-sitemap.xml
+docs/             Architecture and decision records
+tests/            Cross-package integration tests
+scripts/          Repo tooling
+infrastructure/   Deployment configuration
 ```
 
-## Running locally
+Status markers are accurate as of the latest commit. A `⏳ planned` package exists as a
+workspace member with its manifest in place, but has no implementation yet.
+
+## Getting started
 
 ```bash
-python3 -m http.server 8000
-# then open http://localhost:8000
+pnpm install          # install all workspace dependencies
+pnpm test             # run every package's tests
+pnpm typecheck        # type-check the whole repo
 ```
 
-## Deploying
+### The marketing site
 
-Any static host works — Netlify, Vercel, Cloudflare Pages, GitHub Pages, S3. Point it at the
-repository root. There is nothing to build.
+It is static on purpose — no bundler, no framework, no build step.
 
-For GitHub Pages: repository settings → Pages → deploy from branch, root directory.
+```bash
+cd apps/web && python3 -m http.server 4000
+# http://localhost:4000
+```
 
-## Before you launch
+Verify link and asset integrity without a browser:
 
-These need real values. Each is a placeholder today.
+```bash
+node scripts/check-web.mjs
+```
 
-| Item | Where | Notes |
+## Design tokens
+
+`packages/design-system/src/tokens.ts` is the single source of truth for every colour,
+font stack and spacing value.
+
+```bash
+pnpm tokens    # regenerate all consumers
+```
+
+That writes `packages/design-system/dist/tokens.css` for the React apps **and** rewrites the
+`:root` block inside `apps/web/assets/css/main.css` in place, between the `/* @tokens:start */`
+and `/* @tokens:end */` markers. The static site therefore stays buildless and adds no extra
+network request, while remaining impossible to drift from the canonical tokens.
+
+Never hand-edit the block between those markers — the next `pnpm tokens` overwrites it.
+
+## Architecture
+
+```
+Visitor → apps/web → sign in → apps/dashboard → submit verification
+                                     ↓
+                              apps/api
+                                     ↓
+              verification-engine → expert-matching → pricing-engine
+                                     ↓
+                         apps/expert-portal (clinician review)
+                                     ↓
+                    verification record → apps/dashboard
+```
+
+Business logic lives in `packages/*`, never in a page or a route handler. Apps compose
+engines; they do not reimplement them.
+
+## Pending assets
+
+| Asset | Where | Status |
 | --- | --- | --- |
-| Contact email | `contact.html`, `assets/js/main.js` | Currently `hello@harmonyverify.com` |
-| Domain | All pages — `<link rel="canonical">`, OG tags, `sitemap.xml`, `robots.txt` | Currently `harmonyverify.com` |
-| Form backend | `contact.html` | See below |
-| Legal pages | Footer | Privacy policy and terms are not yet written |
+| `apps/web/assets/img/founder.jpg` | Founder profile, `company.html` | Awaiting file. Falls back to an "AY" monogram, so the page is never broken. |
 
-### Wiring up the contact form
+To supply the founder portrait, drop the file in and it appears automatically — no code change:
 
-The form has no backend. With no endpoint configured it falls back to opening the visitor's mail
-client with the fields filled in — functional, but you will lose submissions from anyone without a
-configured mail client.
-
-To connect a real backend, add `data-endpoint` to the `<form>` element in `contact.html`:
-
-```html
-<form class="form" data-form data-endpoint="https://formspree.io/f/XXXXXXX" ...>
+```bash
+cp /path/to/portrait.jpg apps/web/assets/img/founder.jpg
 ```
 
-Any service accepting a `POST` of `FormData` and returning a 2xx will work — Formspree, Basin,
-Netlify Forms, or your own handler.
-
-**Do not accept protected health information through this form.** The form copy says so explicitly,
-and it should stay that way unless the endpoint is covered by a business associate agreement.
+Square or portrait crop, at least 400×400. It is displayed as a 132px circle, focal point
+biased slightly above centre for head-and-shoulders framing.
 
 ## A note on claims
 
-The copy deliberately avoids stating security certifications, compliance attestations or accuracy
-percentages that Harmony Verify does not currently hold or cannot source. `trust.html` makes that
-discipline an explicit, published position.
-
-If you later obtain a real certification (SOC 2, ISO 27001, HITRUST), add it to the data-handling
-table in `trust.html` with its actual scope and date. Until then, claiming it is a material
-misrepresentation to healthcare buyers — the audience most likely to check.
-
-## Brand
-
-| Token | Value |
-| --- | --- |
-| Navy (base) | `#050F24` |
-| Navy (deep) | `#03081A` |
-| Gold | `#D4AF37` |
-| Verified | `#48C79A` |
-| Review | `#E0A93B` |
-| Flagged | `#E8735C` |
-
-Display type is Newsreader, body is IBM Plex Sans, data and labels are IBM Plex Mono, all loaded
-from Google Fonts with system fallbacks.
-
-The logo mark in `assets/img/mark.svg` is a vector reconstruction of the Harmony interlocking
-infinity mark, so it stays sharp at favicon size. The original supplied artwork is kept at
-`assets/img/harmony-logo.jpg`.
+Site copy deliberately avoids stating security certifications, compliance attestations or
+accuracy figures the company does not hold or cannot source. `apps/web/trust.html` publishes
+that discipline as an explicit position. If a real certification is obtained, add it to the
+data-handling table there with its actual scope and date — and not before.

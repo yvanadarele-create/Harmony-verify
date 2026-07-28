@@ -88,6 +88,9 @@
 
 /* --- Tokens ------------------------------------------------------------- */
 
+/* @tokens:start */
+/* Generated from packages/design-system/src/tokens.ts — do not edit by hand. */
+
 :root {
   /* Surfaces */
   --ink: #03081a;
@@ -139,6 +142,7 @@
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --dur: 0.42s;
 }
+/* @tokens:end */
 
 /* --- Reset -------------------------------------------------------------- */
 
@@ -1245,6 +1249,101 @@ td:first-child {
   color: var(--gold);
   font-weight: 500;
   margin-bottom: 4px;
+}
+
+/* --- Founder profile ---------------------------------------------------- */
+
+.founder-card {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.4vw, 28px);
+  padding: clamp(20px, 2.4vw, 28px);
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: linear-gradient(168deg, rgba(11, 35, 80, 0.7), rgba(3, 8, 26, 0.9));
+  box-shadow: 0 22px 60px -26px rgba(0, 0, 0, 0.75);
+}
+
+.founder-portrait {
+  position: relative;
+  flex: none;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  /* Gold hairline ring, drawn as a border so it never clips the portrait. */
+  border: 1px solid var(--rule-strong);
+  background: linear-gradient(150deg, var(--navy-700), var(--ink));
+  box-shadow: 0 0 0 5px rgba(212, 175, 55, 0.07);
+}
+
+.founder-portrait img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  border-radius: 50%;
+}
+
+/* Sits underneath the portrait; visible only if the image is absent or fails. */
+.founder-monogram {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.founder-identity {
+  min-width: 0;
+}
+
+.founder-mark {
+  width: 26px;
+  height: 26px;
+  margin-bottom: 12px;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.32));
+}
+
+.founder-name {
+  font-size: clamp(1.3rem, 2.1vw, 1.7rem);
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.founder-role {
+  font-family: var(--font-mono);
+  font-size: 0.719rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.founder-org {
+  font-size: 0.875rem;
+  color: var(--text-3);
+  margin-top: 6px;
+}
+
+@media (max-width: 560px) {
+  .founder-card {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
 }
 
 /* --- CTA ---------------------------------------------------------------- */

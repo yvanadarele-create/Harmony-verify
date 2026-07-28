@@ -147,13 +147,33 @@
     <div class="wrap cols cols--split">
       <div data-reveal="0">
         <p class="eyebrow">Founder</p>
-        <figure class="quote">
+
+        <div class="founder-card">
+          <div class="founder-portrait">
+            <!-- Drop the portrait at apps/web/assets/img/founder.jpg.
+                 Until it exists, the monogram below shows instead of a broken image. -->
+            <img src="assets/img/founder.jpg"
+                 alt="Affriee Darele Yvana, Founder and CEO of Harmony Verify"
+                 width="132" height="132" loading="lazy"
+                 onerror="this.remove()">
+            <span class="founder-monogram" aria-hidden="true">AY</span>
+          </div>
+
+          <div class="founder-identity">
+            <img class="founder-mark" src="assets/img/mark.svg" alt="" width="26" height="26">
+            <h2 class="founder-name">Affriee Darele Yvana</h2>
+            <p class="founder-role">Founder &amp; Chief Executive Officer</p>
+            <p class="founder-org">Harmony Verify</p>
+          </div>
+        </div>
+
+        <figure class="quote" style="margin-top:34px">
           <blockquote>
             AI will become infrastructure in medicine. Trust cannot be the optional part.
           </blockquote>
           <figcaption>
             <b>Affriee Darele Yvana</b>
-            Founder &amp; CEO
+            Founder &amp; CEO, Harmony Verify
           </figcaption>
         </figure>
       </div>
