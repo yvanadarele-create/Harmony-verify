@@ -1290,6 +1290,59 @@ td:first-child {
   margin-bottom: 4px;
 }
 
+/* --- Brand lockup band -------------------------------------------------- */
+
+.brand-band {
+  padding-block: clamp(44px, 6vw, 76px);
+  background:
+    radial-gradient(620px 320px at 50% 50%, rgba(18, 46, 106, 0.55), transparent 72%),
+    var(--navy-deep);
+  border-block: 1px solid var(--border);
+}
+
+.brand-band-inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(26px, 4vw, 56px);
+  justify-content: center;
+}
+
+/* The supplied artwork carries its own navy backdrop, a shade off the page. Fading
+   the edges dissolves that seam so the mark floats rather than sitting in a box. */
+.brand-lockup {
+  flex: none;
+  width: clamp(240px, 26vw, 320px);
+  height: auto;
+  filter: drop-shadow(0 0 40px rgba(212, 175, 55, 0.16));
+  -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 52%, transparent 88%);
+  mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 52%, transparent 88%);
+}
+
+.brand-band-copy {
+  max-width: 46ch;
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+  line-height: 1.72;
+  color: var(--text-muted);
+}
+
+.brand-band-eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.688rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+@media (max-width: 720px) {
+  .brand-band-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
 /* --- Product preview ---------------------------------------------------- */
 
 .prev-win {

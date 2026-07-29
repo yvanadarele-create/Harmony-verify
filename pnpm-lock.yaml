@@ -24,6 +24,10 @@ importers:
   apps/web: {}
 
   packages/ai-engine:
+    dependencies:
+      '@harmony/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -33,6 +37,13 @@ importers:
         version: 5.9.3
 
   packages/analytics:
+    dependencies:
+      '@harmony/cognitive-data':
+        specifier: workspace:*
+        version: link:../cognitive-data
+      '@harmony/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -42,6 +53,10 @@ importers:
         version: 5.9.3
 
   packages/cognitive-data:
+    dependencies:
+      '@harmony/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -86,6 +101,13 @@ importers:
         version: 5.9.3
 
   packages/notifications:
+    dependencies:
+      '@harmony/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@harmony/ui':
+        specifier: workspace:*
+        version: link:../ui
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -117,6 +139,10 @@ importers:
         version: 5.9.3
 
   packages/ui:
+    dependencies:
+      '@harmony/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
