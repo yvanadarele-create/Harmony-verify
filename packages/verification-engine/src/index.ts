@@ -5,7 +5,7 @@ import type {
   Submission,
   VerificationAnalysis,
 } from "@harmony/shared";
-import { quote, quoteRange, etaFrom } from "@harmony/pricing-engine";
+import { customerPrice, slaHours, etaFrom, inferSeniority } from "@harmony/pricing-engine";
 import { assessComplexity, assessRisk, detectSpecialty } from "./classify.js";
 
 export * from "./classify.js";
@@ -99,29 +99,40 @@ export function processVerificationRequest(input: ProcessInput): VerificationAna
     );
   }
 
-  const q = quote({
-    reviewType: input.reviewType,
-    complexity: c.complexity,
-    priority: effectivePriority,
-  });
+  const mode = input.reviewType === "deep-clinical-review" ? "double" : "single";
+  const price = customerPrice({ specialty, complexity: c.complexity, risk: r.risk, reviewMode: mode });
+  const hours = slaHours(c.complexity, r.risk, mode);
+
+  rationale.push(
+    `Seniority ${inferSeniority(c.complexity, r.risk)}; ` +
+      `expert payout ${(price.payout.payoutCents / 100).toFixed(2)}, ` +
+      `price ${(price.priceCents / 100).toFixed(2)}.`,
+  );
 
   return {
     specialty,
     complexity: c.complexity,
     risk: r.risk,
     recommendedExpert,
-    estimatedTimeHours: q.slaHours,
-    estimatedPrice: { minCents: q.totalCents, maxCents: q.totalCents },
+    estimatedTimeHours: hours,
+    estimatedPrice: { minCents: price.priceCents, maxCents: price.priceCents },
     rationale,
   };
 }
 
-/** Pre-analysis estimate for the submission form's confirmation step. */
+/**
+ * Pre-analysis estimate for the submission form's confirmation step, before
+ * complexity and risk are known. Spans cheapest to dearest for the specialty.
+ */
 export function estimateBeforeAnalysis(
+  specialty: Specialty,
   reviewType: Submission["reviewType"],
-  priority: Priority,
 ): VerificationAnalysis["estimatedPrice"] {
-  return quoteRange(reviewType, priority);
+  const mode = reviewType === "deep-clinical-review" ? "double" : "single";
+  return {
+    minCents: customerPrice({ specialty, complexity: "low", risk: "low", reviewMode: mode }).priceCents,
+    maxCents: customerPrice({ specialty, complexity: "high", risk: "high", reviewMode: mode }).priceCents,
+  };
 }
 
 export function computeEta(now: Date, slaHours: number): string {

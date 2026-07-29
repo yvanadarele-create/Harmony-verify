@@ -1,19 +1,19 @@
 /**
  * Canonical Harmony Verify design tokens.
  *
- * Values are taken from the brand reference (harmonyverifyv2). Two rules that the
- * reference encodes and this file preserves:
+ * Palette and type are taken verbatim from the Ultimate Build Prompt. Two additions
+ * exist because two of the specified values fail WCAG AA in the place they are meant
+ * to be used — both are documented inline and neither changes a specified value:
  *
- *   1. #050F24 is the darkest surface in the system. Nothing is blacker than it.
- *      Emphasis is created by going LIGHTER (navy → navy-mid), never darker.
- *   2. Gold is the accent for pending/attention states. Green and coral are reserved
- *      for resolved outcomes only.
+ *   - `destructive #A53030` renders at 2.71:1 on `navy-deep`, so it is unreadable as
+ *     text on the page background. It is kept exactly as specified for fills and
+ *     borders, and `destructive-text` is added for the label itself.
+ *   - `muted-foreground #8595B0` clears AA on `navy-deep` (6.11) and `navy` (5.62)
+ *     but lands at 4.16 on `navy-mid`. Use `foreground` for secondary text on
+ *     `navy-mid` surfaces.
  *
  * This file is the single source of truth. `pnpm tokens` regenerates the CSS consumed
  * by every app, including the static marketing site.
- *
- * Contrast notes on individual values are load-bearing — they record why an alpha is
- * what it is. Changing them without re-running the contrast audit regresses WCAG AA.
  */
 
 export interface TokenGroup {
@@ -23,76 +23,66 @@ export interface TokenGroup {
 
 export const tokenGroups: readonly TokenGroup[] = [
   {
-    label: "Surfaces — #050F24 is the floor; emphasis goes lighter, never darker",
+    label: "Surfaces",
     tokens: [
-      ["navy-deep", "#050F24"],
-      ["navy", "#071A3D"],
-      ["navy-mid", "#0B2456"],
-      ["navy-light", "#122E6A"],
-      [
-        "paper",
-        "#EDF1F7",
-        "Cool white for clinical documents rendered inside the UI — a content surface, not brand chrome.",
-      ],
+      ["navy-deep", "#0A1325"],
+      ["navy", "#101B36"],
+      ["navy-mid", "#163166"],
+      ["navy-light", "#1E3A78"],
+      ["paper", "#EDF1F7", "Clinical documents rendered inside the UI — a content surface, not brand chrome."],
     ],
   },
   {
     label: "Brand",
     tokens: [
       ["gold", "#D4AF37"],
-      ["gold-light", "#F0D060"],
-      ["gold-dim", "#A88820"],
-      [
-        "gold-grad",
-        "linear-gradient(135deg, #F0D060 0%, #D4AF37 45%, #F0D060 70%, #A88820 100%)",
-        "Stops stay within the brand gold range so button label text clears 4.5:1 across the whole face.",
-      ],
-    ],
-  },
-  {
-    label: "Signal — gold carries attention, green and coral resolve it",
-    tokens: [
-      ["sig-pending", "#D4AF37"],
-      ["sig-verified", "#34D27A"],
-      ["sig-flagged", "#FF6450"],
+      ["gold-light", "#E8C97A"],
+      ["gold-dark", "#A8842A"],
+      ["gold-grad", "linear-gradient(135deg, #D4AF37 0%, #A8842A 100%)"],
     ],
   },
   {
     label: "Text",
     tokens: [
-      ["white", "#FFFFFF"],
-      ["off-white", "#E8EDF5"],
-      [
-        "text-muted",
-        "rgba(200, 215, 240, 0.72)",
-        "Brand RGB at a raised alpha: the reference's 0.55 renders at 4.0:1 and fails AA.",
-      ],
-      [
-        "text-dim",
-        "rgba(200, 215, 240, 0.6)",
-        "0.6 is the floor at which meta text still clears 4.5:1 on #050F24.",
-      ],
-      ["text-on-paper", "#0B2456"],
-      ["text-on-paper-2", "rgba(11, 36, 86, 0.68)"],
+      ["foreground", "#E9EDF5"],
+      ["muted-foreground", "#8595B0", "AA on navy-deep (6.11) and navy (5.62). On navy-mid it is 4.16 — use foreground there."],
+      ["text-on-paper", "#101B36"],
+      ["text-on-paper-2", "rgba(16, 27, 54, 0.68)"],
     ],
   },
   {
     label: "Lines",
     tokens: [
-      ["border", "rgba(212, 175, 55, 0.18)"],
-      ["border-sub", "rgba(255, 255, 255, 0.07)"],
-      ["border-strong", "rgba(212, 175, 55, 0.34)"],
+      ["border", "#172F55"],
+      ["border-gold", "rgba(212, 175, 55, 0.22)"],
+      ["border-gold-strong", "rgba(212, 175, 55, 0.4)"],
     ],
   },
   {
-    label: "Type",
+    label: "Status — gold carries attention, green resolves, red rejects",
     tokens: [
-      ["font-display", '"Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif'],
-      [
-        "font-sans",
-        '"IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif',
-      ],
-      ["font-mono", '"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace'],
+      ["destructive", "#A53030", "Fills and borders only — 2.71:1 on navy-deep, unreadable as text."],
+      ["destructive-text", "#FF7B6B", "The readable counterpart for an Unsafe label on a dark surface (6.0:1)."],
+      ["success", "#34D27A"],
+      ["warning", "#D4AF37"],
+    ],
+  },
+  {
+    label: "Charts",
+    tokens: [
+      ["chart-1", "#D4AF37"],
+      ["chart-2", "#34D27A"],
+      ["chart-3", "#1E3A78"],
+      ["chart-4", "#9B7BD4"],
+      ["chart-5", "#FF7B6B"],
+    ],
+  },
+  {
+    label: "Type — Cinzel for display, Inter for body and UI",
+    tokens: [
+      ["font-display", '"Cinzel", "Iowan Old Style", Georgia, "Times New Roman", serif'],
+      ["font-sans", '"Inter", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif'],
+      ["font-mono", 'ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace'],
     ],
   },
   {
@@ -120,15 +110,25 @@ export const tokenGroups: readonly TokenGroup[] = [
       ["navy-800", "var(--navy)"],
       ["navy-700", "var(--navy-mid)"],
       ["navy-600", "var(--navy-light)"],
+      ["white", "#FFFFFF"],
+      ["off-white", "var(--foreground)"],
+      ["text", "var(--foreground)"],
+      ["text-2", "var(--muted-foreground)"],
+      ["text-3", "var(--muted-foreground)"],
+      ["text-muted", "var(--muted-foreground)"],
+      ["text-dim", "var(--muted-foreground)"],
       ["gold-bright", "var(--gold-light)"],
-      ["gold-deep", "var(--gold-dim)"],
-      ["text", "var(--off-white)"],
-      ["text-2", "var(--text-muted)"],
-      ["text-3", "var(--text-dim)"],
-      ["sig-review", "var(--sig-pending)"],
-      ["rule", "var(--border)"],
-      ["rule-soft", "var(--border-sub)"],
-      ["rule-strong", "var(--border-strong)"],
+      ["gold-dim", "var(--gold-dark)"],
+      ["gold-deep", "var(--gold-dark)"],
+      ["sig-pending", "var(--gold)"],
+      ["sig-review", "var(--gold)"],
+      ["sig-verified", "var(--success)"],
+      ["sig-flagged", "var(--destructive-text)"],
+      ["rule", "var(--border-gold)"],
+      ["border-sub", "var(--border)"],
+      ["rule-soft", "var(--border)"],
+      ["border-strong", "var(--border-gold-strong)"],
+      ["rule-strong", "var(--border-gold-strong)"],
       ["paper-dim", "#DCE3EE"],
     ],
   },

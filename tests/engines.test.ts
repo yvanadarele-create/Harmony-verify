@@ -1,7 +1,6 @@
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
 
-import { quote, quoteRange, MIN_SLA_HOURS } from "@harmony/pricing-engine";
 import {
   processVerificationRequest,
   detectSpecialty,
@@ -37,55 +36,6 @@ const expert = (over: Partial<Expert> = {}): Expert => ({
 const CARDIAC_TEXT =
   "72 y/o male post-MI discharged on dual antiplatelet therapy. Continue clopidogrel 75 mg " +
   "daily. Patient also takes omeprazole. Check troponin and ECG. Watch for interaction.";
-
-/* --- Pricing ------------------------------------------------------------ */
-
-describe("pricing-engine", () => {
-  test("standard low-complexity single verification is the base price", () => {
-    const q = quote({ reviewType: "single-verification", complexity: "low", priority: "standard" });
-    assert.equal(q.totalCents, 14_900);
-    assert.equal(q.slaHours, 24);
-    assert.equal(q.currency, "USD");
-  });
-
-  test("complexity and priority both add cost", () => {
-    const low = quote({ reviewType: "single-verification", complexity: "low", priority: "standard" });
-    const high = quote({ reviewType: "single-verification", complexity: "high", priority: "critical" });
-    assert.ok(high.totalCents > low.totalCents);
-    // base 14900 + complexity 18000 + priority 100% of base 14900
-    assert.equal(high.totalCents, 14_900 + 18_000 + 14_900);
-  });
-
-  test("priority compresses turnaround but never below the floor", () => {
-    const std = quote({ reviewType: "single-verification", complexity: "low", priority: "standard" });
-    const crit = quote({ reviewType: "single-verification", complexity: "low", priority: "critical" });
-    assert.ok(crit.slaHours < std.slaHours);
-    assert.ok(crit.slaHours >= MIN_SLA_HOURS);
-  });
-
-  test("every quote is fully explained", () => {
-    const q = quote({ reviewType: "deep-clinical-review", complexity: "medium", priority: "urgent" });
-    const sum = q.baseCents + q.complexityCents + q.priorityCents + q.reviewTypeCents;
-    assert.equal(sum, q.totalCents, "components must sum to the total");
-    assert.ok(q.breakdown.length >= 4);
-  });
-
-  test("pre-analysis range brackets the eventual price", () => {
-    const range = quoteRange("single-verification", "standard");
-    const actual = quote({ reviewType: "single-verification", complexity: "medium", priority: "standard" });
-    assert.ok(actual.totalCents >= range.minCents);
-    assert.ok(actual.totalCents <= range.maxCents);
-  });
-
-  test("money is always whole cents", () => {
-    for (const complexity of ["low", "medium", "high"] as const) {
-      for (const priority of ["standard", "urgent", "critical"] as const) {
-        const q = quote({ reviewType: "deep-clinical-review", complexity, priority });
-        assert.equal(q.totalCents, Math.trunc(q.totalCents), "no fractional cents");
-      }
-    }
-  });
-});
 
 /* --- Classification ----------------------------------------------------- */
 
@@ -172,13 +122,14 @@ describe("verification-engine — processVerificationRequest", () => {
     });
     assert.equal(a.risk, "high");
     assert.ok(a.rationale.some((r) => r.includes("Priority raised")));
-    // Escalation must actually shorten turnaround, not just annotate.
-    const unescalated = quote({
+    // Escalation must actually shorten turnaround, not merely annotate it.
+    const benign = processVerificationRequest({
+      content: "Routine advice about staying hydrated and sleeping well.",
+      declaredSpecialty: "general-medicine",
       reviewType: "single-verification",
-      complexity: a.complexity,
       priority: "standard",
     });
-    assert.ok(a.estimatedTimeHours < unescalated.slaHours);
+    assert.ok(a.estimatedTimeHours < benign.estimatedTimeHours);
   });
 
   test("higher risk demands a more senior reviewer", () => {

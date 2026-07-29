@@ -6,84 +6,39 @@
 /* --- Fonts (self-hosted: no third-party request, no CDN dependency) ------ */
 
 @font-face {
-  font-family: 'Newsreader';
+  font-family: 'Cinzel';
   font-style: normal;
-  font-weight: 200 800;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('../fonts/newsreader-var-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Newsreader';
-  font-style: normal;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url('../fonts/newsreader-var-latin-ext.woff2') format('woff2');
+  src: url('../fonts/cinzel-var-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
-  font-family: 'Newsreader';
-  font-style: italic;
-  font-weight: 200 800;
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('../fonts/newsreader-var-italic-latin.woff2') format('woff2');
+  src: url('../fonts/cinzel-var-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'IBM Plex Sans';
+  font-family: 'Inter';
   font-style: normal;
-  font-weight: 300 600;
+  font-weight: 300 700;
   font-display: swap;
-  src: url('../fonts/ibm-plex-sans-var-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'IBM Plex Sans';
-  font-style: normal;
-  font-weight: 300 600;
-  font-display: swap;
-  src: url('../fonts/ibm-plex-sans-var-latin-ext.woff2') format('woff2');
+  src: url('../fonts/inter-var-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
-  font-family: 'IBM Plex Mono';
+  font-family: 'Inter';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300 700;
   font-display: swap;
-  src: url('../fonts/ibm-plex-mono-400-latin.woff2') format('woff2');
+  src: url('../fonts/inter-var-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../fonts/ibm-plex-mono-400-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('../fonts/ibm-plex-mono-500-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('../fonts/ibm-plex-mono-500-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 /* --- Tokens ------------------------------------------------------------- */
@@ -92,45 +47,51 @@
 /* Generated from packages/design-system/src/tokens.ts — do not edit by hand. */
 
 :root {
-  /* Surfaces — #050F24 is the floor; emphasis goes lighter, never darker */
-  --navy-deep: #050F24;
-  --navy: #071A3D;
-  --navy-mid: #0B2456;
-  --navy-light: #122E6A;
-  /* Cool white for clinical documents rendered inside the UI — a content surface, not brand chrome. */
+  /* Surfaces */
+  --navy-deep: #0A1325;
+  --navy: #101B36;
+  --navy-mid: #163166;
+  --navy-light: #1E3A78;
+  /* Clinical documents rendered inside the UI — a content surface, not brand chrome. */
   --paper: #EDF1F7;
 
   /* Brand */
   --gold: #D4AF37;
-  --gold-light: #F0D060;
-  --gold-dim: #A88820;
-  /* Stops stay within the brand gold range so button label text clears 4.5:1 across the whole face. */
-  --gold-grad: linear-gradient(135deg, #F0D060 0%, #D4AF37 45%, #F0D060 70%, #A88820 100%);
-
-  /* Signal — gold carries attention, green and coral resolve it */
-  --sig-pending: #D4AF37;
-  --sig-verified: #34D27A;
-  --sig-flagged: #FF6450;
+  --gold-light: #E8C97A;
+  --gold-dark: #A8842A;
+  --gold-grad: linear-gradient(135deg, #D4AF37 0%, #A8842A 100%);
 
   /* Text */
-  --white: #FFFFFF;
-  --off-white: #E8EDF5;
-  /* Brand RGB at a raised alpha: the reference's 0.55 renders at 4.0:1 and fails AA. */
-  --text-muted: rgba(200, 215, 240, 0.72);
-  /* 0.6 is the floor at which meta text still clears 4.5:1 on #050F24. */
-  --text-dim: rgba(200, 215, 240, 0.6);
-  --text-on-paper: #0B2456;
-  --text-on-paper-2: rgba(11, 36, 86, 0.68);
+  --foreground: #E9EDF5;
+  /* AA on navy-deep (6.11) and navy (5.62). On navy-mid it is 4.16 — use foreground there. */
+  --muted-foreground: #8595B0;
+  --text-on-paper: #101B36;
+  --text-on-paper-2: rgba(16, 27, 54, 0.68);
 
   /* Lines */
-  --border: rgba(212, 175, 55, 0.18);
-  --border-sub: rgba(255, 255, 255, 0.07);
-  --border-strong: rgba(212, 175, 55, 0.34);
+  --border: #172F55;
+  --border-gold: rgba(212, 175, 55, 0.22);
+  --border-gold-strong: rgba(212, 175, 55, 0.4);
 
-  /* Type */
-  --font-display: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  /* Status — gold carries attention, green resolves, red rejects */
+  /* Fills and borders only — 2.71:1 on navy-deep, unreadable as text. */
+  --destructive: #A53030;
+  /* The readable counterpart for an Unsafe label on a dark surface (6.0:1). */
+  --destructive-text: #FF7B6B;
+  --success: #34D27A;
+  --warning: #D4AF37;
+
+  /* Charts */
+  --chart-1: #D4AF37;
+  --chart-2: #34D27A;
+  --chart-3: #1E3A78;
+  --chart-4: #9B7BD4;
+  --chart-5: #FF7B6B;
+
+  /* Type — Cinzel for display, Inter for body and UI */
+  --font-display: "Cinzel", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 
   /* Rhythm */
   --gutter: clamp(20px, 5vw, 64px);
@@ -149,15 +110,25 @@
   --navy-800: var(--navy);
   --navy-700: var(--navy-mid);
   --navy-600: var(--navy-light);
+  --white: #FFFFFF;
+  --off-white: var(--foreground);
+  --text: var(--foreground);
+  --text-2: var(--muted-foreground);
+  --text-3: var(--muted-foreground);
+  --text-muted: var(--muted-foreground);
+  --text-dim: var(--muted-foreground);
   --gold-bright: var(--gold-light);
-  --gold-deep: var(--gold-dim);
-  --text: var(--off-white);
-  --text-2: var(--text-muted);
-  --text-3: var(--text-dim);
-  --sig-review: var(--sig-pending);
-  --rule: var(--border);
-  --rule-soft: var(--border-sub);
-  --rule-strong: var(--border-strong);
+  --gold-dim: var(--gold-dark);
+  --gold-deep: var(--gold-dark);
+  --sig-pending: var(--gold);
+  --sig-review: var(--gold);
+  --sig-verified: var(--success);
+  --sig-flagged: var(--destructive-text);
+  --rule: var(--border-gold);
+  --border-sub: var(--border);
+  --rule-soft: var(--border);
+  --border-strong: var(--border-gold-strong);
+  --rule-strong: var(--border-gold-strong);
   --paper-dim: #DCE3EE;
 }
 /* @tokens:end */
@@ -186,7 +157,7 @@ body {
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 16px;
-  font-weight: 350;
+  font-weight: 400;
   line-height: 1.65;
   letter-spacing: 0.004em;
   -webkit-font-smoothing: antialiased;
@@ -267,10 +238,18 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 300;
-  line-height: 1.1;
-  letter-spacing: -0.018em;
+  font-weight: 400;
+  line-height: 1.18;
+  /* Cinzel is a Roman capitals face — it needs positive tracking, not the negative
+     tracking a modern serif wants, or the letterforms collide at display sizes. */
+  letter-spacing: 0.012em;
   text-wrap: balance;
+}
+
+h1,
+h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 h1 {
@@ -686,8 +665,11 @@ p {
 }
 
 .hero h1 em {
-  font-style: italic;
-  color: var(--gold-bright);
+  font-style: normal;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .hero-marks {
@@ -1267,9 +1249,8 @@ td:first-child {
 .quote blockquote {
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 2.3vw, 1.85rem);
-  font-weight: 300;
-  font-style: italic;
-  line-height: 1.4;
+  font-weight: 400;
+  line-height: 1.45;
   color: var(--text);
   max-width: 30ch;
 }
@@ -1377,7 +1358,9 @@ td:first-child {
   font-family: var(--font-mono);
   font-size: 0.688rem;
   letter-spacing: 0.06em;
-  color: var(--text-dim);
+  /* navy-mid surface: muted-foreground lands at 4.16 here, so use foreground. */
+  color: var(--foreground);
+  opacity: 0.82;
 }
 
 .prev-body {
