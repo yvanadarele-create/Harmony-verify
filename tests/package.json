@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "tsc -p tsconfig.json && node --test dist/engines.test.js dist/pricing.test.js"
+    "test": "tsc -p tsconfig.json && node --test dist/engines.test.js dist/pricing.test.js dist/lifecycle.test.js"
   },
   "dependencies": {
     "@harmony/shared": "workspace:*",

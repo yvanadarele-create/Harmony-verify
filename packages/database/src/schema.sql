@@ -45,6 +45,14 @@ CREATE TABLE IF NOT EXISTS experts (
   rating_count           INTEGER NOT NULL DEFAULT 0,
   status                 TEXT NOT NULL CHECK (status IN ('pending','active','suspended')),
   conflicts_of_interest  TEXT NOT NULL DEFAULT '[]',
+  license_number         TEXT,
+  institution            TEXT,
+  cv_url                 TEXT,
+  -- Agreement gate: assignment checks BOTH status and these two, so an expert
+  -- flipped to 'active' by hand still cannot receive work unsigned.
+  agreement_signed_url   TEXT,
+  agreement_signed_at    TEXT,
+  suspension_reason      TEXT,
   active_case_count      INTEGER NOT NULL DEFAULT 0 CHECK (active_case_count >= 0),
   max_concurrent_cases   INTEGER NOT NULL DEFAULT 5 CHECK (max_concurrent_cases > 0),
   created_at             TEXT NOT NULL
@@ -132,3 +140,53 @@ CREATE TABLE IF NOT EXISTS audit_log (
   at          TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_audit_target ON audit_log(target_type, target_id);
+
+-- Expert wallet and payouts -------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS wallets (
+  id                    TEXT PRIMARY KEY,
+  expert_id             TEXT NOT NULL UNIQUE REFERENCES experts(id) ON DELETE CASCADE,
+  balance_cents         INTEGER NOT NULL DEFAULT 0 CHECK (balance_cents >= 0),
+  total_earned_cents    INTEGER NOT NULL DEFAULT 0 CHECK (total_earned_cents >= 0),
+  pending_payout_cents  INTEGER NOT NULL DEFAULT 0 CHECK (pending_payout_cents >= 0),
+  total_withdrawn_cents INTEGER NOT NULL DEFAULT 0 CHECK (total_withdrawn_cents >= 0),
+  created_at            TEXT NOT NULL
+);
+
+-- Separate table so a wallet query never returns bank details, and so this row
+-- can carry a stricter retention and access policy than the balance itself.
+CREATE TABLE IF NOT EXISTS payout_details (
+  expert_id           TEXT PRIMARY KEY REFERENCES experts(id) ON DELETE CASCADE,
+  account_holder_name TEXT NOT NULL,
+  bank_name           TEXT NOT NULL,
+  -- Encrypted at rest. Only the last four digits are ever shown in the UI.
+  account_number_enc  TEXT NOT NULL,
+  account_last4       TEXT NOT NULL,
+  swift_bic           TEXT,
+  payout_method       TEXT NOT NULL CHECK (payout_method IN ('bank-transfer','mobile-money','paystack')),
+  paystack_recipient  TEXT,
+  updated_at          TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS payouts (
+  id           TEXT PRIMARY KEY,
+  expert_id    TEXT NOT NULL REFERENCES experts(id) ON DELETE CASCADE,
+  amount_cents INTEGER NOT NULL CHECK (amount_cents > 0),
+  status       TEXT NOT NULL CHECK (status IN ('pending','completed','rejected')),
+  requested_at TEXT NOT NULL,
+  resolved_at  TEXT,
+  note         TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_payouts_expert ON payouts(expert_id, status);
+
+CREATE TABLE IF NOT EXISTS expert_ratings (
+  id            TEXT PRIMARY KEY,
+  expert_id     TEXT NOT NULL REFERENCES experts(id) ON DELETE CASCADE,
+  review_id     TEXT NOT NULL REFERENCES reviews(id) ON DELETE CASCADE,
+  quality       INTEGER NOT NULL CHECK (quality BETWEEN 1 AND 5),
+  deadline      INTEGER NOT NULL CHECK (deadline BETWEEN 1 AND 5),
+  professionalism INTEGER NOT NULL CHECK (professionalism BETWEEN 1 AND 5),
+  created_at    TEXT NOT NULL,
+  UNIQUE (review_id)
+);
+CREATE INDEX IF NOT EXISTS idx_ratings_expert ON expert_ratings(expert_id);
