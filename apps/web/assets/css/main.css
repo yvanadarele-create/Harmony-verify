@@ -92,39 +92,40 @@
 /* Generated from packages/design-system/src/tokens.ts — do not edit by hand. */
 
 :root {
-  /* Surfaces */
-  --ink: #03081a;
-  --navy-900: #050f24;
-  --navy-800: #071a3d;
-  --navy-700: #0b2350;
-  --navy-600: #123066;
-  --paper: #f4f2ec;
-  --paper-dim: #e4e0d6;
+  /* Surfaces — #050F24 is the floor; emphasis goes lighter, never darker */
+  --navy-deep: #050F24;
+  --navy: #071A3D;
+  --navy-mid: #0B2456;
+  --navy-light: #122E6A;
+  /* Cool white for clinical documents rendered inside the UI — a content surface, not brand chrome. */
+  --paper: #EDF1F7;
 
   /* Brand */
-  --gold: #d4af37;
-  --gold-bright: #f0d374;
-  --gold-deep: #96741a;
-  /* Final stop stays light enough that button label text clears 4.5:1 across the whole face. */
-  --gold-grad: linear-gradient(135deg, #f8e7a6 0%, #e3c356 28%, #d4af37 55%, #efd374 80%, #b58c1f 100%);
+  --gold: #D4AF37;
+  --gold-light: #F0D060;
+  --gold-dim: #A88820;
+  /* Stops stay within the brand gold range so button label text clears 4.5:1 across the whole face. */
+  --gold-grad: linear-gradient(135deg, #F0D060 0%, #D4AF37 45%, #F0D060 70%, #A88820 100%);
 
-  /* Signal — clinical status */
-  --sig-verified: #48c79a;
-  --sig-review: #e0a93b;
-  --sig-flagged: #e8735c;
+  /* Signal — gold carries attention, green and coral resolve it */
+  --sig-pending: #D4AF37;
+  --sig-verified: #34D27A;
+  --sig-flagged: #FF6450;
 
   /* Text */
-  --text: #e9eefa;
-  --text-2: rgba(206, 219, 242, 0.72);
-  /* 0.64 keeps meta text at 4.5:1 or better on every surface we place it on. */
-  --text-3: rgba(186, 203, 232, 0.64);
-  --text-on-paper: #10203f;
-  --text-on-paper-2: rgba(16, 32, 63, 0.66);
+  --white: #FFFFFF;
+  --off-white: #E8EDF5;
+  /* Brand RGB at a raised alpha: the reference's 0.55 renders at 4.0:1 and fails AA. */
+  --text-muted: rgba(200, 215, 240, 0.72);
+  /* 0.6 is the floor at which meta text still clears 4.5:1 on #050F24. */
+  --text-dim: rgba(200, 215, 240, 0.6);
+  --text-on-paper: #0B2456;
+  --text-on-paper-2: rgba(11, 36, 86, 0.68);
 
   /* Lines */
-  --rule: rgba(212, 175, 55, 0.16);
-  --rule-soft: rgba(180, 205, 245, 0.1);
-  --rule-strong: rgba(212, 175, 55, 0.34);
+  --border: rgba(212, 175, 55, 0.18);
+  --border-sub: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(212, 175, 55, 0.34);
 
   /* Type */
   --font-display: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
@@ -141,6 +142,23 @@
   /* Motion */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --dur: 0.42s;
+
+  /* Aliases — kept so existing rules resolve against the canonical values */
+  --ink: var(--navy-deep);
+  --navy-900: var(--navy-deep);
+  --navy-800: var(--navy);
+  --navy-700: var(--navy-mid);
+  --navy-600: var(--navy-light);
+  --gold-bright: var(--gold-light);
+  --gold-deep: var(--gold-dim);
+  --text: var(--off-white);
+  --text-2: var(--text-muted);
+  --text-3: var(--text-dim);
+  --sig-review: var(--sig-pending);
+  --rule: var(--border);
+  --rule-soft: var(--border-sub);
+  --rule-strong: var(--border-strong);
+  --paper-dim: #DCE3EE;
 }
 /* @tokens:end */
 
@@ -341,8 +359,12 @@ p {
   background: var(--navy-800);
 }
 
+/* The brand floor is #050F24, so emphasis is a glow over the base — never a darker
+   surface. Going blacker than the floor is what made this read as charcoal, not navy. */
 .section--deep {
-  background: var(--ink);
+  background:
+    radial-gradient(700px 420px at 50% 0%, rgba(18, 46, 106, 0.55), transparent 70%),
+    var(--navy-deep);
 }
 
 .section-head {
@@ -423,7 +445,7 @@ p {
 }
 
 .nav[data-scrolled="true"] {
-  background: rgba(3, 8, 26, 0.94);
+  background: rgba(5, 15, 36, 0.94);
   border-bottom-color: var(--rule-strong);
 }
 
@@ -708,7 +730,7 @@ p {
 .record {
   border: 1px solid var(--rule);
   border-radius: 5px;
-  background: linear-gradient(168deg, rgba(11, 35, 80, 0.86), rgba(3, 8, 26, 0.94));
+  background: linear-gradient(168deg, rgba(11, 35, 80, 0.86), rgba(5, 15, 36, 0.94));
   box-shadow: 0 26px 70px -22px rgba(0, 0, 0, 0.78), inset 0 1px 0 rgba(255, 255, 255, 0.045);
   overflow: hidden;
 }
@@ -719,7 +741,7 @@ p {
   gap: 10px;
   padding: 12px 16px;
   border-bottom: 1px solid var(--rule-soft);
-  background: rgba(3, 8, 26, 0.6);
+  background: rgba(5, 15, 36, 0.6);
 }
 
 .record-bar .ref {
@@ -779,7 +801,7 @@ p {
 }
 
 .note mark {
-  background: rgba(232, 115, 92, 0.2);
+  background: rgba(255, 100, 80, 0.18);
   color: inherit;
   border-bottom: 1.5px solid var(--sig-flagged);
   padding: 0 2px;
@@ -787,7 +809,7 @@ p {
 }
 
 .note ins {
-  background: rgba(72, 199, 154, 0.19);
+  background: rgba(40, 200, 100, 0.18);
   border-bottom: 1.5px solid var(--sig-verified);
   color: inherit;
   text-decoration: none;
@@ -802,7 +824,7 @@ p {
   border-bottom-color: transparent;
   background:
     linear-gradient(90deg, rgba(16, 32, 63, 0.11) 0 62%, transparent 62%) 0 0.35em / 100% 0.62em repeat-y,
-    rgba(72, 199, 154, 0.06);
+    rgba(40, 200, 100, 0.06);
   background-size: 100% 1.62em, auto;
   border-radius: 3px;
   animation: pending 1.9s ease-in-out infinite;
@@ -878,7 +900,7 @@ p {
 .steps li[data-state="done"] .tick {
   opacity: 1;
   border-color: var(--sig-verified);
-  background: rgba(72, 199, 154, 0.14);
+  background: rgba(40, 200, 100, 0.14);
 }
 
 /* Status chips */
@@ -905,9 +927,25 @@ p {
   background: currentColor;
 }
 
-.chip--verified { color: var(--sig-verified); background: rgba(72, 199, 154, 0.09); }
-.chip--review   { color: var(--sig-review);   background: rgba(224, 169, 59, 0.09); }
-.chip--flagged  { color: var(--sig-flagged);  background: rgba(232, 115, 92, 0.09); }
+/* Fill and border weights taken from the brand reference. Pending is gold — the
+   brand accent carries attention; green and coral are reserved for resolved states. */
+.chip--review {
+  color: var(--sig-pending);
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.chip--verified {
+  color: var(--sig-verified);
+  background: rgba(40, 200, 100, 0.1);
+  border-color: rgba(40, 200, 100, 0.25);
+}
+
+.chip--flagged {
+  color: var(--sig-flagged);
+  background: rgba(255, 100, 80, 0.1);
+  border-color: rgba(255, 100, 80, 0.2);
+}
 
 /* --- Cards -------------------------------------------------------------- */
 
@@ -1004,9 +1042,10 @@ p {
 
 /* --- Data band ---------------------------------------------------------- */
 
+/* The reference lifts its stats band to the lightest navy. Emphasis goes up. */
 .band {
   border-block: 1px solid var(--rule);
-  background: var(--navy-800);
+  background: var(--navy-mid);
 }
 
 .band-grid {
@@ -1134,7 +1173,7 @@ th {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--gold);
-  background: rgba(3, 8, 26, 0.5);
+  background: rgba(5, 15, 36, 0.5);
   white-space: nowrap;
 }
 
@@ -1251,6 +1290,190 @@ td:first-child {
   margin-bottom: 4px;
 }
 
+/* --- Product preview ---------------------------------------------------- */
+
+.prev-win {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px -20px rgba(0, 0, 0, 0.6);
+}
+
+.prev-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: var(--navy-mid);
+  border-bottom: 1px solid var(--border);
+}
+
+.pdot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.pdot--r { background: rgba(255, 100, 80, 0.7); }
+.pdot--y { background: rgba(212, 175, 55, 0.7); }
+.pdot--g { background: rgba(40, 200, 100, 0.7); }
+
+.purl {
+  margin-left: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.688rem;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.prev-body {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  min-height: 400px;
+  background: var(--navy-deep);
+}
+
+.prev-nav {
+  padding: 26px 0;
+  background: rgba(7, 26, 61, 0.8);
+  border-right: 1px solid var(--border-sub);
+}
+
+.prev-nav-sec {
+  padding: 0 22px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.pni {
+  display: block;
+  padding: 11px 22px;
+  font-size: 0.844rem;
+  color: var(--text-muted);
+  border-left: 2px solid transparent;
+}
+
+.pni.is-active {
+  color: var(--gold);
+  background: rgba(212, 175, 55, 0.07);
+  border-left-color: var(--gold);
+}
+
+.prev-main {
+  padding: clamp(20px, 2.4vw, 30px);
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.prev-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-sub);
+}
+
+.prev-title {
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  color: var(--off-white);
+}
+
+.pcard {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-sub);
+  border-radius: var(--radius);
+  background: rgba(11, 36, 86, 0.4);
+  transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease);
+}
+
+.pcard:hover {
+  border-color: var(--border);
+  background: rgba(11, 36, 86, 0.65);
+}
+
+.pcard-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.pc-lbl {
+  font-family: var(--font-mono);
+  font-size: 0.656rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 7px;
+}
+
+.pc-val {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.pc-mono {
+  font-family: var(--font-mono);
+  font-size: 0.781rem;
+}
+
+.pbar {
+  height: 3px;
+  margin-top: 12px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.pbar-f {
+  display: block;
+  height: 100%;
+  background: var(--gold-grad);
+}
+
+@media (max-width: 760px) {
+  .prev-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .prev-nav {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    padding: 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border-sub);
+  }
+
+  .prev-nav-sec {
+    display: none;
+  }
+
+  .pni {
+    white-space: nowrap;
+    padding: 8px 14px;
+    border-left: 0;
+    border-bottom: 2px solid transparent;
+  }
+
+  .pni.is-active {
+    border-left: 0;
+    border-bottom-color: var(--gold);
+  }
+
+  .pcard {
+    flex-direction: column;
+  }
+}
+
 /* --- Founder profile ---------------------------------------------------- */
 
 .founder-card {
@@ -1260,7 +1483,7 @@ td:first-child {
   padding: clamp(20px, 2.4vw, 28px);
   border: 1px solid var(--rule);
   border-radius: 5px;
-  background: linear-gradient(168deg, rgba(11, 35, 80, 0.7), rgba(3, 8, 26, 0.9));
+  background: linear-gradient(168deg, rgba(11, 35, 80, 0.7), rgba(5, 15, 36, 0.9));
   box-shadow: 0 22px 60px -26px rgba(0, 0, 0, 0.75);
 }
 
@@ -1275,7 +1498,7 @@ td:first-child {
   overflow: hidden;
   /* Gold hairline ring, drawn as a border so it never clips the portrait. */
   border: 1px solid var(--rule-strong);
-  background: linear-gradient(150deg, var(--navy-700), var(--ink));
+  background: linear-gradient(150deg, var(--navy-mid), var(--navy-deep));
   box-shadow: 0 0 0 5px rgba(212, 175, 55, 0.07);
 }
 
@@ -1353,8 +1576,8 @@ td:first-child {
   text-align: center;
   padding-block: clamp(72px, 10vw, 130px);
   background:
-    radial-gradient(620px 400px at 50% 0%, rgba(18, 48, 102, 0.55), transparent 70%),
-    var(--ink);
+    radial-gradient(700px 400px at 50% 50%, rgba(18, 46, 106, 0.9), transparent 70%),
+    var(--navy-deep);
   border-top: 1px solid var(--rule);
   overflow: hidden;
 }
@@ -1433,7 +1656,7 @@ td:first-child {
 .field-group textarea {
   width: 100%;
   padding: 13px 15px;
-  background: rgba(3, 8, 26, 0.55);
+  background: rgba(5, 15, 36, 0.55);
   border: 1px solid var(--rule-soft);
   border-radius: var(--radius);
   color: var(--text);
@@ -1472,7 +1695,7 @@ td:first-child {
 .field-group select:focus,
 .field-group textarea:focus {
   border-color: var(--gold);
-  background: rgba(3, 8, 26, 0.85);
+  background: rgba(5, 15, 36, 0.85);
 }
 
 .field-group input::placeholder,
@@ -1507,14 +1730,14 @@ td:first-child {
 }
 
 .form-status[data-tone="ok"] {
-  border-color: rgba(72, 199, 154, 0.42);
-  background: rgba(72, 199, 154, 0.08);
+  border-color: rgba(40, 200, 100, 0.42);
+  background: rgba(40, 200, 100, 0.08);
   color: var(--text);
 }
 
 .form-status[data-tone="err"] {
-  border-color: rgba(232, 115, 92, 0.42);
-  background: rgba(232, 115, 92, 0.08);
+  border-color: rgba(255, 100, 80, 0.42);
+  background: rgba(255, 100, 80, 0.08);
   color: var(--text);
 }
 
@@ -1525,7 +1748,7 @@ td:first-child {
 /* --- Footer ------------------------------------------------------------- */
 
 .footer {
-  background: var(--ink);
+  background: var(--navy-deep);
   border-top: 1px solid var(--rule);
   padding-block: clamp(48px, 6vw, 72px) 28px;
 }
