@@ -386,6 +386,14 @@ p {
   align-items: start;
 }
 
+/* Inverted split for form pages: the form takes the wide column and the
+   supporting notes the narrow one. Two inputs side by side inside a 0.85fr
+   column are cramped enough that people mistype. */
+.cols--form {
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  align-items: start;
+}
+
 /* Atmospheric field: faint measured grid + vignette */
 .field {
   position: relative;
@@ -2328,6 +2336,70 @@ td:first-child {
   font-size: 0.96rem;
   line-height: 1.72;
   color: var(--foreground);
+}
+
+/* --- Long forms ---------------------------------------------------------- */
+
+/* Sectioned rather than a multi-step wizard. A wizard hides how much is left,
+   loses answers on a reload, and cannot be reviewed as a whole before sending —
+   for a form someone completes once, carefully, that is the wrong trade. */
+.form-section {
+  margin: 0 0 34px;
+  padding: 0 0 30px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-section:last-of-type {
+  border-bottom: 0;
+  padding-bottom: 8px;
+}
+
+.form-section legend {
+  padding: 0;
+  margin-bottom: 20px;
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* Checkbox rows: a large hit area, and the label wrapping the input so the
+   whole line is clickable rather than a 13px square. */
+.field-group.check {
+  margin-bottom: 16px;
+}
+
+.field-group.check label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--foreground);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.field-group.check input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+.field-group.check input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.field-group.check input[aria-invalid="true"] + span {
+  color: var(--destructive-text);
 }
 
 /* --- Legal pages --------------------------------------------------------- */

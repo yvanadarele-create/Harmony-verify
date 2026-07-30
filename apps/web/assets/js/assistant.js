@@ -1,112 +1,200 @@
 /* Harmony Verify — site assistant.
  *
- * Two modes, and which one is running is visible to the visitor rather than
- * implied:
+ * Answers come from assets/js/knowledge.js. This file is the plumbing: matching,
+ * rendering, focus handling.
  *
- *   Guided (default). Answers come from the knowledge base below — the same facts
- *   that are on the pages, routed by keyword. No network request, no transcript
- *   stored, no cookie set, so it works before a cookie decision is made and it
- *   still works if the visitor rejects everything.
+ * Matching is weighted-term scoring rather than a chain of regexes. A regex chain
+ * answers the phrasing its author imagined and falls through on everything else,
+ * which is what makes most site widgets feel stupid — they know the answer and
+ * still say "I didn't understand that". Here every entry is scored against the
+ * question: exact phrases count heavily, individual words count a little,
+ * stopwords count for nothing, and the best scorer answers. If nothing clears the
+ * confidence floor the assistant says so and offers the nearest topics, instead
+ * of confidently returning whatever matched first.
  *
- *   Model-backed. When the page carries data-assist-endpoint, questions are sent
- *   to that endpoint, which is a server route holding ANTHROPIC_API_KEY. The key
- *   stays server-side: a browser that could read it is a key that is public, and
- *   an API key in a static site is public the moment the site ships.
+ * Two modes, and which one is running is visible rather than implied:
  *
- * The assistant never claims a clinical fact. Clinical questions are routed to a
- * human, because a marketing widget guessing at medicine is precisely the failure
- * this company exists to catch.
+ *   Guided (default). No network request, no transcript stored, no cookie set —
+ *   so it works before a cookie decision is made, and still works if the visitor
+ *   rejects everything.
+ *
+ *   Model-backed. When the page carries data-assist-endpoint, questions go to
+ *   that endpoint — a server route holding ANTHROPIC_API_KEY. The key stays
+ *   server-side: a key a browser can read is a key that is public.
+ *
+ * Clinical questions are refused in both modes.
  */
 (function () {
   "use strict";
 
   var mount = document.querySelector("[data-assistant]");
-  if (!mount) return;
+  var KB = window.HarmonyKnowledge;
+  if (!mount || !KB) return;
 
   var endpoint = mount.dataset.assistEndpoint || "";
   var panel = null;
   var log = null;
   var history = [];
 
-  /* --- Knowledge base ---------------------------------------------------- */
+  /* --- Matching ---------------------------------------------------------- */
 
-  var ANSWERS = [
-    {
-      match: /price|pricing|cost|how much|quote|budget|expensive|fee/i,
-      reply:
-        "Pricing is calculated per case rather than sold as a fixed package, because a low-risk general medicine note and a high-risk oncology recommendation are not the same piece of work. Specialty, case complexity and clinical risk set the price, and volume earns a discount. <a href=\"pricing.html\">The pricing page has a simulator</a> that gives you the exact figure for your case mix."
-    },
-    {
-      match: /monitor|continuous|ongoing|volume|per month|subscription/i,
-      reply:
-        "Continuous monitoring is a monthly arrangement: we sample your live output, score it, and escalate to a clinician when the risk model flags something. It starts at $500 a month plus a volume component. <a href=\"pricing.html\">Model it on the pricing page</a>."
-    },
-    {
-      match: /expert|clinician|doctor|reviewer|physician|who reviews/i,
-      reply:
-        "Reviews are done by licensed, practising clinicians, credentialled before they are admitted and matched to your case by specialty. Every review carries the reviewer's name and credentials. <a href=\"experts.html\">The expert network page</a> covers how they are vetted and where they are."
-    },
-    {
-      match: /apply|join|become an expert|work with you|reviewer role|clinician role/i,
-      reply:
-        "Clinicians apply through the expert network page. Admission requires at least three years post-qualification practice, a verifiable license and a named institution, and every application is scored across eight dimensions. <a href=\"experts.html#apply\">Start here</a>."
-    },
-    {
-      match: /partner|integrat|reseller|api partner|work together/i,
-      reply:
-        "Partnerships are assessed on strategic fit, technical readiness, commercial potential, compliance standing and risk. <a href=\"contact.html\">Tell us what you are building</a> and we will come back with an assessment."
-    },
-    {
-      match: /security|privacy|data|hipaa|gdpr|phi|compliance|store my/i,
-      reply:
-        "Clinical material is handled as confidential, is never used for advertising, and is never shared with an analytics provider. <a href=\"trust.html\">The trust page</a> sets out how we handle data — and, just as important, which certifications we do not yet hold. We do not claim attestations we have not completed."
-    },
-    {
-      match: /how (does|do).*(work|verif)|process|workflow|what happens/i,
-      reply:
-        "You send an AI-generated output. It is classified for specialty, complexity and clinical risk, priced, and routed to a matched clinician. They assess accuracy, hallucination, missing information, safety and clinical reasoning, and return a signed record with corrections. <a href=\"platform.html\">The platform page walks through it</a>."
-    },
-    {
-      match: /how long|turnaround|sla|fast|speed|when will/i,
-      reply:
-        "Turnaround depends on complexity and risk — higher clinical risk compresses the target rather than extending it. A low-complexity case targets 24 hours; a high-risk case is much tighter. The simulator on <a href=\"pricing.html\">the pricing page</a> shows the target for your case."
-    },
-    {
-      match: /report|record|audit|evidence|documentation|pdf/i,
-      reply:
-        "Each verification returns a signed record: the original output, the reviewer's assessment against each rubric dimension, any corrections with sources, and the reviewer's credentials. It is written to be handed to a clinical governance committee without translation."
-    },
-    {
-      match: /format|file type|upload|pdf|docx|word|txt|image/i,
-      reply:
-        "Submissions can be PDF, Word (.docx), plain text or images. Anything else needs to be converted first."
-    },
-    {
-      match: /demo|trial|pilot|get started|sign up|access/i,
-      reply:
-        "Design partners start by routing a real sample and getting a measured baseline back. <a href=\"contact.html\">Request access</a> and tell us what you are building."
-    },
-    {
-      match: /cookie|tracking|consent/i,
-      reply:
-        "Only strictly necessary cookies run before you choose. Analytics and marketing stay off unless you switch them on, and you can change that at any time from the footer."
-    }
-  ];
+  /* Words that appear in almost every question and so distinguish nothing. */
+  var STOPWORDS = {
+    a: 1, an: 1, the: 1, is: 1, are: 1, was: 1, do: 1, does: 1, did: 1, can: 1,
+    could: 1, would: 1, will: 1, i: 1, we: 1, you: 1, my: 1, our: 1, your: 1,
+    to: 1, of: 1, for: 1, in: 1, on: 1, at: 1, it: 1, this: 1, that: 1, and: 1,
+    or: 1, but: 1, if: 1, so: 1, be: 1, been: 1, have: 1, has: 1, get: 1, got: 1,
+    me: 1, us: 1, what: 1, whats: 1, how: 1, when: 1, where: 1, who: 1, why: 1,
+    with: 1, about: 1, there: 1, any: 1, some: 1, please: 1, hi: 1, hello: 1
+  };
 
-  var CLINICAL =
-    /diagnos|treat|dose|dosage|mg\b|prescrib|symptom|my patient|should i take|is it safe to|medication|drug interaction/i;
+  var normalise = function (text) {
+    return " " + text.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim() + " ";
+  };
 
-  var FALLBACK =
-    'I can help with pricing, how verification works, who the reviewers are, data handling, and getting started. For anything else, <a href="contact.html">the team will pick it up directly</a>.';
+  var tokens = function (text) {
+    return normalise(text)
+      .trim()
+      .split(" ")
+      .filter(function (word) {
+        return word.length > 2 && !STOPWORDS[word];
+      });
+  };
 
-  function guidedReply(question) {
-    if (CLINICAL.test(question)) {
-      return "I can't help with clinical questions — not a hedge, a design decision. Harmony Verify does not practise medicine and does not give medical advice, and an assistant guessing at clinical content would be the exact failure this company exists to catch. For anything clinical, speak to a qualified clinician.";
-    }
-    var hit = ANSWERS.find(function (entry) {
-      return entry.match.test(question);
+  /**
+   * Crude suffix stripping so "reviews", "reviewing" and "reviewed" all reach
+   * "review". Not linguistically principled — it does not need to be. It only
+   * has to stop a question failing because someone wrote a verb in a tense the
+   * keyword list didn't anticipate.
+   */
+  function stem(word) {
+    return word
+      .replace(/(ing|edly|ally|ily)$/, "")
+      .replace(/(ies)$/, "y")
+      .replace(/(ed|es|ly|s)$/, "");
+  }
+
+  var similar = function (a, b) {
+    if (a === b) return true;
+    var sa = stem(a);
+    var sb = stem(b);
+    if (sa === sb) return true;
+    // Prefix containment catches "internal" ↔ "internally", "price" ↔ "pricing".
+    return (sa.length > 3 && sb.indexOf(sa) === 0) || (sb.length > 3 && sa.indexOf(sb) === 0);
+  };
+
+  /**
+   * Score one term against the question.
+   *
+   * A phrase matched whole is worth far more than its words matched separately:
+   * "start small" in a question is a strong signal, "small" alone is noise. A
+   * phrase also matches when the words appear in order with something between
+   * them — "who reviews" should still fire on "who actually reviews my output",
+   * which is exactly the kind of sentence a keyword list never anticipates.
+   */
+  function termScore(term, haystack, words) {
+    var needle = normalise(term).trim();
+    var length = needle.split(" ").length;
+
+    if (haystack.indexOf(needle) !== -1) return 10 + length * 4;
+
+    var parts = needle.split(" ").filter(function (w) {
+      return w.length > 2 && !STOPWORDS[w];
     });
-    return hit ? hit.reply : FALLBACK;
+    if (parts.length === 0) return 0;
+
+    // In-order match with gaps, for multi-word terms.
+    if (parts.length > 1) {
+      var cursor = -1;
+      var ordered = parts.every(function (part) {
+        for (var i = cursor + 1; i < words.length; i++) {
+          if (similar(words[i], part)) {
+            cursor = i;
+            return true;
+          }
+        }
+        return false;
+      });
+      if (ordered) return 9 + parts.length * 3;
+    }
+
+    var hit = parts.filter(function (part) {
+      return words.some(function (word) {
+        return similar(word, part);
+      });
+    }).length;
+
+    return hit === 0 ? 0 : (hit / parts.length) * 6;
+  }
+
+  /**
+   * Score an entry: its single best term, plus a small contribution from the
+   * rest.
+   *
+   * Summing every term would mean an entry with twenty keywords beats a
+   * precise entry with six simply by having more chances to catch a stray word
+   * — which is how "what happens if the review is wrong" ends up answered by
+   * the reviewers entry instead of the refund one.
+   */
+  function score(entry, question) {
+    var haystack = normalise(question);
+    var words = tokens(question);
+
+    var scores = entry.terms
+      .map(function (term) {
+        return termScore(term, haystack, words);
+      })
+      .sort(function (a, b) {
+        return b - a;
+      });
+
+    if (scores.length === 0 || scores[0] === 0) return 0;
+
+    var support = scores.slice(1).reduce(function (sum, value) {
+      return sum + value;
+    }, 0);
+
+    return scores[0] + Math.min(support * 0.22, 6);
+  }
+
+  var CONFIDENCE_FLOOR = 6;
+
+  function answer(question) {
+    if (KB.clinical.test(question)) return { text: KB.clinicalReply, id: "clinical" };
+
+    var ranked = KB.entries
+      .map(function (entry) {
+        return { entry: entry, score: score(entry, question) };
+      })
+      .sort(function (a, b) {
+        return b.score - a.score;
+      });
+
+    var best = ranked[0];
+    if (!best || best.score < CONFIDENCE_FLOOR) {
+      return { text: KB.fallback, id: "fallback", suggestions: nearest(ranked) };
+    }
+
+    // A near-tie means the question genuinely touches two topics; say both
+    // rather than picking one and sounding certain about it.
+    var runnerUp = ranked[1];
+    var text = best.entry.a;
+    if (runnerUp && runnerUp.score > CONFIDENCE_FLOOR && runnerUp.score >= best.score * 0.82) {
+      text += "<br><br>" + runnerUp.entry.a;
+    }
+    return { text: text, id: best.entry.id };
+  }
+
+  /** Topics that scored something, offered when nothing scored enough. */
+  function nearest(ranked) {
+    return ranked
+      .filter(function (row) {
+        return row.score > 1.5;
+      })
+      .slice(0, 3)
+      .map(function (row) {
+        return row.entry.terms[0];
+      });
   }
 
   /* --- Rendering ---------------------------------------------------------- */
@@ -122,8 +210,16 @@
     '<path d="M8 19H4.5M32 19h3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
     "</svg>";
 
+  var escapeHtml = function (value) {
+    return value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  };
+
   function say(from, html) {
-    if (!log) return;
+    if (!log) return null;
     var msg = document.createElement("div");
     msg.className = "assist-msg";
     msg.dataset.from = from;
@@ -133,16 +229,27 @@
     return msg;
   }
 
-  var escapeHtml = function (value) {
-    return value
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  };
+  function offer(questions) {
+    if (!panel || !questions || questions.length === 0) return;
+    var old = panel.querySelector(".assist-suggest");
+    if (old) old.remove();
+
+    var row = document.createElement("div");
+    row.className = "assist-suggest";
+    questions.forEach(function (question) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.textContent = question;
+      button.addEventListener("click", function () {
+        ask(question);
+      });
+      row.appendChild(button);
+    });
+    panel.insertBefore(row, panel.querySelector(".assist-form"));
+  }
 
   function ask(question) {
-    var trimmed = question.trim();
+    var trimmed = String(question || "").trim();
     if (!trimmed) return;
 
     say("you", escapeHtml(trimmed));
@@ -151,12 +258,14 @@
     var suggestions = panel.querySelector(".assist-suggest");
     if (suggestions) suggestions.remove();
 
-    if (!endpoint) {
-      var reply = guidedReply(trimmed);
-      history.push({ role: "assistant", content: reply });
+    var local = answer(trimmed);
+
+    if (!endpoint || local.id === "clinical") {
       window.setTimeout(function () {
-        say("bot", reply);
-      }, 180);
+        say("bot", local.text);
+        history.push({ role: "assistant", content: local.text });
+        if (local.suggestions && local.suggestions.length) offer(local.suggestions);
+      }, 160);
       return;
     }
 
@@ -172,14 +281,15 @@
         return res.json();
       })
       .then(function (data) {
-        var answer = typeof data.reply === "string" && data.reply.trim() ? data.reply : guidedReply(trimmed);
-        history.push({ role: "assistant", content: answer });
-        if (pending) pending.innerHTML = answer;
+        var reply = typeof data.reply === "string" && data.reply.trim() ? data.reply : local.text;
+        history.push({ role: "assistant", content: reply });
+        if (pending) pending.innerHTML = reply;
       })
       .catch(function () {
         // Degrade to the guided answer rather than showing an error: the visitor
         // asked a question and is entitled to the answer we already have.
-        if (pending) pending.innerHTML = guidedReply(trimmed);
+        if (pending) pending.innerHTML = local.text;
+        if (local.suggestions && local.suggestions.length) offer(local.suggestions);
       });
   }
 
@@ -197,15 +307,9 @@
       '<button class="assist-close" type="button" aria-label="Close assistant">&times;</button>' +
       "</div>" +
       '<div class="assist-log" role="log" aria-live="polite"></div>' +
-      '<div class="assist-suggest">' +
-      '<button type="button">How does verification work?</button>' +
-      '<button type="button">What does it cost?</button>' +
-      '<button type="button">Who are the reviewers?</button>' +
-      '<button type="button">How is my data handled?</button>' +
-      "</div>" +
       '<form class="assist-form">' +
       '<label class="sr-only" for="assist-input">Your question</label>' +
-      '<input id="assist-input" type="text" autocomplete="off" placeholder="Ask about pricing, reviewers, security…">' +
+      '<input id="assist-input" type="text" autocomplete="off" placeholder="Ask about pricing, turnaround, security…">' +
       '<button type="submit">Send</button>' +
       "</form>" +
       '<p class="assist-note">This assistant does not give medical advice and does not see your submissions. Nothing you type here is stored.</p>';
@@ -213,11 +317,6 @@
     log = wrap.querySelector(".assist-log");
 
     wrap.querySelector(".assist-close").addEventListener("click", close);
-    wrap.querySelectorAll(".assist-suggest button").forEach(function (button) {
-      button.addEventListener("click", function () {
-        ask(button.textContent);
-      });
-    });
 
     var form = wrap.querySelector(".assist-form");
     var input = wrap.querySelector("#assist-input");
@@ -239,8 +338,9 @@
 
     say(
       "bot",
-      "Hello. I can explain how verification works, what it costs, who reviews your output and how your data is handled. What would be useful?"
+      "Hello. I can explain how verification works, what it costs, how fast it is, who reviews your output and how your data is handled. What would be useful?"
     );
+    offer(KB.starters);
 
     var input = panel.querySelector("#assist-input");
     if (input) input.focus();
@@ -273,4 +373,7 @@
   launcher.innerHTML = ROBOT + "<span>Ask Harmony</span>";
   launcher.addEventListener("click", open);
   document.body.appendChild(launcher);
+
+  // Exposed so the browser test suite can assert routing without opening the UI.
+  window.HarmonyAssistant = { answer: answer, score: score, open: open, ask: ask };
 })();
