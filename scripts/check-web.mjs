@@ -89,6 +89,55 @@ for (const page of pages) {
   }
 }
 
+/* --- Consent invariants ---------------------------------------------------
+ *
+ * The rule the site has to keep is that nothing but strictly necessary storage
+ * runs before a visitor chooses. That is easy to hold today and easy to break in
+ * six months by pasting a vendor snippet into one page, so it is checked here
+ * rather than trusted.
+ *
+ * Three things are asserted per page: the consent script is present, it is not
+ * deferred behind the scripts it is supposed to gate, and every third-party or
+ * tracking script is written as an inert placeholder that consent.js promotes.
+ */
+const THIRD_PARTY = /<script\b[^>]*\bsrc="https?:\/\/[^"]+"[^>]*>/gi;
+// Bounded to a single element, so prose elsewhere on the page cannot trip it.
+const SCRIPT_BLOCK = /<script\b([^>]*)>((?:(?!<\/script>)[\s\S])*)<\/script>/gi;
+const TRACKER_CALL = /\b(gtag\s*\(|dataLayer\s*\.|dataLayer\s*=|fbq\s*\(|_paq\s*\.|analytics\.track\s*\(|plausible\s*\()/;
+
+for (const page of pages) {
+  const html = readFileSync(join(webRoot, page), "utf8");
+  const where = `apps/web/${page}`;
+
+  if (!/<script[^>]+consent\.js/.test(html)) {
+    problems.push(`${where}: consent.js is not loaded — cookies could fire before a choice is made`);
+  } else if (/<script[^>]+consent\.js[^>]*\bdefer\b/.test(html)) {
+    problems.push(
+      `${where}: consent.js is deferred — it must run before the scripts it gates, so it cannot carry defer`,
+    );
+  }
+
+  if (!/data-consent-open/.test(html)) {
+    problems.push(`${where}: no "Cookie preferences" control — consent must be withdrawable from every page`);
+  }
+
+  for (const tag of html.match(THIRD_PARTY) ?? []) {
+    if (!/type="text\/plain"/.test(tag) || !/data-consent=/.test(tag)) {
+      problems.push(
+        `${where}: third-party script loads unconditionally -> ${tag.slice(0, 90)}… ` +
+          `(use type="text/plain" data-consent="analytics" data-src="…")`,
+      );
+    }
+  }
+
+  for (const [, attrs, body] of html.matchAll(SCRIPT_BLOCK)) {
+    if (/type="text\/plain"/.test(attrs)) continue;
+    if (TRACKER_CALL.test(body)) {
+      problems.push(`${where}: inline tracking snippet is not gated behind consent`);
+    }
+  }
+}
+
 // Token block must stay under design-system control
 const cssPath = join(webRoot, "assets/css/main.css");
 if (existsSync(cssPath)) {

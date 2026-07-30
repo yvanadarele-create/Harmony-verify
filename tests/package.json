@@ -5,11 +5,15 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "tsc -p tsconfig.json && node --test dist/engines.test.js dist/pricing.test.js dist/lifecycle.test.js"
+    "test": "tsc -p tsconfig.json && node --test dist/*.test.js"
   },
   "dependencies": {
+    "@harmony/applications": "workspace:*",
+    "@harmony/auth": "workspace:*",
+    "@harmony/config": "workspace:*",
     "@harmony/shared": "workspace:*",
     "@harmony/database": "workspace:*",
+    "@harmony/payments": "workspace:*",
     "@harmony/verification-engine": "workspace:*",
     "@harmony/expert-matching": "workspace:*",
     "@harmony/pricing-engine": "workspace:*"

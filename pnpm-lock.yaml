@@ -52,11 +52,49 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
+  packages/applications:
+    dependencies:
+      '@harmony/shared':
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/auth:
+    dependencies:
+      '@harmony/config':
+        specifier: workspace:*
+        version: link:../config
+      '@harmony/shared':
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
   packages/cognitive-data:
     dependencies:
       '@harmony/shared':
         specifier: workspace:*
         version: link:../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/config:
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -108,6 +146,22 @@ importers:
       '@harmony/ui':
         specifier: workspace:*
         version: link:../ui
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/payments:
+    dependencies:
+      '@harmony/pricing-engine':
+        specifier: workspace:*
+        version: link:../pricing-engine
+      '@harmony/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -169,12 +223,24 @@ importers:
 
   tests:
     dependencies:
+      '@harmony/applications':
+        specifier: workspace:*
+        version: link:../packages/applications
+      '@harmony/auth':
+        specifier: workspace:*
+        version: link:../packages/auth
+      '@harmony/config':
+        specifier: workspace:*
+        version: link:../packages/config
       '@harmony/database':
         specifier: workspace:*
         version: link:../packages/database
       '@harmony/expert-matching':
         specifier: workspace:*
         version: link:../packages/expert-matching
+      '@harmony/payments':
+        specifier: workspace:*
+        version: link:../packages/payments
       '@harmony/pricing-engine':
         specifier: workspace:*
         version: link:../packages/pricing-engine

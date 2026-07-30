@@ -1,8 +1,9 @@
 {
-  "name": "@harmony/pricing-engine",
+  "name": "@harmony/applications",
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "description": "Expert and partner application evaluation — the criteria that decide who is admitted",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -13,7 +14,7 @@
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "build": "tsc -p tsconfig.json && node --experimental-strip-types scripts/emit-web-prices.ts"
+    "build": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

@@ -35,18 +35,22 @@ apps/
 packages/
   design-system   Canonical design tokens (source of truth for all CSS)     ✅ complete
   shared          Domain types, typed errors, id + signing helpers          ✅ complete
-  database        SQLite schema, repositories, audit log                    ✅ complete
+  config          Environment and secrets — the only reader of process.env  ✅ complete
+  auth            Authorisation policy: areas, resources, route guards      ✅ complete
+  database        SQLite schema, repositories, expert lifecycle gates       ✅ complete
   verification-engine  Triage, classification, report scoring               ✅ complete
   expert-matching Specialty routing, conflict and capacity rules            ✅ complete
   pricing-engine  Price and SLA calculation                                 ✅ complete
+  applications    Expert and partner admission criteria                     ✅ complete
+  payments        Paystack — a new payment page per charge                  ✅ complete
   ui              Status mapping and formatting (framework-agnostic)        ✅ complete
   ai-engine       Optional LLM refinement over deterministic rules          ✅ complete
   analytics       Aggregate quality metrics                                 ✅ complete
   notifications   Email composition and delivery                            ✅ complete
   cognitive-data  Failure taxonomy and calibration set                      ✅ complete
 
-docs/             Architecture and decision records
-tests/            Cross-package tests (29 passing)
+docs/             Architecture, configuration and decision records
+tests/            Cross-package tests (160 passing)
 scripts/          Repo tooling
 infrastructure/   Deployment configuration
 ```
@@ -77,6 +81,20 @@ Verify link and asset integrity without a browser:
 ```bash
 node scripts/check-web.mjs
 ```
+
+The same check enforces the consent invariants on every page: `consent.js` is
+loaded and not deferred, a "Cookie preferences" control exists, and no
+third-party or tracking script loads without being gated behind a consent
+category. Pasting a vendor snippet into a page fails the build.
+
+## Configuration
+
+Copy `.env.example` to `.env` and fill it in. Every secret is read through
+`packages/config`; nothing else in the codebase reads a credential from the
+environment, and no secret is ever a literal in this repository.
+
+See **[docs/configuration.md](docs/configuration.md)** for the full variable
+list, the rules the codebase enforces, and what to do if a key is ever exposed.
 
 ## Deployment
 
@@ -135,6 +153,8 @@ they do not reimplement them.
 | Asset | Where | Status |
 | --- | --- | --- |
 | `apps/web/assets/img/founder.jpg` | Founder profile, `company.html` | Awaiting file. Falls back to an "AY" monogram, so the page is never broken. |
+
+The name and title are already on the page — only the photograph is missing.
 
 To supply the founder portrait, drop the file in and it appears automatically — no code change:
 

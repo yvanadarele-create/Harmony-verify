@@ -552,6 +552,10 @@ p {
   justify-content: center;
   gap: 9px;
   padding: 13px 26px;
+  /* Reset the UA button surface. Most .btn uses are anchors, where this is a
+     no-op; on a real <button> — the consent actions — the default buttonface
+     grey would otherwise show through a ghost variant. */
+  background: none;
   border: 1px solid transparent;
   border-radius: var(--radius);
   font-family: var(--font-sans);
@@ -2092,9 +2096,877 @@ td:first-child {
   }
 }
 
+/* --- Utilities ----------------------------------------------------------- */
+
+/* Available to screen readers, absent from the visual layout. Used where a
+   canvas or an icon carries meaning a non-sighted visitor would otherwise lose. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* A button that has to read as a footer link: cookie preferences must be a
+   button because it opens a dialog, but it belongs in the row of legal links. */
+.footer-link {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border-gold-strong);
+  cursor: pointer;
+}
+
+.footer-link:hover {
+  color: var(--gold);
+}
+
+/* --- Legal pages --------------------------------------------------------- */
+
+.legal {
+  max-width: 74ch;
+}
+
+.legal h2 {
+  margin: 46px 0 14px;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  letter-spacing: 0.04em;
+  color: var(--foreground);
+}
+
+.legal h3 {
+  margin: 28px 0 10px;
+  font-size: 1rem;
+  color: var(--gold);
+}
+
+.legal p,
+.legal li {
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: var(--foreground);
+}
+
+.legal ul {
+  margin: 0 0 18px;
+  padding-left: 20px;
+}
+
+.legal li {
+  margin-bottom: 8px;
+}
+
+.legal table {
+  width: 100%;
+  margin: 18px 0 26px;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.legal th,
+.legal td {
+  padding: 11px 14px;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid var(--border);
+}
+
+.legal th {
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  background: var(--navy);
+}
+
+.legal-updated {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* --- Cookie consent ------------------------------------------------------ */
+
+/* Anchored bottom-centre rather than as a full-width bar: it has to be
+   unmissable without burying the page behind it, because a banner that covers
+   the content is a banner people dismiss without reading. */
+.consent {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 90;
+  padding: 0 var(--gutter) clamp(14px, 3vw, 26px);
+  transform: translateY(120%);
+  transition: transform var(--dur) var(--ease);
+}
+
+.consent[data-in="true"] {
+  transform: translateY(0);
+}
+
+.consent-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(16px, 3vw, 34px);
+  padding: clamp(18px, 2.4vw, 26px) clamp(20px, 3vw, 32px);
+  background: var(--navy);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 70px rgba(3, 8, 20, 0.62);
+}
+
+.consent-copy {
+  flex: 1 1 380px;
+}
+
+.consent-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 6px;
+}
+
+.consent-copy p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--foreground);
+  max-width: 66ch;
+}
+
+/* Accept, Reject and Preferences sit in one row at the same size. No visual
+   hierarchy between accepting and refusing — that asymmetry is the dark
+   pattern regulators actually cite. */
+.consent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.consent-actions .btn {
+  min-width: 122px;
+  justify-content: center;
+}
+
+@media (max-width: 720px) {
+  .consent-actions {
+    width: 100%;
+  }
+
+  .consent-actions .btn {
+    flex: 1 1 auto;
+  }
+}
+
+.consent-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  background: rgba(3, 8, 20, 0.78);
+  overflow-y: auto;
+}
+
+.consent-panel {
+  position: relative;
+  width: min(620px, 100%);
+  max-height: min(86vh, 780px);
+  overflow-y: auto;
+  padding: clamp(24px, 4vw, 40px);
+  background: var(--navy);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  box-shadow: 0 30px 90px rgba(3, 8, 20, 0.7);
+}
+
+.consent-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--muted-foreground);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.consent-close:hover {
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+.consent-dialog-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  letter-spacing: 0.05em;
+  color: var(--foreground);
+  margin: 0 0 10px;
+}
+
+.consent-dialog-intro {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--muted-foreground);
+  margin: 0 0 22px;
+}
+
+.consent-rows {
+  display: grid;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--border);
+  margin-bottom: 24px;
+}
+
+.consent-row {
+  padding: 16px 18px;
+  background: var(--navy-deep);
+}
+
+.consent-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.consent-row-name {
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--foreground);
+  cursor: pointer;
+}
+
+.consent-row-desc {
+  margin: 8px 0 0;
+  font-size: 0.83rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  max-width: 58ch;
+}
+
+.consent-row-note {
+  margin: 8px 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+}
+
+.consent-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 26px;
+}
+
+.consent-switch input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.consent-switch input:disabled {
+  cursor: not-allowed;
+}
+
+.consent-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+  pointer-events: none;
+}
+
+.consent-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.consent-switch input:checked + .consent-track {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--border-gold-strong);
+}
+
+.consent-switch input:checked + .consent-track::after {
+  transform: translateX(20px);
+  background: var(--gold);
+}
+
+.consent-switch input:focus-visible + .consent-track {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.consent-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.consent-dialog-actions .btn {
+  flex: 1 1 150px;
+  justify-content: center;
+}
+
+.consent-dialog-foot {
+  margin: 18px 0 0;
+  font-size: 0.82rem;
+}
+
+.consent-dialog-foot a {
+  color: var(--gold);
+}
+
+body[data-consent-open="true"] {
+  overflow: hidden;
+}
+
+/* --- Expert globe -------------------------------------------------------- */
+
+.globe-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .globe-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.globe-stage {
+  position: relative;
+  aspect-ratio: 1;
+  width: min(100%, 460px);
+  margin-inline: auto;
+}
+
+.globe-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* A faint halo so the sphere reads as lit rather than as a flat wireframe.
+   Kept inside the stage box: the sphere is drawn at 84% of the canvas, so the
+   glow has room to sit outside it without a negative inset pushing the page
+   wider than the viewport on a phone. */
+.globe-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(212, 175, 55, 0.16) 0%,
+    rgba(212, 175, 55, 0.1) 44%,
+    transparent 72%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.globe-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-top: 22px;
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+.globe-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.globe-legend i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+}
+
+.globe-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  margin-top: 28px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.globe-stat {
+  background: var(--navy-deep);
+  padding: 16px 18px;
+}
+
+.globe-stat b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.globe-stat span {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* --- Assistant ----------------------------------------------------------- */
+
+.assist-launch {
+  position: fixed;
+  right: clamp(16px, 3vw, 30px);
+  bottom: clamp(16px, 3vw, 30px);
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px 12px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--navy-deep);
+  background: var(--gold-grad);
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 14px 40px rgba(3, 8, 20, 0.55);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.assist-launch:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 48px rgba(3, 8, 20, 0.62);
+}
+
+.assist-launch svg {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+}
+
+/* The banner owns the bottom edge until a choice is made; the assistant lifts
+   clear of it rather than sitting underneath. A visitor who has not yet chosen
+   must still be able to read the choice they are being asked to make. */
+:root[data-consent="pending"] .assist-launch,
+:root[data-consent="pending"] .assist-panel {
+  bottom: clamp(150px, 22vh, 210px);
+}
+
+:root[data-consent="pending"] .assist-panel {
+  max-height: min(520px, calc(100vh - clamp(170px, 24vh, 240px)));
+}
+
+.assist-panel {
+  position: fixed;
+  right: clamp(16px, 3vw, 30px);
+  bottom: clamp(16px, 3vw, 30px);
+  z-index: 95;
+  width: min(380px, calc(100vw - 32px));
+  max-height: min(620px, calc(100vh - 40px));
+  display: flex;
+  flex-direction: column;
+  background: var(--navy);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  box-shadow: 0 28px 80px rgba(3, 8, 20, 0.7);
+  overflow: hidden;
+}
+
+.assist-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--navy-deep);
+}
+
+.assist-head svg {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+}
+
+.assist-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: var(--foreground);
+}
+
+.assist-head p {
+  margin: 2px 0 0;
+  font-size: 0.74rem;
+  color: var(--muted-foreground);
+}
+
+.assist-close {
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--muted-foreground);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.assist-close:hover {
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+.assist-log {
+  flex: 1 1 auto;
+  min-height: 180px;
+  overflow-y: auto;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.assist-msg {
+  max-width: 88%;
+  padding: 11px 14px;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  border-radius: var(--radius);
+}
+
+.assist-msg[data-from="bot"] {
+  align-self: flex-start;
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.assist-msg[data-from="you"] {
+  align-self: flex-end;
+  background: rgba(212, 175, 55, 0.14);
+  border: 1px solid var(--border-gold);
+  color: var(--foreground);
+}
+
+.assist-msg a {
+  color: var(--gold);
+}
+
+.assist-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 18px 14px;
+}
+
+.assist-suggest button {
+  padding: 7px 12px;
+  font-size: 0.78rem;
+  color: var(--foreground);
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.assist-suggest button:hover {
+  border-color: var(--border-gold-strong);
+  color: var(--gold);
+}
+
+.assist-form {
+  display: flex;
+  gap: 8px;
+  padding: 14px 18px 18px;
+  border-top: 1px solid var(--border);
+}
+
+.assist-form input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 0.86rem;
+  color: var(--foreground);
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.assist-form input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.assist-form button {
+  flex: 0 0 auto;
+  padding: 10px 16px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--navy-deep);
+  background: var(--gold);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.assist-note {
+  margin: 0;
+  padding: 0 18px 14px;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+
+/* --- Pricing simulator --------------------------------------------------- */
+
+.sim {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+@media (max-width: 880px) {
+  .sim {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sim-controls,
+.sim-output {
+  background: var(--navy-deep);
+  padding: clamp(20px, 3vw, 30px);
+}
+
+.sim-output {
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+}
+
+.sim-tabs {
+  display: flex;
+  gap: 1px;
+  margin-bottom: 24px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.sim-tabs button {
+  flex: 1 1 0;
+  padding: 11px 14px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  background: var(--navy-deep);
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.sim-tabs button[aria-selected="true"] {
+  color: var(--navy-deep);
+  background: var(--gold);
+}
+
+.sim-field {
+  margin-bottom: 18px;
+}
+
+.sim-field > label,
+.sim-legend {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.sim-field select,
+.sim-field input[type="number"] {
+  width: 100%;
+  padding: 11px 12px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--foreground);
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.sim-field select:focus-visible,
+.sim-field input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.sim-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 0;
+  padding: 0;
+  margin: 0 0 18px;
+}
+
+.sim-choice {
+  position: relative;
+}
+
+.sim-choice input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.sim-choice span {
+  display: block;
+  padding: 9px 15px;
+  font-size: 0.83rem;
+  color: var(--muted-foreground);
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.sim-choice input:checked + span {
+  color: var(--gold);
+  border-color: var(--border-gold-strong);
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.sim-choice input:focus-visible + span {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.sim-price {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.sim-price-label {
+  margin: 0 0 6px;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.sim-sub {
+  margin: 12px 0 0;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--foreground);
+}
+
+.sim-lines {
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.sim-lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 11px 0;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+}
+
+.sim-lines li b {
+  color: var(--foreground);
+  font-weight: 600;
+  text-align: right;
+}
+
+.sim-foot {
+  margin: auto 0 0;
+  padding-top: 22px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
 /* --- Print -------------------------------------------------------------- */
 
 @media print {
+  .consent,
+  .consent-overlay,
+  .assist-launch,
+  .assist-panel,
   .nav,
   .cta,
   .btn-row,
