@@ -199,19 +199,78 @@ if (!/<meta name="google-site-verification"/.test(home)) {
   problems.push("apps/web/index.html: google-site-verification tag is missing");
 }
 
-// Every indexable page should be in the sitemap.
+/* The sitemap and the canonicals must agree with what the server serves.
+ *
+ * Search Console rejects a sitemap whose URLs are on a different host than the
+ * verified property, and reports every entry that redirects. With cleanUrls the
+ * server serves /pricing and redirects /pricing.html, so a sitemap of .html URLs
+ * is a sitemap of redirects. Neither fault is visible in a browser, and both
+ * present as "your sitemap is wrong" with no indication of why. */
 const sitemapPath = join(webRoot, "sitemap.xml");
-if (existsSync(sitemapPath)) {
+const vercelPath = resolve(webRoot, "../../vercel.json");
+const cleanUrls = existsSync(vercelPath)
+  ? JSON.parse(readFileSync(vercelPath, "utf8")).cleanUrls === true
+  : false;
+
+if (!existsSync(sitemapPath)) {
+  problems.push("apps/web/sitemap.xml: not found");
+} else {
   const sitemap = readFileSync(sitemapPath, "utf8");
+  const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+
+  if (locs.length === 0) problems.push("apps/web/sitemap.xml: no <loc> entries");
+
+  const hosts = new Set(locs.map((loc) => new URL(loc).host));
+  if (hosts.size > 1) {
+    problems.push(`apps/web/sitemap.xml: mixes hosts (${[...hosts].join(", ")})`);
+  }
+
+  const siteHost = [...hosts][0];
+
   for (const page of pages) {
     if (page === "404.html") continue;
-    const slug = page === "index.html" ? "" : page;
-    if (!sitemap.includes(`/${slug}<`)) {
-      problems.push(`apps/web/sitemap.xml: ${page} is not listed`);
+    const expected = page === "index.html" ? "/" : cleanUrls ? `/${page.replace(/\.html$/, "")}` : `/${page}`;
+    if (!locs.some((loc) => new URL(loc).pathname === expected)) {
+      problems.push(`apps/web/sitemap.xml: ${page} is not listed (expected ${expected})`);
     }
   }
-} else {
-  problems.push("apps/web/sitemap.xml: not found");
+
+  if (cleanUrls) {
+    for (const loc of locs) {
+      if (loc.endsWith(".html")) {
+        problems.push(`apps/web/sitemap.xml: ${loc} redirects under cleanUrls — drop the .html`);
+      }
+    }
+  }
+
+  // Canonicals must be on the same host as the sitemap, and in the same form.
+  for (const page of pages) {
+    if (page === "404.html") continue;
+    const html = readFileSync(join(webRoot, page), "utf8");
+    const canonical = /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1];
+    if (!canonical) continue;
+
+    const url = new URL(canonical);
+    if (siteHost && url.host !== siteHost) {
+      problems.push(`apps/web/${page}: canonical host ${url.host} does not match the sitemap's ${siteHost}`);
+    }
+    if (cleanUrls && canonical.endsWith(".html")) {
+      problems.push(`apps/web/${page}: canonical points at a URL that redirects — drop the .html`);
+    }
+    if (!locs.includes(canonical)) {
+      problems.push(`apps/web/${page}: canonical ${canonical} is not in the sitemap`);
+    }
+  }
+
+  // robots.txt must advertise the same sitemap URL.
+  const robotsPath = join(webRoot, "robots.txt");
+  if (existsSync(robotsPath)) {
+    const declared = /^Sitemap:\s*(\S+)$/m.exec(readFileSync(robotsPath, "utf8"))?.[1];
+    if (!declared) problems.push("apps/web/robots.txt: no Sitemap: line");
+    else if (siteHost && new URL(declared).host !== siteHost) {
+      problems.push(`apps/web/robots.txt: Sitemap host ${new URL(declared).host} does not match ${siteHost}`);
+    }
+  }
 }
 
 // Token block must stay under design-system control

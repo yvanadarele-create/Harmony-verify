@@ -9,4 +9,4 @@ Disallow: /expert/
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://harmonyverify.com/sitemap.xml
+Sitemap: https://harmonyverify.org/sitemap.xml

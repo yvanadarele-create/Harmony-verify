@@ -160,10 +160,43 @@ page ships its content in the initial response. On top of that:
 - Google Search Console verification tag on every page
 - `favicon.ico`, SVG favicon, Apple touch icon and a web manifest
 
-`node scripts/check-web.mjs` enforces the parts that break silently: duplicate
-titles or descriptions, a canonical copied from another page, JSON-LD that does
-not parse, a page missing from the sitemap, and the loss of the Search Console
-tag.
+### The site's own URLs come from one place
+
+Every absolute URL the site publishes about itself — canonicals, `og:url`, the
+JSON-LD, the sitemap and the `Sitemap:` line in `robots.txt` — is written by
+`scripts/site-urls.mjs`, which runs as part of `build:web`.
+
+```bash
+SITE_URL=https://harmonyverify.org pnpm run site:urls
+```
+
+With no `SITE_URL` it falls back to `PUBLIC_BASE_URL`, then Vercel's production
+domain, then the committed default. A Vercel build therefore publishes URLs for
+the domain it is actually served from.
+
+Two failures this exists to prevent, both invisible in a browser and both
+reported by Search Console only as "your sitemap is wrong":
+
+- **Host drift.** Four different files each carry a full URL. Change the domain
+  by hand, miss one, and Search Console rejects the sitemap for containing URLs
+  that are not on the property.
+- **Extension drift.** `vercel.json` sets `cleanUrls: true`, so the server serves
+  `/pricing` and redirects `/pricing.html`. A sitemap of `.html` URLs is a
+  sitemap of redirects, and a canonical pointing at `.html` contradicts the URL
+  Google actually fetched. The script derives the right form from the deployment
+  config rather than assuming it.
+
+`node scripts/check-web.mjs` fails the build if the sitemap mixes hosts, lists a
+URL that would redirect, omits a page, disagrees with a canonical, or if
+`robots.txt` advertises a sitemap on a different host.
+
+**Contact addresses are separate and opt-in.** Mail is often hosted on a
+different domain than the website, and rewriting `hello@` to a domain with no
+mailbox behind it silently loses enquiries rather than failing loudly:
+
+```bash
+CONTACT_DOMAIN=harmonyverify.org pnpm run site:urls
+```
 
 **Still to do by hand:** add real social profile URLs to `sameAs` in the
 homepage `Organization` schema once the accounts exist. An empty or invented

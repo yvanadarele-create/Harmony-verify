@@ -15,7 +15,8 @@
     "lint": "turbo run lint",
     "web": "pnpm --filter @harmony/web dev",
     "tokens": "pnpm --filter @harmony/design-system build",
-    "build:web": "pnpm --filter @harmony/design-system build && node scripts/check-web.mjs"
+    "build:web": "node scripts/site-urls.mjs && pnpm --filter @harmony/design-system build && node scripts/check-web.mjs",
+    "site:urls": "node scripts/site-urls.mjs"
   },
   "devDependencies": {
     "turbo": "^2.3.3",
