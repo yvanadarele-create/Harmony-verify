@@ -2528,18 +2528,20 @@ body[data-consent-open="true"] {
   box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
 }
 
+/* Borders on the cells rather than a 1px gap over a coloured container: with
+   three tiles in a two-column layout the container trick leaves a filled empty
+   cell, which reads as a missing statistic. */
 .globe-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
   margin-top: 28px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
 }
 
 .globe-stat {
   background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   padding: 16px 18px;
 }
 
