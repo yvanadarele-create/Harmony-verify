@@ -2130,6 +2130,206 @@ td:first-child {
   color: var(--gold);
 }
 
+/* --- Founder page -------------------------------------------------------- */
+
+.fh {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(30px, 5vw, 72px);
+  align-items: center;
+}
+
+@media (max-width: 880px) {
+  .fh {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The photograph is lit on a pale background; against navy it would read as a
+   pasted rectangle. A gold hairline, an inset navy vignette at the base and a
+   slight desaturation marry it to the page without retouching the person. */
+.fh-portrait {
+  position: relative;
+  width: min(100%, 420px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 2px;
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 30px 80px rgba(3, 8, 20, 0.6);
+}
+
+.fh-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 18%;
+  display: block;
+  filter: saturate(0.94) contrast(1.02);
+}
+
+.fh-portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 19, 37, 0) 55%, rgba(10, 19, 37, 0.55) 100%),
+    radial-gradient(120% 80% at 50% 0%, rgba(212, 175, 55, 0.08), transparent 60%);
+  pointer-events: none;
+}
+
+.fh-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6.2vw, 4.1rem);
+  line-height: 1.02;
+  letter-spacing: 0.03em;
+  margin: 10px 0 0;
+  text-transform: uppercase;
+}
+
+.fh-name span {
+  display: block;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fh-role {
+  margin: 18px 0 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.fh-statement {
+  margin: 22px 0 0;
+  max-width: 54ch;
+  font-size: clamp(1rem, 1.7vw, 1.14rem);
+  line-height: 1.7;
+  color: var(--foreground);
+}
+
+.fh-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Timeline ---------------------------------------------------------------- */
+
+.tl {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 34px;
+  list-style: none;
+}
+
+.tl::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 5px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--border-gold-strong) 12%,
+    var(--border-gold-strong) 88%,
+    transparent
+  );
+}
+
+.tl li {
+  position: relative;
+  padding-bottom: clamp(30px, 4vw, 46px);
+}
+
+.tl li:last-child {
+  padding-bottom: 0;
+}
+
+.tl li::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: -34px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--navy-deep);
+  border: 1px solid var(--border-gold-strong);
+}
+
+/* The present is the lit node — the eye should land on where the story is now. */
+.tl li[data-now]::before {
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.16);
+}
+
+.tl-when {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+}
+
+.tl h3 {
+  margin: 8px 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+  letter-spacing: 0.03em;
+  color: var(--foreground);
+}
+
+.tl p {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+/* Mission / vision -------------------------------------------------------- */
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(18px, 2.6vw, 28px);
+}
+
+.pillar {
+  padding: clamp(24px, 3vw, 34px);
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--gold);
+  border-radius: var(--radius);
+}
+
+.pillar h3 {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  color: var(--gold);
+}
+
+.pillar p {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.72;
+  color: var(--foreground);
+}
+
 /* --- Legal pages --------------------------------------------------------- */
 
 .legal {

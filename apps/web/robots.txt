@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
 
+# Signed-in surfaces. Nothing here is served to an unauthenticated request, so
+# these lines are a courtesy to crawlers rather than a security control — access
+# is enforced server-side in @harmony/auth.
+Disallow: /dashboard
+Disallow: /expert/
+Disallow: /admin
+Disallow: /api/
+
 Sitemap: https://harmonyverify.com/sitemap.xml

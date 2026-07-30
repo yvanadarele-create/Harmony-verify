@@ -19,9 +19,7 @@ const webRoot = resolve(here, "../apps/web");
  * gracefully in the page (see the founder monogram fallback), so a missing one is a
  * warning, not a build failure. Remove an entry once the real asset lands.
  */
-const PENDING_ASSETS = new Map([
-  ["assets/img/founder.jpg", "founder portrait — falls back to the AY monogram until supplied"],
-]);
+const PENDING_ASSETS = new Map();
 
 const pages = readdirSync(webRoot).filter((f) => f.endsWith(".html"));
 const problems = [];
@@ -136,6 +134,84 @@ for (const page of pages) {
       problems.push(`${where}: inline tracking snippet is not gated behind consent`);
     }
   }
+}
+
+/* --- SEO invariants -------------------------------------------------------
+ *
+ * Search visibility is easy to lose silently: a page copied from another one
+ * keeps its canonical, a JSON-LD block gets a trailing comma and is discarded
+ * without warning, two pages end up with the same title. None of that shows up
+ * in a browser, so it is asserted here.
+ */
+const titles = new Map();
+const descriptions = new Map();
+const canonicals = new Map();
+
+for (const page of pages) {
+  const html = readFileSync(join(webRoot, page), "utf8");
+  const where = `apps/web/${page}`;
+  const noindex = /<meta name="robots"[^>]*content="[^"]*noindex/.test(html);
+
+  const title = /<title>([^<]+)<\/title>/.exec(html)?.[1]?.trim();
+  const description = /<meta name="description" content="([^"]+)"/.exec(html)?.[1]?.trim();
+  const canonical = /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1];
+
+  if (title) {
+    if (titles.has(title)) problems.push(`${where}: duplicate <title> shared with ${titles.get(title)}`);
+    else titles.set(title, where);
+    if (title.length > 65) warnings.push(`${where}: title is ${title.length} chars — Google truncates near 60`);
+  }
+
+  if (description) {
+    if (descriptions.has(description)) {
+      problems.push(`${where}: duplicate meta description shared with ${descriptions.get(description)}`);
+    } else descriptions.set(description, where);
+    if (description.length > 165) {
+      warnings.push(`${where}: meta description is ${description.length} chars — truncated near 160`);
+    }
+  }
+
+  // A noindex page (404) has nothing to be canonical about.
+  if (!noindex) {
+    if (!canonical) problems.push(`${where}: missing canonical`);
+    else if (canonicals.has(canonical)) {
+      problems.push(`${where}: canonical points at the same URL as ${canonicals.get(canonical)}`);
+    } else canonicals.set(canonical, where);
+
+    if (!/<meta property="og:title"/.test(html)) warnings.push(`${where}: no og:title — link previews will guess`);
+  }
+
+  // Invalid JSON-LD is dropped by Google without an error anyone sees.
+  for (const [, body] of html.matchAll(
+    /<script type="application\/ld\+json">((?:(?!<\/script>)[\s\S])*)<\/script>/g,
+  )) {
+    try {
+      JSON.parse(body);
+    } catch (error) {
+      problems.push(`${where}: invalid JSON-LD — ${error.message}`);
+    }
+  }
+}
+
+// Search Console verifies the site at its root; losing this tag unverifies it.
+const home = readFileSync(join(webRoot, "index.html"), "utf8");
+if (!/<meta name="google-site-verification"/.test(home)) {
+  problems.push("apps/web/index.html: google-site-verification tag is missing");
+}
+
+// Every indexable page should be in the sitemap.
+const sitemapPath = join(webRoot, "sitemap.xml");
+if (existsSync(sitemapPath)) {
+  const sitemap = readFileSync(sitemapPath, "utf8");
+  for (const page of pages) {
+    if (page === "404.html") continue;
+    const slug = page === "index.html" ? "" : page;
+    if (!sitemap.includes(`/${slug}<`)) {
+      problems.push(`apps/web/sitemap.xml: ${page} is not listed`);
+    }
+  }
+} else {
+  problems.push("apps/web/sitemap.xml: not found");
 }
 
 // Token block must stay under design-system control

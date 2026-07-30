@@ -148,22 +148,26 @@ Visitor → apps/web → sign in → apps/dashboard → submit verification
 Business logic lives in `packages/*`, never in a page or a route handler. Apps compose engines;
 they do not reimplement them.
 
-## Pending assets
+## SEO
 
-| Asset | Where | Status |
-| --- | --- | --- |
-| `apps/web/assets/img/founder.jpg` | Founder profile, `company.html` | Awaiting file. Falls back to an "AY" monogram, so the page is never broken. |
+The site is static HTML, so there is no rendering problem for crawlers — every
+page ships its content in the initial response. On top of that:
 
-The name and title are already on the page — only the photograph is missing.
+- Unique `<title>`, meta description and canonical on every page
+- `Organization`, `WebSite` and `Service` JSON-LD on the homepage; `ProfilePage`
+  and `Person` on the founder page; `FAQPage` on pricing; `BreadcrumbList` per page
+- `sitemap.xml` and a `robots.txt` that keeps crawlers out of signed-in surfaces
+- Google Search Console verification tag on every page
+- `favicon.ico`, SVG favicon, Apple touch icon and a web manifest
 
-To supply the founder portrait, drop the file in and it appears automatically — no code change:
+`node scripts/check-web.mjs` enforces the parts that break silently: duplicate
+titles or descriptions, a canonical copied from another page, JSON-LD that does
+not parse, a page missing from the sitemap, and the loss of the Search Console
+tag.
 
-```bash
-cp /path/to/portrait.jpg apps/web/assets/img/founder.jpg
-```
-
-Square or portrait crop, at least 400×400. Displayed as a 132px circle, focal point biased
-slightly above centre for head-and-shoulders framing.
+**Still to do by hand:** add real social profile URLs to `sameAs` in the
+homepage `Organization` schema once the accounts exist. An empty or invented
+`sameAs` is worse than none.
 
 ## A note on claims
 
