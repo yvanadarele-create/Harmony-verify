@@ -199,6 +199,41 @@ if (!/<meta name="google-site-verification"/.test(home)) {
   problems.push("apps/web/index.html: google-site-verification tag is missing");
 }
 
+/* The favicon Google shows beside a search result has a specific requirement
+ * that nothing in a browser enforces: it must be square and a multiple of 48px.
+ * A perfectly good 32×32 icon is simply ignored, and the site shows the default
+ * globe — which reads as "this brand has no logo" rather than as a spec
+ * mismatch. Asserted here because the failure is silent and slow to notice. */
+for (const page of pages) {
+  const html = readFileSync(join(webRoot, page), "utf8");
+  const where = `apps/web/${page}`;
+
+  const declared = [...html.matchAll(/<link rel="icon"[^>]*>/g)].map((m) => m[0]);
+  if (declared.length === 0) {
+    problems.push(`${where}: no <link rel="icon"> — Google will show a default globe`);
+    continue;
+  }
+
+  const sizes = declared
+    .map((tag) => /sizes="(\d+)x(\d+)"/.exec(tag))
+    .filter(Boolean)
+    .map((m) => Number(m[1]));
+
+  if (!sizes.some((size) => size % 48 === 0)) {
+    problems.push(
+      `${where}: no favicon at a multiple of 48px (declared: ${sizes.join(", ") || "none"}) — ` +
+        `Google ignores other sizes for search results`,
+    );
+  }
+
+  for (const tag of declared) {
+    const square = /sizes="(\d+)x(\d+)"/.exec(tag);
+    if (square && square[1] !== square[2]) {
+      problems.push(`${where}: favicon is not square -> ${tag}`);
+    }
+  }
+}
+
 /* The sitemap and the canonicals must agree with what the server serves.
  *
  * Search Console rejects a sitemap whose URLs are on a different host than the
