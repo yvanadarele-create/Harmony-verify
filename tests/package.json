@@ -16,7 +16,8 @@
     "@harmony/payments": "workspace:*",
     "@harmony/verification-engine": "workspace:*",
     "@harmony/expert-matching": "workspace:*",
-    "@harmony/pricing-engine": "workspace:*"
+    "@harmony/pricing-engine": "workspace:*",
+    "@harmony/deliverables": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

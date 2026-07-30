@@ -116,6 +116,19 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
+  packages/deliverables:
+    dependencies:
+      '@harmony/shared':
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
   packages/design-system:
     devDependencies:
       '@types/node':
@@ -235,6 +248,9 @@ importers:
       '@harmony/database':
         specifier: workspace:*
         version: link:../packages/database
+      '@harmony/deliverables':
+        specifier: workspace:*
+        version: link:../packages/deliverables
       '@harmony/expert-matching':
         specifier: workspace:*
         version: link:../packages/expert-matching
