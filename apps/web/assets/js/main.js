@@ -214,7 +214,7 @@
           "mailto:" +
           (form.dataset.mailto || "hello@harmonyverify.com") +
           "?subject=" +
-          encodeURIComponent("Harmony Verify — access request") +
+          encodeURIComponent(form.dataset.subject || "Harmony Verify — access request") +
           "&body=" +
           encodeURIComponent(lines.join("\n"));
         window.location.href = mailto;

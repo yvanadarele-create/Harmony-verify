@@ -12,10 +12,44 @@
 (function () {
   "use strict";
 
-  var root = document.querySelector("[data-sim]");
-  if (!root || !window.HarmonyPrices) return;
-
+  if (!window.HarmonyPrices) return;
   var PRICES = window.HarmonyPrices;
+
+  /* --- Plan cards -------------------------------------------------------- */
+
+  /**
+   * The "From $10" and "From $500" headline figures are read out of the same
+   * generated table the simulator uses, rather than typed into the HTML.
+   *
+   * A tier card claiming a floor the engine does not actually charge is the most
+   * embarrassing kind of pricing bug — it is the first number a customer reads
+   * and the last one anybody thinks to check. Deriving it means the card cannot
+   * disagree with the calculator sitting directly underneath it.
+   */
+  var tiers = document.querySelector("[data-tiers]");
+  if (tiers) {
+    var cheapest = Object.keys(PRICES.perReview).reduce(function (min, key) {
+      var price = PRICES.perReview[key].price;
+      return price < min ? price : min;
+    }, Infinity);
+
+    var whole = function (cents) {
+      return "$" + Math.round(cents / 100).toLocaleString("en-US");
+    };
+
+    // Named for the element, not the plan: `monitoring` is a function further
+    // down this same scope, and a `var` of that name silently replaces it.
+    var reviewEl = tiers.querySelector('[data-tier-price="review"]');
+    if (reviewEl && Number.isFinite(cheapest)) reviewEl.textContent = "From " + whole(cheapest);
+
+    var monitoringEl = tiers.querySelector('[data-tier-price="monitoring"]');
+    if (monitoringEl) monitoringEl.textContent = "From " + whole(PRICES.monitoring.baseCents);
+  }
+
+  /* --- Simulator --------------------------------------------------------- */
+
+  var root = document.querySelector("[data-sim]");
+  if (!root) return;
 
   var money = function (cents) {
     return (

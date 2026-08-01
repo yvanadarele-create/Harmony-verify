@@ -666,6 +666,54 @@
     </div>
   </section>
 
+  <!-- Newsletter -->
+  <section class="section section--mid section--line" id="newsletter">
+    <div class="wrap">
+      <div class="news" data-reveal="0">
+        <div class="news-head">
+          <span class="news-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m2 7 10 6 10-6"/>
+            </svg>
+          </span>
+          <div>
+            <h2>Newsletter</h2>
+            <p>Healthcare AI safety, what we are learning from real reviews, and product updates.</p>
+          </div>
+        </div>
+
+        <form class="form" data-form data-mailto="hello@harmonyverify.com"
+              data-subject="Newsletter subscription" novalidate>
+          <div class="news-fields">
+            <div class="field-group">
+              <label class="sr-only" for="news-email">Email address</label>
+              <input id="news-email" name="email" type="email" autocomplete="email" required
+                     placeholder="Email address *">
+              <span class="field-error" data-error-for="email" role="alert"></span>
+            </div>
+            <div class="field-group">
+              <label class="sr-only" for="news-company">Company</label>
+              <input id="news-company" name="company" type="text" autocomplete="organization"
+                     placeholder="Company (optional)">
+            </div>
+          </div>
+
+          <div class="form-status" data-form-status role="status" aria-live="polite" hidden></div>
+
+          <button class="btn btn--gold" type="submit">Subscribe</button>
+
+          <p class="news-note">
+            Roughly monthly. No clinical content, no third-party tracking pixels, and unsubscribe in
+            one click. Your address is used for this and nothing else — see the
+            <a href="privacy.html">privacy notice</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="footer">

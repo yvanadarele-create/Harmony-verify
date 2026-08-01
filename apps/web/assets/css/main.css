@@ -3045,6 +3045,236 @@ body[data-consent-open="true"] {
   color: var(--muted-foreground);
 }
 
+/* --- Pricing tiers -------------------------------------------------------- */
+
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(18px, 2.4vw, 26px);
+  align-items: start;
+}
+
+.tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(26px, 3vw, 34px);
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* The recommended tier is lifted by a gold edge and a lit surface rather than by
+   scaling it up — a card that overlaps its neighbours reflows awkwardly the
+   moment the grid wraps, which is most of the time on a laptop. */
+.tier--featured {
+  background: var(--navy);
+  border-color: var(--border-gold-strong);
+  box-shadow: 0 22px 60px rgba(3, 8, 20, 0.5);
+}
+
+.tier-badge {
+  position: absolute;
+  top: -11px;
+  left: clamp(26px, 3vw, 34px);
+  padding: 4px 12px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy-deep);
+  background: var(--gold-grad);
+  border-radius: 999px;
+}
+
+.tier h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+  letter-spacing: 0.04em;
+  color: var(--foreground);
+}
+
+.tier > p {
+  margin: 0 0 24px;
+  font-size: 0.92rem;
+  line-height: 1.68;
+  color: var(--muted-foreground);
+}
+
+/* The unit label always sits on its own line. Inline-with-wrap put "talk to us"
+   beside "Custom" while the longer prices pushed theirs onto a second line, so
+   the three cards disagreed about where the eye should land. */
+.tier-price {
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tier-price b,
+.tier-price span {
+  display: block;
+}
+
+.tier-price span {
+  margin-top: 6px;
+}
+
+.tier-price b {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 2.7rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tier-price span {
+  font-size: 0.86rem;
+  color: var(--muted-foreground);
+}
+
+.tier-list {
+  margin: 0 0 26px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 11px;
+}
+
+.tier-list li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 0.89rem;
+  line-height: 1.6;
+  color: var(--foreground);
+}
+
+.tier-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 13px;
+  height: 8px;
+  border-left: 1.5px solid var(--gold);
+  border-bottom: 1.5px solid var(--gold);
+  transform: rotate(-45deg);
+}
+
+/* Buttons align across cards of unequal height, so the row of calls to action
+   reads as one decision rather than three staggered ones. */
+.tier .btn {
+  margin-top: auto;
+  width: 100%;
+  justify-content: center;
+}
+
+/* A centred footnote under a card grid. A class rather than an inline style so
+   the pricing page carries no `margin` in its markup — the leak test that scans
+   for internal pricing terms matches on substrings, and a CSS property name in a
+   style attribute is exactly the kind of false positive that gets a real check
+   loosened until it stops catching anything. */
+.grid-note {
+  margin: 28px auto 0;
+  text-align: center;
+}
+
+/* --- Newsletter ----------------------------------------------------------- */
+
+.news {
+  max-width: 720px;
+  margin-inline: auto;
+  padding: clamp(26px, 4vw, 40px);
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.news-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+.news-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  color: var(--gold);
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+}
+
+.news-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.news-head h2 {
+  margin: 0 0 5px;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.3vw, 1.35rem);
+  letter-spacing: 0.05em;
+  color: var(--foreground);
+}
+
+.news-head p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.news-fields {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.news-fields input {
+  width: 100%;
+  padding: 13px 15px;
+  font: inherit;
+  font-size: 0.93rem;
+  color: var(--foreground);
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.news-fields input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.news-fields input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.news .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.news-note {
+  margin: 16px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.news-note a {
+  color: var(--gold);
+}
+
 /* --- Pricing simulator --------------------------------------------------- */
 
 .sim {
