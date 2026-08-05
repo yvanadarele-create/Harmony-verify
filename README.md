@@ -58,6 +58,27 @@ infrastructure/   Deployment configuration
 Status markers are accurate as of the latest commit. Every package listed `✅ complete` has
 real source and compiles under strict TypeScript — there are no placeholder packages.
 
+### A second product also lives here
+
+**Les Délices de Grace Lumière** — the ordering system for a food and pastry business
+(custom cakes, wedding cakes, celebration cakes, pizzas, quiches) — shares this repository
+and its tooling, and nothing else: separate application, separate database, no shared code
+with Harmony Verify.
+
+```
+apps/delices/               Storefront and admin console — static HTML/CSS/JS
+packages/delices-core/      Types, order lifecycle, validation, money
+packages/delices-db/        SQLite schema and repositories
+packages/delices-server/    HTTP API and static host — no framework, no dependencies
+```
+
+```bash
+pnpm run delices            # http://localhost:4100  ·  admin at /admin/
+pnpm run delices:check      # link, metadata and accessibility check
+```
+
+Full architecture and operating guide: [`docs/delices.md`](docs/delices.md).
+
 ## Getting started
 
 ```bash

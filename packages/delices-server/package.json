@@ -1,0 +1,29 @@
+{
+  "name": "@delices/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "HTTP API and static host for Les Délices de Grace Lumière",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "dev": "node dist/main.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2"
+  },
+  "dependencies": {
+    "@delices/core": "workspace:*",
+    "@delices/db": "workspace:*"
+  }
+}

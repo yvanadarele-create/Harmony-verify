@@ -17,7 +17,10 @@
     "@harmony/verification-engine": "workspace:*",
     "@harmony/expert-matching": "workspace:*",
     "@harmony/pricing-engine": "workspace:*",
-    "@harmony/deliverables": "workspace:*"
+    "@harmony/deliverables": "workspace:*",
+    "@delices/core": "workspace:*",
+    "@delices/db": "workspace:*",
+    "@delices/server": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

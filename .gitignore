@@ -23,3 +23,9 @@ Thumbs.db
 
 # test output
 coverage/
+
+# runtime state (SQLite databases and uploaded images)
+data/
+*.db
+*.db-wal
+*.db-shm

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Les Délices de Grace Lumière">
+  <rect width="64" height="64" rx="14" fill="#FFF7F9"/>
+  <g fill="none" stroke="#E88AA5" stroke-width="3" stroke-linejoin="round">
+    <path d="M32 50C20 44 13 35 13 27c0-5 3.5-9 8-9 4.4 0 8 3.5 8.8 8 .9-5.3 5.3-9 10.2-9s9.3 3.7 10.2 9c.8-4.5 4.4-8 8.8-8 4.5 0 8 4 8 9 0 8-7 17-19 23z" transform="translate(-3.5 0) scale(1)"/>
+  </g>
+  <path d="M32 6l2.2 6.2L40 14l-5.8 2L32 22l-2.2-6L24 14l5.8-1.8z" fill="#C9A227"/>
+</svg>

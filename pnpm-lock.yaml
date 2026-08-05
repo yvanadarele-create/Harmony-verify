@@ -21,6 +21,8 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@22.20.1)
 
+  apps/delices: {}
+
   apps/web: {}
 
   packages/ai-engine:
@@ -108,6 +110,44 @@ importers:
       '@harmony/shared':
         specifier: workspace:*
         version: link:../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/delices-core:
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/delices-db:
+    dependencies:
+      '@delices/core':
+        specifier: workspace:*
+        version: link:../delices-core
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/delices-server:
+    dependencies:
+      '@delices/core':
+        specifier: workspace:*
+        version: link:../delices-core
+      '@delices/db':
+        specifier: workspace:*
+        version: link:../delices-db
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -236,6 +276,15 @@ importers:
 
   tests:
     dependencies:
+      '@delices/core':
+        specifier: workspace:*
+        version: link:../packages/delices-core
+      '@delices/db':
+        specifier: workspace:*
+        version: link:../packages/delices-db
+      '@delices/server':
+        specifier: workspace:*
+        version: link:../packages/delices-server
       '@harmony/applications':
         specifier: workspace:*
         version: link:../packages/applications
