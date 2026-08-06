@@ -2,7 +2,7 @@
   "name": "harmony-verify",
   "version": "0.1.0",
   "private": true,
-  "description": "Harmony Verify — clinical verification infrastructure for healthcare AI",
+  "description": "Harmony Verify \u2014 clinical verification infrastructure for healthcare AI",
   "packageManager": "pnpm@10.33.0",
   "engines": {
     "node": ">=20"
@@ -16,10 +16,7 @@
     "web": "pnpm --filter @harmony/web dev",
     "tokens": "pnpm --filter @harmony/design-system build",
     "build:web": "node scripts/site-urls.mjs && pnpm --filter @harmony/design-system build && node scripts/check-web.mjs",
-    "site:urls": "node scripts/site-urls.mjs",
-    "delices": "pnpm --filter @delices/core --filter @delices/db --filter @delices/server build && node packages/delices-server/dist/main.js",
-    "delices:demo": "DELICES_SEED_DEMO=1 pnpm run delices",
-    "delices:check": "node scripts/check-delices.mjs"
+    "site:urls": "node scripts/site-urls.mjs"
   },
   "devDependencies": {
     "turbo": "^2.3.3",
