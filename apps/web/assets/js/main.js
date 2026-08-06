@@ -212,7 +212,7 @@
         });
         var mailto =
           "mailto:" +
-          (form.dataset.mailto || "hello@harmonyverify.com") +
+          (form.dataset.mailto || "hello@harmonyverify.org") +
           "?subject=" +
           encodeURIComponent(form.dataset.subject || "Harmony Verify — access request") +
           "&body=" +
@@ -242,7 +242,7 @@
           say(
             "err",
             "Something went wrong. Please email " +
-              (form.dataset.mailto || "hello@harmonyverify.com") +
+              (form.dataset.mailto || "hello@harmonyverify.org") +
               " directly."
           );
         })

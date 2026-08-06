@@ -44,8 +44,8 @@ These need real values. Each is a placeholder today.
 
 | Item | Where | Notes |
 | --- | --- | --- |
-| Contact email | `contact.html`, `assets/js/main.js` | Currently `hello@harmonyverify.com` |
-| Domain | All pages — `<link rel="canonical">`, OG tags, `sitemap.xml`, `robots.txt` | Currently `harmonyverify.com` |
+| Contact email | `contact.html`, `assets/js/main.js` | Currently `hello@harmonyverify.org` |
+| Domain | All pages — `<link rel="canonical">`, OG tags, `sitemap.xml`, `robots.txt` | Currently `harmonyverify.org` |
 | Form backend | `contact.html` | See below |
 | Legal pages | Footer | Privacy policy and terms are not yet written |
 

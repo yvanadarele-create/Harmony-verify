@@ -70,18 +70,18 @@
         {
           "@type": "ContactPoint",
           "contactType": "sales",
-          "email": "hello@harmonyverify.com",
+          "email": "hello@harmonyverify.org",
           "url": "https://harmonyverify.org/contact",
           "availableLanguage": ["English"]
         },
         {
           "@type": "ContactPoint",
           "contactType": "privacy",
-          "email": "privacy@harmonyverify.com",
+          "email": "privacy@harmonyverify.org",
           "availableLanguage": ["English"]
         }
       ],
-      "email": "hello@harmonyverify.com"
+      "email": "hello@harmonyverify.org"
     },
     {
       "@type": "WebSite",
@@ -177,6 +177,13 @@
   <section class="hero field">
     <div class="wrap hero-inner">
       <div data-reveal="0">
+        <a class="hero-globe" href="experts.html">
+          <span class="hero-globe-stage" data-globe="mini" aria-hidden="true"></span>
+          <span class="hero-globe-text">
+            <b>Reviewers on six continents</b>
+            <span>Follow-the-sun clinical review</span>
+          </span>
+        </a>
         <p class="eyebrow">Clinical verification infrastructure</p>
         <h1>Ship clinical AI you can <em>defend</em>.</h1>
         <p class="lede">
@@ -506,7 +513,7 @@
           <span class="pdot pdot--r" aria-hidden="true"></span>
           <span class="pdot pdot--y" aria-hidden="true"></span>
           <span class="pdot pdot--g" aria-hidden="true"></span>
-          <span class="purl">app.harmonyverify.com / dashboard</span>
+          <span class="purl">app.harmonyverify.org / dashboard</span>
         </div>
         <div class="prev-body">
           <nav class="prev-nav" aria-label="Product preview navigation">
@@ -666,6 +673,21 @@
     </div>
   </section>
 
+  <!--
+    Testimonials. Rendered from assets/js/testimonials.js, which ships empty:
+    the section removes itself until a real, attributable quote is added. See the
+    note at the top of that file before publishing one.
+  -->
+  <section class="section field" id="testimonials" data-testimonials hidden>
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">In their words</p>
+        <h2>What teams say after the first batch.</h2>
+      </div>
+      <div class="quotes" data-quotes></div>
+    </div>
+  </section>
+
   <!-- Newsletter -->
   <section class="section section--mid section--line" id="newsletter">
     <div class="wrap">
@@ -684,7 +706,7 @@
           </div>
         </div>
 
-        <form class="form" data-form data-mailto="hello@harmonyverify.com"
+        <form class="form" data-form data-mailto="hello@harmonyverify.org"
               data-subject="Newsletter subscription" novalidate>
           <div class="news-fields">
             <div class="field-group">
@@ -745,6 +767,7 @@
           <li><a href="founder.html">Founder</a></li>
           <li><a href="experts.html">Expert network</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="support.html">Support</a></li>
         </ul>
       </div>
       <div>
@@ -768,7 +791,10 @@
 
 <script src="assets/js/consent.js"></script>
 <script src="assets/js/main.js" defer></script>
+<script src="assets/js/globe.js" defer></script>
+<script src="assets/js/testimonials.js" defer></script>
 <script src="assets/js/knowledge.js" defer></script>
 <script src="assets/js/assistant.js" defer></script>
+<script src="assets/js/chat.js" defer></script>
 </body>
 </html>

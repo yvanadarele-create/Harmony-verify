@@ -265,6 +265,7 @@
         say("bot", local.text);
         history.push({ role: "assistant", content: local.text });
         if (local.suggestions && local.suggestions.length) offer(local.suggestions);
+        if (local.id === "fallback") offerHuman(trimmed);
       }, 160);
       return;
     }
@@ -291,6 +292,41 @@
         if (pending) pending.innerHTML = local.text;
         if (local.suggestions && local.suggestions.length) offer(local.suggestions);
       });
+  }
+
+  /**
+   * Hand over to a person.
+   *
+   * "I don't know" is a dead end unless it comes with a route out. The button
+   * carries the question across so the visitor does not have to type it twice —
+   * repeating yourself to the second system is the moment most people give up.
+   */
+  function offerHuman(question) {
+    if (!panel || !window.HarmonyChat) return;
+
+    var row = document.createElement("div");
+    row.className = "assist-suggest";
+
+    var button = document.createElement("button");
+    button.type = "button";
+    button.textContent = window.HarmonyChat.online()
+      ? "Talk to a person now"
+      : "Leave this with a person";
+    button.addEventListener("click", function () {
+      close();
+      window.HarmonyChat.open(question);
+    });
+
+    var support = document.createElement("button");
+    support.type = "button";
+    support.textContent = "See all contact routes";
+    support.addEventListener("click", function () {
+      window.location.href = "support.html";
+    });
+
+    row.appendChild(button);
+    row.appendChild(support);
+    panel.insertBefore(row, panel.querySelector(".assist-form"));
   }
 
   function build() {

@@ -186,7 +186,18 @@ if (contactDomain) {
   const MAILBOX = /\b([a-z][\w.+-]*)@harmonyverify\.[a-z.]+/g;
   let rewritten = 0;
 
-  for (const page of pages) {
+  /* Addresses live in the scripts too — the contact form's fallback mailto, the
+     human-chat inbox and the assistant's answer to "how do I reach someone".
+     Rewriting only the HTML would leave those three pointing at the old domain,
+     which is exactly the silent breakage this block exists to avoid. */
+  const carriers = [
+    ...pages,
+    ...readdirSync(join(webRoot, "assets", "js"))
+      .filter((f) => f.endsWith(".js"))
+      .map((f) => join("assets", "js", f)),
+  ];
+
+  for (const page of carriers) {
     const file = join(webRoot, page);
     const before = readFileSync(file, "utf8");
     const after = before.replace(MAILBOX, (_m, mailbox) => `${mailbox}@${clean}`);

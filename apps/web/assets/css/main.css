@@ -180,8 +180,26 @@ textarea {
   color: inherit;
 }
 
+/* A text input carries an intrinsic default width (~467px). Inside a grid or
+   flex track that width becomes the min-content floor and forces horizontal
+   overflow on narrow viewports. Buttons are left alone — they must keep their
+   own label's min-content width or the text spills out of the button. */
+input,
+select,
+textarea {
+  min-width: 0;
+}
+
 a {
   color: inherit;
+}
+
+/* The UA rule for [hidden] is `display: none` at specificity (0,1,0), so any
+   author class that sets display — `.btn { display: inline-flex }`, for one —
+   silently beats it and the element stays on screen. Every `hidden` toggle in
+   this site's JS depends on the attribute actually hiding things. */
+[hidden] {
+  display: none !important;
 }
 
 ::selection {
@@ -1673,6 +1691,7 @@ td:first-child {
 
 .form {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 20px;
 }
 
@@ -1684,7 +1703,9 @@ td:first-child {
 
 .field-group {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
+  min-width: 0;
 }
 
 .field-group label {
@@ -1789,9 +1810,6 @@ td:first-child {
   color: var(--text);
 }
 
-.form-status[hidden] {
-  display: none;
-}
 
 /* --- Footer ------------------------------------------------------------- */
 
@@ -1958,6 +1976,7 @@ td:first-child {
 @media (max-width: 1000px) {
   .hero-inner,
   .cols--split,
+  .cols--form,
   .feature {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -2343,11 +2362,22 @@ td:first-child {
 /* Sectioned rather than a multi-step wizard. A wizard hides how much is left,
    loses answers on a reload, and cannot be reviewed as a whole before sending —
    for a form someone completes once, carefully, that is the wrong trade. */
+/* `min-inline-size: 0` is the important line. A <fieldset> ships with an
+   intrinsic min-inline-size of min-content that `width` cannot override, so one
+   long <option> — "Obstetrics & Gynecology" — silently forces the whole form
+   wider than the phone it is being read on. */
 .form-section {
   margin: 0 0 34px;
   padding: 0 0 30px;
+  min-inline-size: 0;
   border: 0;
   border-bottom: 1px solid var(--border);
+}
+
+.form-section select,
+.form-section input,
+.form-section textarea {
+  max-width: 100%;
 }
 
 .form-section:last-of-type {
@@ -2400,6 +2430,285 @@ td:first-child {
 
 .field-group.check input[aria-invalid="true"] + span {
   color: var(--destructive-text);
+}
+
+/* --- Multi-step form ------------------------------------------------------ */
+
+.wiz-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.wiz-bar span {
+  flex: 1 1 0;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: background 0.3s var(--ease);
+}
+
+.wiz-bar span[data-state="active"],
+.wiz-bar span[data-state="done"] {
+  background: var(--gold-grad);
+}
+
+.wiz-count {
+  margin: 0 0 28px;
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.wiz-count b {
+  color: var(--gold);
+}
+
+
+.wiz-pane legend:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.wiz-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 18px;
+}
+
+/* Continue sits right even on step one, where Back is hidden. */
+.wiz-nav [data-wiz-next],
+.wiz-nav [data-wiz-submit] {
+  margin-left: auto;
+}
+
+/* An upload slot that explains why it is not an upload slot yet. Documents are
+   requested inside the authenticated portal, so this describes the step rather
+   than collecting a licence scan through an anonymous form. */
+.drop {
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  background: var(--navy);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+.drop b {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--foreground);
+}
+
+.drop > span {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+}
+
+.drop p {
+  margin: 10px 0 0;
+  font-size: 0.83rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+/* --- Support -------------------------------------------------------------- */
+
+.routes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: clamp(18px, 2.6vw, 26px);
+}
+
+.route {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3vw, 32px);
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.route-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 18px;
+  color: var(--gold);
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+}
+
+.route-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.route h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--foreground);
+}
+
+.route p {
+  margin: 0 0 18px;
+  font-size: 0.9rem;
+  line-height: 1.68;
+  color: var(--muted-foreground);
+}
+
+.route-address {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 0.92rem;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.route-address a {
+  color: var(--gold);
+}
+
+.route-meta {
+  margin: 8px 0 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* --- Live chat ------------------------------------------------------------ */
+
+/* Anchored left so it never sits under the assistant launcher. Two widgets
+   fighting for the same corner is how a visitor ends up talking to the wrong
+   one — and the whole point here is that these are different things. */
+.chat-launch {
+  position: fixed;
+  left: clamp(16px, 3vw, 30px);
+  bottom: clamp(16px, 3vw, 30px);
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px 12px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--foreground);
+  background: var(--navy);
+  border: 1px solid var(--border-gold-strong);
+  border-radius: 999px;
+  box-shadow: 0 14px 40px rgba(3, 8, 20, 0.55);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.chat-launch:hover {
+  transform: translateY(-2px);
+}
+
+.chat-launch svg {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  color: var(--gold);
+}
+
+:root[data-consent="pending"] .chat-launch,
+:root[data-consent="pending"] .chat-panel {
+  bottom: clamp(150px, 22vh, 210px);
+}
+
+.chat-panel {
+  position: fixed;
+  left: clamp(16px, 3vw, 30px);
+  bottom: clamp(16px, 3vw, 30px);
+  z-index: 95;
+  width: min(380px, calc(100vw - 32px));
+  max-height: min(620px, calc(100vh - 40px));
+  display: flex;
+  flex-direction: column;
+  background: var(--navy);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  box-shadow: 0 28px 80px rgba(3, 8, 20, 0.7);
+  overflow: hidden;
+}
+
+.chat-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--navy-deep);
+}
+
+.chat-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: var(--foreground);
+}
+
+.chat-head p {
+  margin: 2px 0 0;
+  font-size: 0.74rem;
+  color: var(--muted-foreground);
+}
+
+.chat-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chat-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.chat-status[data-state="offline"] i {
+  background: var(--muted-foreground);
+}
+
+.chat-body {
+  flex: 1 1 auto;
+  min-height: 140px;
+  overflow-y: auto;
+  padding: 18px;
+}
+
+.chat-body p {
+  margin: 0 0 14px;
+  font-size: 0.89rem;
+  line-height: 1.65;
+  color: var(--foreground);
+}
+
+.chat-body p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-body .muted {
+  color: var(--muted-foreground);
+  font-size: 0.83rem;
 }
 
 /* --- Legal pages --------------------------------------------------------- */
@@ -3043,6 +3352,112 @@ body[data-consent-open="true"] {
   font-size: 0.72rem;
   line-height: 1.55;
   color: var(--muted-foreground);
+}
+
+/* --- Hero globe ----------------------------------------------------------- */
+
+/* A small live globe under the hero copy. It is a link rather than decoration:
+   the claim it makes — reviewers on six continents — has a page behind it, and
+   an unclickable badge asserting a fact is worse than one that lets you check. */
+/* Above the headline, not below the fold. Placed after the call-to-action row it
+   landed around 1000px down, which on most laptops meant the banner globe was
+   never actually in the banner. */
+.hero-globe {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+  padding: 10px 20px 10px 10px;
+  text-decoration: none;
+  background: rgba(22, 49, 102, 0.34);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+}
+
+.hero-globe:hover {
+  border-color: var(--border-gold-strong);
+  background: rgba(22, 49, 102, 0.5);
+}
+
+.hero-globe-stage {
+  position: relative;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.hero-globe-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-globe-text {
+  display: grid;
+  gap: 2px;
+  line-height: 1.35;
+}
+
+.hero-globe-text b {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.hero-globe-text span {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 520px) {
+  .hero-globe {
+    width: 100%;
+  }
+}
+
+/* --- Testimonials --------------------------------------------------------- */
+
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(18px, 2.6vw, 28px);
+}
+
+.quote-card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3vw, 32px);
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--gold);
+  border-radius: var(--radius);
+}
+
+.quote-card blockquote {
+  margin: 0 0 22px;
+  font-size: 0.98rem;
+  line-height: 1.72;
+  color: var(--foreground);
+}
+
+.quote-card figcaption {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+
+.quote-card figcaption b {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--foreground);
 }
 
 /* --- Pricing tiers -------------------------------------------------------- */

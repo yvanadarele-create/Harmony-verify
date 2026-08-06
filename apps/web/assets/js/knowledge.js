@@ -257,7 +257,7 @@ window.HarmonyKnowledge = {
     {
       id: "contact",
       terms: ["contact", "talk to someone", "talk to a person", "speak to a person", "speak to someone", "real person", "sales", "book a call", "demo", "meeting", "get in touch"],
-      a: "<a href=\"contact.html\">The contact page</a> reaches the team directly, or email hello@harmonyverify.com. For a design-partner conversation, send a real sample of your output — it's a far more useful first meeting than a deck."
+      a: "<a href=\"contact.html\">The contact page</a> reaches the team directly, or email hello@harmonyverify.org For a design-partner conversation, send a real sample of your output — it's a far more useful first meeting than a deck."
     },
     {
       id: "cookies",
