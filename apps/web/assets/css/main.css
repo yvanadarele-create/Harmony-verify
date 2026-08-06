@@ -2519,10 +2519,19 @@ td:first-child {
 
 /* --- Support -------------------------------------------------------------- */
 
+/* Four routes. auto-fit gives three across on a wide screen and leaves the
+   fourth stranded on a row of its own, so the columns are pinned to two and
+   the grid falls to one below the tablet breakpoint. */
 .routes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(18px, 2.6vw, 26px);
+}
+
+@media (max-width: 720px) {
+  .routes {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .route {
@@ -2654,6 +2663,24 @@ td:first-child {
   background: var(--navy-deep);
 }
 
+/* The bubble carries a viewBox and no width/height, so without this it
+   resolves to 100% of the flex line and swallows the header. */
+.chat-head > svg {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--gold);
+}
+
+.chat-head > div {
+  min-width: 0;
+}
+
+.chat-head .assist-close {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
 .chat-head h2 {
   margin: 0;
   font-family: var(--font-display);
@@ -2678,6 +2705,7 @@ td:first-child {
 }
 
 .chat-status i {
+  flex: 0 0 auto;
   width: 7px;
   height: 7px;
   border-radius: 50%;
