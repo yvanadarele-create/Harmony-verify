@@ -256,8 +256,13 @@ window.HarmonyKnowledge = {
     /* --- Meta ------------------------------------------------------------ */
     {
       id: "contact",
-      terms: ["contact", "talk to someone", "talk to a person", "speak to a person", "speak to someone", "real person", "sales", "book a call", "demo", "meeting", "get in touch"],
-      a: "<a href=\"contact.html\">The contact page</a> reaches the team directly, or email hello@harmonyverify.org For a design-partner conversation, send a real sample of your output — it's a far more useful first meeting than a deck."
+      terms: ["contact", "talk to someone", "talk to a person", "speak to a person", "speak to someone", "real person", "sales", "get in touch"],
+      a: "<a href=\"contact.html\">The contact page</a> reaches the team directly, or email hello@harmonyverify.org. For a design-partner conversation, send a real sample of your output — it's a far more useful first meeting than a deck."
+    },
+    {
+      id: "demo",
+      terms: ["book a demo", "demo", "book a call", "schedule", "scheduling", "meeting", "calendar", "availability", "walkthrough", "see it in action", "call"],
+      a: "Use the <b>Book a demo</b> button in the header. It opens our live calendar, so the times you see are the times that are actually free — pick one and it is booked. Bring a real output from your system if you can; a walkthrough over your own material is worth more than a generic tour."
     },
     {
       id: "cookies",

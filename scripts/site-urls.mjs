@@ -183,7 +183,9 @@ if (readFileSync(sitemapPath, "utf8") !== sitemap) {
 const contactDomain = process.env.CONTACT_DOMAIN;
 if (contactDomain) {
   const clean = contactDomain.replace(/^https?:\/\//, "").replace(/\/.*$/, "");
-  const MAILBOX = /\b([a-z][\w.+-]*)@harmonyverify\.[a-z.]+/g;
+  // The TLD is matched label by label rather than as [a-z.]+, which would
+  // swallow the full stop that ends a sentence and silently delete it.
+  const MAILBOX = /\b([a-z][\w.+-]*)@harmonyverify(?:\.[a-z]+)+/g;
   let rewritten = 0;
 
   /* Addresses live in the scripts too — the contact form's fallback mailto, the

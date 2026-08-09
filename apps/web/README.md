@@ -46,8 +46,27 @@ These need real values. Each is a placeholder today.
 | --- | --- | --- |
 | Contact email | `contact.html`, `assets/js/main.js` | Currently `hello@harmonyverify.org` |
 | Domain | All pages — `<link rel="canonical">`, OG tags, `sitemap.xml`, `robots.txt` | Currently `harmonyverify.org` |
+| Calendly link | `assets/js/calendly.js` — `SCHEDULING_URL` | Empty. See below |
 | Form backend | `contact.html` | See below |
 | Legal pages | Footer | Privacy policy and terms are not yet written |
+
+### Wiring up Book a demo
+
+Every "Book a demo" control on the site carries `data-book-demo`, and one file decides what they do:
+
+```js
+// assets/js/calendly.js
+var SCHEDULING_URL = "https://calendly.com/your-handle/demo";
+```
+
+Set it and each of those controls opens the Calendly scheduler in a modal, live against your real
+availability. Leave it empty and they behave as ordinary links to the contact page — the site never
+ships a button that opens an empty scheduler.
+
+Nothing about scheduling lives in this repository: no slots, no calendar, no confirmation email.
+Calendly owns the booking and the confirmation that follows it. Their script is fetched on the first
+click and never again — it is deliberately not a `<script>` tag in the pages, so a visitor who never
+asks to book never loads a third party or gets its cookies.
 
 ### Wiring up the contact form
 
