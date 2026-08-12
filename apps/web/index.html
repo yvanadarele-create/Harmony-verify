@@ -257,6 +257,46 @@
     </div>
   </section>
 
+  <!--
+    Brand film. Plays once on the way past and holds its final frame — the clip
+    builds from a bare processor to an assembled ring, so looping it would snap
+    back to an empty field every twelve seconds. film.js handles that, and stands
+    down entirely when the visitor has asked for reduced motion.
+  -->
+  <section class="film" id="film">
+    <div class="wrap">
+      <div class="film-head" data-reveal="0">
+        <p class="eyebrow">The idea, in one shot</p>
+        <h2>A model at the centre. A verification layer around it.</h2>
+      </div>
+
+      <figure class="film-figure" data-reveal="1">
+        <div class="film-stage" data-film>
+          <video class="film-video"
+                 poster="assets/img/verified-core-poster.jpg"
+                 preload="none"
+                 muted
+                 playsinline
+                 width="864" height="496"
+                 aria-describedby="film-caption"
+                 data-film-video>
+            <source src="assets/video/verified-core.mp4" type="video/mp4">
+          </video>
+          <button class="film-btn" type="button" data-film-btn>
+            <span class="film-btn-icon" aria-hidden="true"></span>
+            <span data-film-label>Play</span>
+          </button>
+        </div>
+        <figcaption class="film-caption" id="film-caption">
+          A stylised animation, not a product recording: a processor labelled
+          <b>Verified</b> at the centre, closed in by concentric rings and eight instrument arms.
+          That is the shape of the work — the model stays the model, and the checking happens
+          around it, by people who are not the people who built it.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
   <!-- Brand lockup -->
   <section class="brand-band">
     <div class="wrap brand-band-inner">
@@ -796,6 +836,7 @@
 <script src="assets/js/main.js" defer></script>
 <script src="assets/js/calendly.js" defer></script>
 <script src="assets/js/globe.js" defer></script>
+<script src="assets/js/film.js" defer></script>
 <script src="assets/js/testimonials.js" defer></script>
 <script src="assets/js/knowledge.js" defer></script>
 <script src="assets/js/assistant.js" defer></script>

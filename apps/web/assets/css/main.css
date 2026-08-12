@@ -3088,6 +3088,149 @@ body[data-consent-open="true"] {
   overflow: hidden;
 }
 
+/* --- Brand film ---------------------------------------------------------- */
+
+.film {
+  padding-block: var(--section-y);
+  background: var(--navy-deep);
+  border-block: 1px solid var(--rule);
+}
+
+/* Centred, unlike most sections here, because the footage is radially
+   symmetric: a ring composed around its own centre reads as off-balance the
+   moment it is set against a left-aligned column. */
+.film .wrap {
+  text-align: center;
+}
+
+.film-head {
+  max-width: 780px;
+  margin: 0 auto clamp(28px, 4vw, 44px);
+}
+
+.film-head .eyebrow {
+  justify-content: center;
+}
+
+.film-head .eyebrow::before {
+  display: none;
+}
+
+.film-head h2 {
+  margin: 12px 0 0;
+}
+
+.film-figure {
+  margin: 0;
+}
+
+/* The source is 864x496. Held to that width so it is never upscaled into
+   softness, and the aspect ratio is declared so the row does not jump when the
+   poster arrives. */
+.film-stage {
+  position: relative;
+  max-width: 864px;
+  margin-inline: auto;
+  aspect-ratio: 864 / 496;
+  overflow: hidden;
+  background: #060d1c;
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  box-shadow: 0 30px 90px rgba(3, 8, 20, 0.55);
+}
+
+.film-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.film-btn {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px 9px 13px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  background: rgba(6, 13, 28, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-gold);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: opacity 0.3s var(--ease), border-color 0.2s var(--ease),
+    color 0.2s var(--ease);
+}
+
+.film-btn:hover {
+  color: var(--gold);
+  border-color: var(--border-gold-strong);
+}
+
+/* Out of the way while it runs, back the moment the pointer returns or the
+   keyboard reaches it — the control is never actually gone. */
+.film-stage[data-state="playing"] .film-btn {
+  opacity: 0;
+}
+
+.film-stage[data-state="playing"]:hover .film-btn,
+.film-stage .film-btn:focus-visible {
+  opacity: 1;
+}
+
+.film-btn-icon {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 8px;
+  border-color: transparent transparent transparent var(--gold);
+}
+
+.film-stage[data-state="playing"] .film-btn-icon {
+  width: 8px;
+  height: 10px;
+  border: 0;
+  background: linear-gradient(
+    to right,
+    var(--gold) 0 3px,
+    transparent 3px 5px,
+    var(--gold) 5px 8px
+  );
+}
+
+.film-caption {
+  max-width: 68ch;
+  margin: 20px auto 0;
+  font-size: 0.86rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+.film-caption b {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+@media (max-width: 720px) {
+  .film-btn {
+    left: 12px;
+    bottom: 12px;
+    padding: 8px 14px 8px 11px;
+  }
+
+  /* No hover on a touch screen, so the control stays put. */
+  .film-stage[data-state="playing"] .film-btn {
+    opacity: 1;
+  }
+}
+
 /* --- Book a demo --------------------------------------------------------- */
 
 /* The panel that holds Calendly's inline scheduler. Sits above the consent
