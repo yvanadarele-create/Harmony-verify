@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" role="img" aria-label="Brandora">
+  <title>Brandora</title>
+  <!--
+    The small-size B.
+
+    The outlined mark in logo-b.svg is drawn with a hairline rim light, which is
+    right at hero size and wrong at 16px: the stroke falls below a pixel and the
+    counters fill in, leaving a purple smudge. So the small variant is *solid* —
+    the letterform carries the colour instead of the edge.
+
+    This is the file to use in the header, the favicon and anywhere under about
+    64px. Above that, logo-b.svg reads as the polished object it is meant to be.
+  -->
+  <defs>
+    <linearGradient id="solid-b" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#B98BE8"/>
+      <stop offset="45%" stop-color="#7650A5"/>
+      <stop offset="100%" stop-color="#4B167A"/>
+    </linearGradient>
+  </defs>
+
+  <path fill="url(#solid-b)" fill-rule="evenodd"
+        d="M26 20 H112
+           C150 20 172 40 172 71
+           C172 93 159 109 136 118
+           C165 125 182 147 182 177
+           C182 214 154 240 110 240
+           H26
+           V226
+           H50
+           V34
+           H26
+           Z
+           M84 34 V112 H104
+           C126 112 138 98 138 73
+           C138 48 126 34 104 34
+           Z
+           M84 130 V226 H106
+           C134 226 148 209 148 178
+           C148 147 134 130 106 130
+           Z"/>
+</svg>

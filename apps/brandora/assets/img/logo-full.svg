@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 400" role="img" aria-label="Brandora">
+  <title>Brandora</title>
+  <!--
+    The primary lockup: the B above a letterspaced BRANDORA wordmark.
+    Both are outlines, for the reason given in logo-b.svg — a mark that depends
+    on an installed font is a mark that changes when someone else opens it.
+  -->
+  <defs>
+    <linearGradient id="lock-body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#232028"/>
+      <stop offset="38%" stop-color="#0B0A0F"/>
+      <stop offset="100%" stop-color="#050507"/>
+    </linearGradient>
+    <linearGradient id="lock-rim" x1="0" y1="0" x2="0.85" y2="1">
+      <stop offset="0%" stop-color="#B98BE8"/>
+      <stop offset="26%" stop-color="#7650A5"/>
+      <stop offset="58%" stop-color="#4B167A"/>
+      <stop offset="82%" stop-color="#35105C"/>
+      <stop offset="100%" stop-color="#9B6FD4"/>
+    </linearGradient>
+    <linearGradient id="lock-silver" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F5F3F7"/>
+      <stop offset="45%" stop-color="#B9B7C2"/>
+      <stop offset="55%" stop-color="#8E8B99"/>
+      <stop offset="100%" stop-color="#D8D5DE"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(210 20)">
+    <path fill="url(#lock-body)" stroke="url(#lock-rim)" stroke-width="3.5" fill-rule="evenodd"
+          d="M26 20 H112
+             C150 20 172 40 172 71
+             C172 93 159 109 136 118
+             C165 125 182 147 182 177
+             C182 214 154 240 110 240
+             H26
+             V226
+             H50
+             V34
+             H26
+             Z
+             M84 34 V112 H104
+             C126 112 138 98 138 73
+             C138 48 126 34 104 34
+             Z
+             M84 130 V226 H106
+             C134 226 148 209 148 178
+             C148 147 134 130 106 130
+             Z"/>
+  </g>
+
+  <text x="310" y="352" fill="url(#lock-silver)" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', 'Didot', serif"
+        font-size="58" letter-spacing="13">BRANDORA</text>
+</svg>

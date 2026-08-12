@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Brandora">
+  <title>Brandora</title>
+  <!--
+    The hero poster.
+
+    Shown before the film loads, instead of it on a metered or slow connection,
+    and to anyone who has asked for reduced motion. It is an SVG rather than a
+    still frame because there is no transcoder in this toolchain to extract one,
+    and because 2KB of vector beats a 200KB JPEG on exactly the connections this
+    poster exists to serve.
+  -->
+  <defs>
+    <radialGradient id="pool" cx="50%" cy="42%" r="58%">
+      <stop offset="0%" stop-color="#4B167A" stop-opacity="0.55"/>
+      <stop offset="45%" stop-color="#35105C" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#050507" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="poster-rim" x1="0" y1="0" x2="0.85" y2="1">
+      <stop offset="0%" stop-color="#B98BE8"/>
+      <stop offset="30%" stop-color="#7650A5"/>
+      <stop offset="70%" stop-color="#4B167A"/>
+      <stop offset="100%" stop-color="#9B6FD4"/>
+    </linearGradient>
+    <linearGradient id="poster-body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#232028"/>
+      <stop offset="40%" stop-color="#0B0A0F"/>
+      <stop offset="100%" stop-color="#050507"/>
+    </linearGradient>
+  </defs>
+
+  <!--
+    Atmosphere only — no logo.
+
+    The lockup is overlaid by the page, not baked in here, because the film
+    itself resolves to the Brandora logo. Two logos on screen at once is what
+    you get if the poster carries one too, and the collision only appears at the
+    moment the video starts, which is exactly when nobody is testing.
+  -->
+  <rect width="1920" height="1080" fill="#050507"/>
+  <rect width="1920" height="1080" fill="url(#pool)"/>
+</svg>

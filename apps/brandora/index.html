@@ -21,29 +21,10 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!--
-  The opening animation (§9). Marked aria-hidden and pointer-events:none: it is
-  a piece of theatre over the page, and it must never delay or block someone who
-  just wants to start. It plays once per session and never for anyone who has
-  asked for reduced motion.
--->
-<div class="intro" data-intro aria-hidden="true">
-  <div class="intro__sheen"></div>
-  <div class="intro__stage">
-    <svg class="intro__mark" viewBox="0 0 64 64" aria-hidden="true">
-      <path fill="currentColor" fill-rule="evenodd" d="M32 2.31 58.63 17.69v30.62L32 63.69 5.37 48.31V17.69ZM32 11.24 13.1 22.15v21.7L32 54.76l18.9-10.91v-21.7ZM32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
-    </svg>
-    <div class="intro__word">BRANDORA</div>
-    <div class="intro__line">Build your brand. Put it everywhere.</div>
-  </div>
-</div>
-
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a class="brand-lockup" href="index.html">
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <path fill="currentColor" fill-rule="evenodd" d="M32 2.31 58.63 17.69v30.62L32 63.69 5.37 48.31V17.69ZM32 11.24 13.1 22.15v21.7L32 54.76l18.9-10.91v-21.7ZM32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
-      </svg>
+      <img src="assets/img/logo-b-solid.svg" alt="" width="20" height="26">
       <span class="brand-lockup__word">BRANDORA</span>
     </a>
 
@@ -69,6 +50,40 @@
 </header>
 
 <main id="main">
+
+  <!--
+    The opening film (§9).
+
+    `src` is deliberately absent: `data-src` is attached by app.js only once it
+    has checked the connection. The file is 8.5MB, and this product is built for
+    people on metered mobile data (§63) — starting an 8.5MB download before
+    anyone has decided they are interested is the single most expensive thing
+    this page could do. Everyone else sees the poster, which is 2KB of vector.
+  -->
+  <section class="film" data-film>
+    <video class="film__media" data-film-video
+           poster="assets/img/film-poster.svg"
+           data-src="assets/video/brandora-intro.mp4"
+           muted loop playsinline preload="none"
+           aria-hidden="true" tabindex="-1"></video>
+    <div class="film__scrim"></div>
+
+    <!--
+      The lockup stands in until the film is actually running. The film resolves
+      to the Brandora logo itself, so leaving this on top of a playing video
+      would put two logos on screen; app.js fades it out on `playing` and brings
+      it back if playback stops or the file cannot be decoded.
+    -->
+    <div class="film__caption">
+      <img class="film__logo" data-film-logo src="assets/img/logo-full.svg" alt="Brandora" width="620" height="400">
+      <p data-i18n="hero.headline">Build your brand. Put it everywhere.</p>
+    </div>
+
+    <button class="control film__toggle" type="button" data-film-toggle hidden>
+      <span aria-hidden="true">❚❚</span>
+      <span data-film-toggle-label>Pause</span>
+    </button>
+  </section>
 
   <!-- Hero (§10) -->
   <section class="hero">

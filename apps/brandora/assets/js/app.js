@@ -166,36 +166,110 @@
 
   window.brandoraTranslate = translate;
 
-  /* --- The opening animation (§9) ---------------------------------------- */
+  /* --- The opening film (§9) ---------------------------------------------- */
 
-  var intro = document.querySelector('[data-intro]');
-  if (intro) {
-    var seen = false;
-    try {
-      seen = sessionStorage.getItem('brandora.intro') === 'seen';
-    } catch (err) {
-      seen = false;
-    }
+  var video = document.querySelector('[data-film-video]');
+  if (video) {
+    /**
+     * Decide whether this visitor should download 8.5MB of video.
+     *
+     * Brandora is built for people who often pay for data by the megabyte
+     * (§63), so the film is opt-out by connection rather than opt-in by luck.
+     * Three things veto it: an explicit Data Saver setting, a connection the
+     * browser reports as 2G, and a reduced-motion preference. In each case the
+     * poster stands in, and it is a real poster — the logo and the wordmark —
+     * not a grey box.
+     */
+    var shouldLoadFilm = function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
 
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (seen || reduced) {
-      intro.hidden = true;
-    } else {
-      // Once per session, not once per page. A cinematic open is a welcome; the
-      // fourth time in five minutes it is an obstacle.
-      window.setTimeout(function () {
-        intro.style.transition = 'opacity 0.6s ease';
-        intro.style.opacity = '0';
-        window.setTimeout(function () {
-          intro.hidden = true;
-        }, 600);
-      }, 3600);
-      try {
-        sessionStorage.setItem('brandora.intro', 'seen');
-      } catch (err) {
-        // Then it plays again next navigation. Not worth failing over.
+      var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (connection) {
+        if (connection.saveData === true) return false;
+        if (connection.effectiveType === 'slow-2g' || connection.effectiveType === ' 2g' || connection.effectiveType === '2g') {
+          return false;
+        }
       }
+      return true;
+    };
+
+    var toggle = document.querySelector('[data-film-toggle]');
+    var toggleLabel = document.querySelector('[data-film-toggle-label]');
+    var filmLogo = document.querySelector('[data-film-logo]');
+
+    // Set once the source turns out to be undecodable. Everything else checks
+    // it, so a late-arriving `play()` rejection cannot re-offer a broken film.
+    var filmFailed = false;
+
+    var setToggle = function (playing) {
+      if (!toggle || filmFailed) return;
+      toggle.hidden = false;
+      toggle.firstElementChild.textContent = playing ? '❚❚' : '▶';
+      if (toggleLabel) toggleLabel.textContent = playing ? 'Pause' : 'Play';
+      toggle.setAttribute('aria-pressed', playing ? 'false' : 'true');
+    };
+
+    /** The lockup belongs on screen whenever the film is not carrying it. */
+    var showLogo = function (visible) {
+      if (!filmLogo) return;
+      filmLogo.style.transition = 'opacity 0.8s ease';
+      filmLogo.style.opacity = visible ? '1' : '0';
+    };
+
+    if (shouldLoadFilm()) {
+      /**
+       * If the file cannot be decoded, stop offering to play it.
+       *
+       * A `<video>` keeps showing its poster when the source fails, so the hero
+       * still looks right — but a Pause button over a still frame is a control
+       * that lies. Browsers without H.264 exist (Chromium built without
+       * proprietary codecs is the common one), and so do half-downloaded files.
+       */
+      video.addEventListener('error', function () {
+        filmFailed = true;
+        if (toggle) toggle.hidden = true;
+        showLogo(true);
+      });
+
+      // The film resolves to the logo, so the static lockup steps aside while it
+      // runs and comes back the moment it stops.
+      video.addEventListener('playing', function () {
+        showLogo(false);
+        setToggle(true);
+      });
+      video.addEventListener('pause', function () {
+        showLogo(true);
+        setToggle(false);
+      });
+
+      video.src = video.getAttribute('data-src');
+      video.load();
+
+      // `play()` rejects when a browser declines autoplay. That is not an error
+      // worth surfacing — the poster is already showing something worth looking
+      // at, so the control simply offers to start it.
+      var attempt = video.play();
+      if (attempt && typeof attempt.then === 'function') {
+        attempt.then(function () { setToggle(true); }).catch(function () { setToggle(false); });
+      } else {
+        setToggle(true);
+      }
+
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          if (video.paused) {
+            video.play().then(function () { setToggle(true); }).catch(function () { setToggle(false); });
+          } else {
+            video.pause();
+            setToggle(false);
+          }
+        });
+      }
+
+      // A film playing behind a page nobody is looking at is spent battery.
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden && !video.paused) video.pause();
+      });
     }
   }
 
