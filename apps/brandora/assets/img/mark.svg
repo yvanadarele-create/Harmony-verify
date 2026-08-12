@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Brandora">
+  <title>Brandora</title>
+  <!--
+    The Brandora mark: a faceted solid with a mark pressed into it.
+
+    The hexagon is the physical object — the cup, the box, the bag — drawn as a
+    cut solid so it reads as polished rather than flat. The circle is knocked
+    out of it rather than sitting on top, because the promise is that the brand
+    goes *into* the product, not onto it.
+
+    Built to survive the smallest use: one path, one fill rule, no strokes and
+    no gradients, so it stays legible at 16px and reverses cleanly out of black.
+  -->
+  <path fill="currentColor" fill-rule="evenodd"
+        d="M32 2.31 58.63 17.69v30.62L32 63.69 5.37 48.31V17.69ZM32 11.24 13.1 22.15v21.7L32 54.76l18.9-10.91v-21.7ZM32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
+</svg>

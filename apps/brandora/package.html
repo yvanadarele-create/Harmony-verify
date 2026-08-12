@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My package — Brandora</title>
+<meta name="description" content="Combine products into a brand package, adjust quantities, and see the estimated total before Brandora prepares your quote.">
+<meta name="theme-color" content="#050507">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/brandora.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand-lockup" href="index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path fill="currentColor" fill-rule="evenodd" d="M32 2.31 58.63 17.69v30.62L32 63.69 5.37 48.31V17.69ZM32 11.24 13.1 22.15v21.7L32 54.76l18.9-10.91v-21.7ZM32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
+      </svg>
+      <span class="brand-lockup__word">BRANDORA</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="create.html" data-i18n="nav.create">Create my brand</a>
+      <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+      <a href="package.html" data-i18n="nav.package">My package</a>
+    </nav>
+    <div class="header-tools">
+      <label class="visually-hidden" for="locale">Language</label>
+      <select class="control" id="locale" data-locale-switch>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+      <button class="control" type="button" data-theme-toggle aria-pressed="false">
+        <span aria-hidden="true">◐</span><span data-theme-label>Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="section">
+  <div class="wrap">
+
+    <h1 data-i18n="package.title">Brand package</h1>
+
+    <div data-identity style="margin-bottom:2rem"></div>
+
+    <div class="grid grid--2" style="align-items:start">
+      <section>
+        <h2 style="font-size:1.15rem">Your products</h2>
+        <div class="grid" data-lines></div>
+        <p class="notice" data-empty hidden>
+          <span data-i18n="package.empty">Your package is empty. Add a product to begin.</span>
+          <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+        </p>
+      </section>
+
+      <section>
+        <h2 style="font-size:1.15rem" data-i18n="package.total">Estimated total</h2>
+        <div class="card" data-totals></div>
+        <p><a class="btn btn--primary" href="catalog.html" data-i18n="package.add">Add product</a></p>
+      </section>
+    </div>
+
+    <section style="margin-top:3rem">
+      <h2 style="font-size:1.15rem">Starter packages</h2>
+      <p class="lede">A first order that already looks like a brand — every line sized so
+        it clears its own minimum.</p>
+      <div class="grid grid--4" data-starters></div>
+    </section>
+
+    <noscript>
+      <div class="notice">The package builder needs JavaScript. Please enable it, or
+        <a href="catalog.html">browse the catalogue</a>.</div>
+    </noscript>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Brandora</span>
+    <a href="index.html" data-i18n="nav.home">Home</a>
+    <a href="create.html" data-i18n="nav.create">Create my brand</a>
+  </div>
+</footer>
+
+<script src="assets/js/app.js" defer></script>
+<script src="assets/js/package.js" defer></script>
+</body>
+</html>

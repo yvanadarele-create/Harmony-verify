@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalogue — Brandora</title>
+<meta name="description" content="Packaging, brand materials, tableware and merchandise — from ten units, with customisation confirmed rather than assumed.">
+<meta name="theme-color" content="#050507">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/brandora.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand-lockup" href="index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path fill="currentColor" fill-rule="evenodd" d="M32 2.31 58.63 17.69v30.62L32 63.69 5.37 48.31V17.69ZM32 11.24 13.1 22.15v21.7L32 54.76l18.9-10.91v-21.7ZM32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
+      </svg>
+      <span class="brand-lockup__word">BRANDORA</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="create.html" data-i18n="nav.create">Create my brand</a>
+      <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+      <a href="package.html" data-i18n="nav.package">My package</a>
+    </nav>
+    <div class="header-tools">
+      <label class="visually-hidden" for="locale">Language</label>
+      <select class="control" id="locale" data-locale-switch>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+      <button class="control" type="button" data-theme-toggle aria-pressed="false">
+        <span aria-hidden="true">◐</span><span data-theme-label>Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="section">
+  <div class="wrap">
+
+    <h1 data-i18n="catalog.title">Catalogue</h1>
+    <p class="lede">Tell us how many you need. Brandora only offers you what you can
+      actually order at that quantity.</p>
+
+    <form class="card card--flat" style="margin-bottom:2rem" onsubmit="return false">
+      <div class="grid grid--4">
+        <div class="field" style="margin:0">
+          <label for="quantity">How many do you need?</label>
+          <input type="number" id="quantity" min="1" step="1" value="30" data-quantity inputmode="numeric">
+        </div>
+        <div class="field" style="margin:0">
+          <label for="category">Category</label>
+          <select id="category" data-category>
+            <option value="">All</option>
+            <option value="packaging" data-i18n="catalog.category.packaging">Packaging</option>
+            <option value="brand-materials" data-i18n="catalog.category.brand-materials">Brand materials</option>
+            <option value="tableware" data-i18n="catalog.category.tableware">Tableware</option>
+            <option value="merchandise" data-i18n="catalog.category.merchandise">Merchandise</option>
+          </select>
+        </div>
+        <div class="field" style="margin:0">
+          <label for="search">Search</label>
+          <input type="text" id="search" data-search placeholder="cups, stickers, boxes…">
+        </div>
+        <div class="field" style="margin:0;align-self:end">
+          <label for="customizable" style="display:flex;gap:0.5rem;align-items:center">
+            <input type="checkbox" id="customizable" data-customizable style="width:auto;min-height:auto">
+            <span>Only products that take my logo</span>
+          </label>
+        </div>
+      </div>
+    </form>
+
+    <p class="product__meta" data-count aria-live="polite"></p>
+
+    <div class="grid grid--3" data-products></div>
+
+    <!--
+      §35: products that cannot fulfil the order are demoted, not deleted.
+      Telling someone "this exists, from fifty" is useful; making it vanish is not.
+    -->
+    <section data-near-wrap hidden style="margin-top:3rem">
+      <h2 style="font-size:1.2rem">Available, but not at this quantity</h2>
+      <p class="product__meta">These need a larger order. The minimum is shown on each.</p>
+      <div class="grid grid--3" data-near-misses></div>
+    </section>
+
+    <noscript>
+      <div class="notice">The catalogue filters need JavaScript. Please enable it, or
+        <a href="index.html">go back home</a>.</div>
+    </noscript>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Brandora</span>
+    <a href="index.html" data-i18n="nav.home">Home</a>
+    <a href="package.html" data-i18n="nav.package">My package</a>
+  </div>
+</footer>
+
+<script src="assets/js/app.js" defer></script>
+<script src="assets/js/catalog.js" defer></script>
+</body>
+</html>

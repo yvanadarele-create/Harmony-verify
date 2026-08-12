@@ -8,6 +8,13 @@
     "test": "tsc -p tsconfig.json && node --test dist/*.test.js"
   },
   "dependencies": {
+    "@brandora/shared": "workspace:*",
+    "@brandora/config": "workspace:*",
+    "@brandora/i18n": "workspace:*",
+    "@brandora/brand-engine": "workspace:*",
+    "@brandora/catalog": "workspace:*",
+    "@brandora/sourcing": "workspace:*",
+    "@brandora/quotes": "workspace:*",
     "@harmony/applications": "workspace:*",
     "@harmony/auth": "workspace:*",
     "@harmony/config": "workspace:*",

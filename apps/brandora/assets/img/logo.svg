@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" role="img" aria-label="Brandora">
+  <title>Brandora</title>
+  <!--
+    The primary lockup: symbol plus wordmark.
+
+    `currentColor` throughout, so one file serves the dark-mode, light-mode and
+    monochrome versions the brand kit calls for — the page sets the colour, and
+    there is no chance of a stale duplicate drifting out of step.
+  -->
+  <path fill="currentColor" fill-rule="evenodd"
+        d="M32 2.31 58.63 17.69v30.62L32 63.69 5.37 48.31V17.69ZM32 11.24 13.1 22.15v21.7L32 54.76l18.9-10.91v-21.7ZM32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
+  <text x="76" y="42" fill="currentColor"
+        font-family="Inter, system-ui, -apple-system, sans-serif"
+        font-size="26" font-weight="500" letter-spacing="6.5">BRANDORA</text>
+</svg>

@@ -21,6 +21,8 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@22.20.1)
 
+  apps/brandora: {}
+
   apps/web: {}
 
   packages/ai-engine:
@@ -73,6 +75,96 @@ importers:
       '@harmony/shared':
         specifier: workspace:*
         version: link:../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/brandora-brand-engine:
+    dependencies:
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/brandora-catalog:
+    dependencies:
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/brandora-config:
+    dependencies:
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/brandora-i18n:
+    dependencies:
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/brandora-quotes:
+    dependencies:
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/brandora-shared:
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/brandora-sourcing:
+    dependencies:
+      '@brandora/config':
+        specifier: workspace:*
+        version: link:../brandora-config
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -236,6 +328,27 @@ importers:
 
   tests:
     dependencies:
+      '@brandora/brand-engine':
+        specifier: workspace:*
+        version: link:../packages/brandora-brand-engine
+      '@brandora/catalog':
+        specifier: workspace:*
+        version: link:../packages/brandora-catalog
+      '@brandora/config':
+        specifier: workspace:*
+        version: link:../packages/brandora-config
+      '@brandora/i18n':
+        specifier: workspace:*
+        version: link:../packages/brandora-i18n
+      '@brandora/quotes':
+        specifier: workspace:*
+        version: link:../packages/brandora-quotes
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../packages/brandora-shared
+      '@brandora/sourcing':
+        specifier: workspace:*
+        version: link:../packages/brandora-sourcing
       '@harmony/applications':
         specifier: workspace:*
         version: link:../packages/applications

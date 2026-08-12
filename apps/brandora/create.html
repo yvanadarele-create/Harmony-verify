@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create my brand — Brandora</title>
+<meta name="description" content="Answer a few questions and Brandora builds your brand — positioning, personality, colour palette, typography and a logo direction you can hand to a designer.">
+<meta name="theme-color" content="#050507">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/brandora.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand-lockup" href="index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path fill="currentColor" fill-rule="evenodd" d="M32 2.31 58.63 17.69v30.62L32 63.69 5.37 48.31V17.69ZM32 11.24 13.1 22.15v21.7L32 54.76l18.9-10.91v-21.7ZM32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
+      </svg>
+      <span class="brand-lockup__word">BRANDORA</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="create.html" data-i18n="nav.create">Create my brand</a>
+      <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+      <a href="package.html" data-i18n="nav.package">My package</a>
+    </nav>
+    <div class="header-tools">
+      <label class="visually-hidden" for="locale">Language</label>
+      <select class="control" id="locale" data-locale-switch>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+      <button class="control" type="button" data-theme-toggle aria-pressed="false">
+        <span aria-hidden="true">◐</span><span data-theme-label>Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="section">
+  <div class="wrap" style="max-width:44rem">
+
+    <p class="eyebrow" data-i18n="builder.step.interview">Interview</p>
+    <h1 data-i18n="builder.title">Let's build your brand.</h1>
+    <p class="lede">You do not need a name, a logo, or any idea what &ldquo;positioning&rdquo; means.
+      Answer what you can, and tap <em>I don't know — help me</em> on anything that stumps you.</p>
+
+    <div class="progress" data-progress role="img" aria-label="Progress"></div>
+
+    <!-- The interview renders here. -->
+    <section data-question aria-live="polite"></section>
+
+    <!-- The generated identity renders here. -->
+    <section data-result tabindex="-1" aria-live="polite" hidden></section>
+
+    <noscript>
+      <div class="notice">
+        The brand builder needs JavaScript to run the interview. You can still
+        <a href="catalog.html">browse the catalogue</a> without it.
+      </div>
+    </noscript>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Brandora</span>
+    <a href="index.html" data-i18n="nav.home">Home</a>
+    <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+  </div>
+</footer>
+
+<script src="assets/js/app.js" defer></script>
+<script src="assets/js/builder.js" type="module"></script>
+</body>
+</html>

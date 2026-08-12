@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brandora — Build your brand. Put it everywhere.</title>
+<meta name="description" content="Brandora turns an idea into a complete brand — strategy, identity, logo, packaging, sourcing and physical products, with a quote you can order from.">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/brandora.css">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Brandora">
+<meta property="og:title" content="Brandora — Build your brand. Put it everywhere.">
+<meta property="og:description" content="From idea to identity to physical brand.">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!--
+  The opening animation (§9). Marked aria-hidden and pointer-events:none: it is
+  a piece of theatre over the page, and it must never delay or block someone who
+  just wants to start. It plays once per session and never for anyone who has
+  asked for reduced motion.
+-->
+<div class="intro" data-intro aria-hidden="true">
+  <div class="intro__sheen"></div>
+  <div class="intro__stage">
+    <svg class="intro__mark" viewBox="0 0 64 64" aria-hidden="true">
+      <path fill="currentColor" fill-rule="evenodd" d="M32 2.31 58.63 17.69v30.62L32 63.69 5.37 48.31V17.69ZM32 11.24 13.1 22.15v21.7L32 54.76l18.9-10.91v-21.7ZM32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
+    </svg>
+    <div class="intro__word">BRANDORA</div>
+    <div class="intro__line">Build your brand. Put it everywhere.</div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand-lockup" href="index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path fill="currentColor" fill-rule="evenodd" d="M32 2.31 58.63 17.69v30.62L32 63.69 5.37 48.31V17.69ZM32 11.24 13.1 22.15v21.7L32 54.76l18.9-10.91v-21.7ZM32 22a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
+      </svg>
+      <span class="brand-lockup__word">BRANDORA</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      <a href="create.html" data-i18n="nav.create">Create my brand</a>
+      <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+      <a href="package.html" data-i18n="nav.package">My package</a>
+    </nav>
+
+    <div class="header-tools">
+      <label class="visually-hidden" for="locale">Language</label>
+      <select class="control" id="locale" data-locale-switch>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+      <button class="control" type="button" data-theme-toggle aria-pressed="false">
+        <span aria-hidden="true">◐</span>
+        <span data-theme-label>Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero (§10) -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="hero.positioning">From idea to identity to physical brand.</p>
+      <h1 data-i18n="hero.headline">Build your brand. Put it everywhere.</h1>
+      <p class="lede" data-i18n="hero.subheadline">Brandora helps you turn an idea into a complete brand — from strategy and identity to packaging, sourcing and physical products.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="create.html" data-i18n="hero.cta.primary">Create My Brand</a>
+        <a class="btn btn--ghost" href="#how" data-i18n="hero.cta.secondary">Explore Brandora</a>
+        <a class="btn btn--quiet" href="create.html#assistant"><span data-i18n="hero.cta.ai">Ask Brandora</span> <span aria-hidden="true">✦</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works (§11) -->
+  <section class="section" id="how">
+    <div class="wrap">
+      <h2 data-i18n="how.title">How it works</h2>
+      <ol class="steps" data-reveal>
+        <li class="step"><div class="step__n">01</div><h3 data-i18n="how.01">Tell us your idea</h3></li>
+        <li class="step"><div class="step__n">02</div><h3 data-i18n="how.02">Build your identity</h3></li>
+        <li class="step"><div class="step__n">03</div><h3 data-i18n="how.03">Choose your products</h3></li>
+        <li class="step"><div class="step__n">04</div><h3 data-i18n="how.04">Visualize your brand</h3></li>
+        <li class="step"><div class="step__n">05</div><h3 data-i18n="how.05">Get your quote</h3></li>
+        <li class="step"><div class="step__n">06</div><h3 data-i18n="how.06">Order</h3></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Brand creation + physical branding (§11) -->
+  <section class="section section--tight">
+    <div class="wrap grid grid--2" data-reveal>
+      <div class="card">
+        <p class="eyebrow">01</p>
+        <h2 data-i18n="section.brand.title">Brand creation</h2>
+        <p data-i18n="section.brand.body">Idea becomes identity. Identity becomes a logo you own.</p>
+        <ul class="flow">
+          <li>Idea</li>
+          <li class="flow__arrow" aria-hidden="true">→</li>
+          <li>Brand identity</li>
+          <li class="flow__arrow" aria-hidden="true">→</li>
+          <li>Logo</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <p class="eyebrow">02</p>
+        <h2 data-i18n="section.physical.title">Physical branding</h2>
+        <p data-i18n="section.physical.body">Your logo on cups, boxes, bags, stickers and cards.</p>
+        <ul class="flow">
+          <li>Logo</li>
+          <li class="flow__arrow" aria-hidden="true">→</li>
+          <li>Cup</li>
+          <li>Box</li>
+          <li>Bag</li>
+          <li>Sticker</li>
+          <li>Card</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI sourcing (§11) -->
+  <section class="section section--tight">
+    <div class="wrap card" data-reveal>
+      <p class="eyebrow">03</p>
+      <h2 data-i18n="section.sourcing.title">AI sourcing</h2>
+      <p data-i18n="section.sourcing.body">Tell Brandora what you need. It searches suppliers, compares the options and returns a quote.</p>
+      <ul class="flow">
+        <li>Your request</li>
+        <li class="flow__arrow" aria-hidden="true">→</li>
+        <li>Supplier search</li>
+        <li class="flow__arrow" aria-hidden="true">→</li>
+        <li>Best options</li>
+        <li class="flow__arrow" aria-hidden="true">→</li>
+        <li>Quote</li>
+      </ul>
+      <p class="notice notice--accent" style="margin-top:1.5rem">
+        &ldquo;Find 30 premium black cups for my bakery. They should be customisable
+        with my logo and deliverable to Abidjan.&rdquo;
+      </p>
+    </div>
+  </section>
+
+  <!-- Small quantities and local reality (§11, §63, §64) -->
+  <section class="section">
+    <div class="wrap" data-reveal>
+      <h2 data-i18n="section.africa.title">Built for how small businesses actually start</h2>
+      <p class="lede" data-i18n="section.africa.body">Small quantities, flexible sourcing, local delivery, mobile-first, and payment options that work where you are.</p>
+      <div class="grid grid--4" style="margin-top:2rem">
+        <div class="card card--flat">
+          <h3>Start at 10 units</h3>
+          <p class="product__meta">Not ten thousand. Test an idea before you commit to it.</p>
+        </div>
+        <div class="card card--flat">
+          <h3>Built for a phone</h3>
+          <p class="product__meta">Every screen works on the device your business already runs on.</p>
+        </div>
+        <div class="card card--flat">
+          <h3>Three languages</h3>
+          <p class="product__meta">English, French and Spanish — interface, quotes and assistant.</p>
+        </div>
+        <div class="card card--flat">
+          <h3>Priced in your currency</h3>
+          <p class="product__meta">FCFA today, and the architecture takes others without a rewrite.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA (§11) -->
+  <section class="section">
+    <div class="wrap" style="text-align:center">
+      <h2 style="font-size:clamp(1.8rem,5vw,2.8rem)" data-i18n="cta.final">Your idea deserves a brand.</h2>
+      <p><a class="btn btn--primary" href="create.html" data-i18n="hero.cta.primary">Create My Brand</a></p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Brandora</span>
+    <a href="create.html" data-i18n="nav.create">Create my brand</a>
+    <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+    <a href="package.html" data-i18n="nav.package">My package</a>
+  </div>
+</footer>
+
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

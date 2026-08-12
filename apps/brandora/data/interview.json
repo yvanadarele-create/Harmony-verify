@@ -1,0 +1,159 @@
+[
+  {
+    "field": "business",
+    "prompt": "What are you building?",
+    "because": "Everything else follows from this. One sentence is plenty.",
+    "helpPrompt": "Forget the word 'business' for a second. If a friend asked what you're working on, what would you say?",
+    "examples": [
+      "A small bakery selling cookies from home",
+      "A natural skincare line for dry skin",
+      "A tailoring service for office wear"
+    ],
+    "kind": "text",
+    "required": true
+  },
+  {
+    "field": "product",
+    "prompt": "What do you sell?",
+    "because": "This decides which packaging and products Brandora sources for you.",
+    "helpPrompt": "What would the first thing a customer buys from you be?",
+    "examples": [
+      "Cookies and small cakes",
+      "Face oil and body butter",
+      "Shirts and trousers"
+    ],
+    "kind": "text",
+    "required": true
+  },
+  {
+    "field": "audience",
+    "prompt": "Who are your customers?",
+    "because": "A brand that speaks to everyone speaks to nobody.",
+    "helpPrompt": "Picture the last person who bought from you, or the person you'd most like to. Who are they?",
+    "examples": [
+      "Young professionals who order for the office",
+      "Mothers buying for their family",
+      "Students who want something affordable"
+    ],
+    "kind": "text",
+    "required": true
+  },
+  {
+    "field": "positioning",
+    "prompt": "Should your brand feel affordable, premium or luxury?",
+    "because": "This sets your prices, your packaging and how your logo should look.",
+    "helpPrompt": "If a customer saw your price next to a supermarket's, should yours look cheaper, about the same, or clearly better?",
+    "examples": [],
+    "kind": "choice",
+    "options": [
+      {
+        "value": "affordable",
+        "label": "Affordable",
+        "hint": "Best price wins. Simple, honest, everyday."
+      },
+      {
+        "value": "accessible-premium",
+        "label": "Accessible premium",
+        "hint": "Feels special, priced so ordinary people can still buy it."
+      },
+      {
+        "value": "premium",
+        "label": "Premium",
+        "hint": "Quality first. Customers pay more, and know why."
+      },
+      {
+        "value": "luxury",
+        "label": "Luxury",
+        "hint": "Rare, crafted, exclusive. Price is not the point."
+      },
+      {
+        "value": "contemporary",
+        "label": "Contemporary",
+        "hint": "Current and design-led. Follows what people want now."
+      },
+      {
+        "value": "mass-market",
+        "label": "Mass market",
+        "hint": "Made for volume. Familiar and easy to reach."
+      }
+    ],
+    "required": true
+  },
+  {
+    "field": "personality",
+    "prompt": "What should customers feel when they see your brand?",
+    "because": "This becomes your colours, your typography and your tone of voice.",
+    "helpPrompt": "Pick the words that feel right. There is no wrong answer here.",
+    "examples": [],
+    "kind": "multi",
+    "options": [
+      {
+        "value": "warm",
+        "label": "Warm",
+        "hint": "Welcoming, human, close"
+      },
+      {
+        "value": "elegant",
+        "label": "Elegant",
+        "hint": "Refined and quiet"
+      },
+      {
+        "value": "bold",
+        "label": "Bold",
+        "hint": "Confident and loud"
+      },
+      {
+        "value": "natural",
+        "label": "Natural",
+        "hint": "Honest, earthy, unprocessed"
+      },
+      {
+        "value": "playful",
+        "label": "Playful",
+        "hint": "Light, fun, easy"
+      },
+      {
+        "value": "trustworthy",
+        "label": "Trustworthy",
+        "hint": "Solid, dependable, safe"
+      },
+      {
+        "value": "modern",
+        "label": "Modern",
+        "hint": "Clean and current"
+      },
+      {
+        "value": "traditional",
+        "label": "Traditional",
+        "hint": "Rooted, proven, familiar"
+      }
+    ],
+    "required": true
+  },
+  {
+    "field": "differentiation",
+    "prompt": "What makes your business different?",
+    "because": "This becomes your brand promise — the reason someone chooses you twice.",
+    "helpPrompt": "What do customers tell you they like? Or: what would you refuse to change, even if it were cheaper?",
+    "examples": [
+      "Everything is made the same morning it's sold",
+      "I use only shea butter sourced from one cooperative",
+      "I deliver the same day, anywhere in the city"
+    ],
+    "kind": "text",
+    "required": false
+  },
+  {
+    "field": "style",
+    "prompt": "What visual style do you imagine?",
+    "because": "It points the logo and packaging in the right direction from the start.",
+    "helpPrompt": "Don't describe a design — name a brand, a shop or a place whose look you like, and we'll take it from there.",
+    "examples": [
+      "Clean and minimal",
+      "Colourful and lively",
+      "Earthy and handmade"
+    ],
+    "kind": "text",
+    "required": false
+  }
+]

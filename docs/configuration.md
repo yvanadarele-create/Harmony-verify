@@ -38,6 +38,31 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 the existing `payout_details` rows makes every stored account number permanently
 unreadable. Treat it like a database, not like a session key.
 
+## Brandora
+
+Brandora's variables are documented in [`brandora.md`](./brandora.md) and listed
+in `.env.example`. They follow the same rules as everything above: read only by
+`packages/brandora-config`, never a literal in the repository, never sent to a
+browser, never placed in an AI prompt.
+
+| Variable | Required for | Notes |
+| --- | --- | --- |
+| `ALIEXPRESS_APP_KEY` | Supplier sourcing | Public in AliExpress's model; still read from the environment. |
+| `ALIEXPRESS_APP_SECRET` | Signing every supplier request | **Server-side only.** Rotate immediately if it has ever been pasted anywhere. |
+| `ALIEXPRESS_ACCESS_TOKEN` | Supplier calls | **Server-side only.** |
+| `ALIEXPRESS_REFRESH_TOKEN` | Renewing the access token | **Server-side only.** Outlives the access token, so a leak lasts longer. |
+| `ALIEXPRESS_ENDPOINT` | Gateway selection | Defaults to the Singapore sync gateway. |
+| `BRANDORA_DEFAULT_CURRENCY` | Pricing | Defaults to `XOF`, which is zero-decimal. |
+| `BRANDORA_MARGIN_RATE` | Quotes | Defaults to `0.35`. |
+| `BRANDORA_LOGISTICS_RATE` | Quotes | Defaults to `0.08`, charged on goods only. |
+| `BRANDORA_SOURCING_SMALL_MAX` | Sourcing strategy | Defaults to `50`. |
+| `BRANDORA_SOURCING_MEDIUM_MAX` | Sourcing strategy | Defaults to `500`. |
+| `BRANDORA_SUPPLIER_CACHE_TTL_MINUTES` | Cache freshness | Defaults to `360`. Stale data is still served during an outage, labelled. |
+
+The admin integrations page reads these through `aliexpressIntegrationStatus()`,
+which returns a mask of the last four characters and a connected boolean. There
+is deliberately no function that returns the real value for a screen.
+
 ## In production
 
 Set these as **encrypted environment variables** in the Vercel project, not in a

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Favicon: the mark on its own field, so it holds up against a light or dark tab bar. -->
+  <rect width="64" height="64" rx="14" fill="#0B0A0F"/>
+  <path fill="#7650A5" fill-rule="evenodd"
+        d="M32 8.5 51.9 20v23L32 54.5 12.1 43V20ZM32 15.2 18 23.3v16.4L32 47.8l14-8.1V23.3ZM32 23.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Z"/>
+</svg>
