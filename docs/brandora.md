@@ -49,14 +49,17 @@ second supplier is one new file rather than an audit of the codebase.
 | `@brandora/catalog` | The Brandora product layer, quantity and customisation filters, the package builder |
 | `@brandora/sourcing` | `SupplierAdapter`, the AliExpress adapter, the sourcing agent, scoring, freight, landed cost, caching |
 | `@brandora/quotes` | The quote engine and the order state machine |
-| `@brandora/web` (`apps/brandora`) | The static front end |
+| `@brandora/database` | SQLite schema and repositories; ownership lives in the query |
+| `@brandora/auth` | scrypt password hashing, session lifecycle, authorization policy |
+| `@brandora/ai` | The Anthropic-backed `StrategyProvider` and the generation flow |
+| `@brandora/web` (`apps/brandora`) | The front end |
 
 Run everything:
 
 ```bash
 pnpm install
 pnpm build:brandora   # builds the packages, emits the front-end data, checks the site
-pnpm test             # 391 tests
+pnpm test             # 473 tests
 pnpm brandora         # serves apps/brandora on :4100
 ```
 
@@ -117,20 +120,64 @@ message, an issue, a screenshot or a commit, treat it as public and rotate it in
 the AliExpress console. The Refresh Token matters most — it outlives the Access
 Token, so a leak of it is a leak of the integration until it is revoked.
 
+## Persistence, auth and AI
+
+**Persistence** is SQLite via Node 22's built-in `node:sqlite` — the same choice
+Harmony made, and for the same reasons: no dependency, no native build step, no
+connection pool to misconfigure. The schema declares its own constraints, so an
+order pointing at a missing quote or a status nobody defined is impossible to
+persist rather than merely unlikely.
+
+The rule that shapes every read: **ownership is part of the query, not a check
+after it.** `findProject(id)` followed by `if (project.userId !== me) throw` is
+the shape that produces IDOR bugs, because the next person to add a route will
+remember the first line and forget the second. The customer methods take an
+owner and put it in the `WHERE` clause — another user's project is not found and
+rejected, it is simply not found. Admin reads are named `…AsAdmin` so an
+unscoped query is impossible to write by accident and obvious in review.
+
+**Auth** is scrypt with a per-password salt and timing-safe comparison, plus
+server-side sessions rather than JWTs — a session row can be revoked instantly,
+which is what "log out everywhere" and "this account is compromised" both need.
+Verifying a password for an address that does not exist burns the same work as a
+real one, so login cannot be used to enumerate accounts.
+
+Authorization is a pure function over a principal and a resource, in one file.
+A refused cross-user read returns **404, not 403** — a 403 confirms the id is
+real, which is exactly what someone enumerating ids wants.
+
+**AI** is the official Anthropic SDK behind the `StrategyProvider` interface the
+brand engine already defined. The key is read by `@brandora/config` and never
+leaves the process. Three things the provider does that are easy to get wrong:
+it checks `stop_reason` **before** reading content (a refusal returns HTTP 200
+with empty content, so indexing `content[0]` throws a `TypeError` and reports a
+policy decline as a crash); it treats a `max_tokens` stop as a failure with its
+real cause named, rather than letting a truncated reply blame the model at the
+JSON parser; and it maps SDK error *classes* rather than message text, because
+wording changes between releases and status codes do not.
+
+With no key configured, `UnconfiguredStrategyProvider` **fails** with a clear
+admin message. It does not fabricate a brand — a provider that invents a
+plausible name and story is exactly what makes a demo look finished and a launch
+fail.
+
 ## What is not built yet
 
 Stated plainly, because a specification section with no code behind it is not a
 feature:
 
-- **The AI runtime.** The prompts, the tool definitions, the reply contract and
-  the validation are all built and tested. What is missing is the server route
-  that holds `ANTHROPIC_API_KEY` and makes the call. `StrategyProvider` is the
-  one interface to implement.
-- **Persistence.** Every engine is pure and returns new values; nothing writes to
-  PostgreSQL yet. The schema in §55 is expressed as the types in
-  `@brandora/shared`, which is what the tables should be generated from.
-- **Authentication, accounts and the admin dashboard.** The roles and the
-  authorisation rules exist in the state machine; the screens and sessions do not.
+- **The HTTP server and API routes.** The database, auth and AI packages are
+  built and tested, but nothing yet wires them into `/api/*` endpoints, and the
+  front end still uses `localStorage` rather than talking to a server. This is
+  the next piece of work, and until it exists the customer journey is not
+  end-to-end.
+- **Payments.** No Paystack integration, no webhook handler, no server-side
+  verification. The order model has a `payment_status` column and nothing sets
+  it to `paid`.
+- **The admin dashboard.** The authorization rules and the admin-scoped
+  repository reads exist; the screens do not.
+- **The visualizer and brand-kit download.** The kit manifest and the guidelines
+  document are generated; no image is rendered and no zip is produced.
 - **Live AliExpress calls.** The adapter is written against the documented shape
   and tested against recorded payloads. **The signing scheme must be verified
   against current AliExpress documentation before the first live call** — the
@@ -139,6 +186,12 @@ feature:
   known-good signature from the console.
 - **Image and video generation.** The logo brief is generated and is written to
   be handed to a designer or an image model; nothing calls one.
-- **Checkout, payments, notifications and the visualizer.** The order lifecycle
-  and the notification keys are built; the screens and the payment integration
-  are not.
+- **Checkout and notifications.** The order lifecycle and the notification keys
+  are built; the screens and the delivery integration are not.
+
+## Deployment
+
+Brandora and Harmony share a repository but no code. See
+[`brandora-deployment.md`](./brandora-deployment.md) for what is already
+separate, the one manual step in the Vercel dashboard, and how to split the
+repositories if you would rather.

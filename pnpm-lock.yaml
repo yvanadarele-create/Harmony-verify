@@ -83,6 +83,41 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
+  packages/brandora-ai:
+    dependencies:
+      '@anthropic-ai/sdk':
+        specifier: ^0.68.0
+        version: 0.68.0
+      '@brandora/brand-engine':
+        specifier: workspace:*
+        version: link:../brandora-brand-engine
+      '@brandora/config':
+        specifier: workspace:*
+        version: link:../brandora-config
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/brandora-auth:
+    dependencies:
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
   packages/brandora-brand-engine:
     dependencies:
       '@brandora/shared':
@@ -110,6 +145,19 @@ importers:
         version: 5.9.3
 
   packages/brandora-config:
+    dependencies:
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/brandora-database:
     dependencies:
       '@brandora/shared':
         specifier: workspace:*
@@ -328,6 +376,12 @@ importers:
 
   tests:
     dependencies:
+      '@brandora/ai':
+        specifier: workspace:*
+        version: link:../packages/brandora-ai
+      '@brandora/auth':
+        specifier: workspace:*
+        version: link:../packages/brandora-auth
       '@brandora/brand-engine':
         specifier: workspace:*
         version: link:../packages/brandora-brand-engine
@@ -337,6 +391,9 @@ importers:
       '@brandora/config':
         specifier: workspace:*
         version: link:../packages/brandora-config
+      '@brandora/database':
+        specifier: workspace:*
+        version: link:../packages/brandora-database
       '@brandora/i18n':
         specifier: workspace:*
         version: link:../packages/brandora-i18n
@@ -388,6 +445,19 @@ importers:
         version: 5.9.3
 
 packages:
+
+  '@anthropic-ai/sdk@0.68.0':
+    resolution: {integrity: sha512-SMYAmbbiprG8k1EjEPMTwaTqssDT7Ae+jxcR5kWXiqTlbwMR2AthXtscEVWOHkRfyAV5+y3PFYTJRNa3OJWIEw==}
+    hasBin: true
+    peerDependencies:
+      zod: ^3.25.0 || ^4.0.0
+    peerDependenciesMeta:
+      zod:
+        optional: true
+
+  '@babel/runtime@7.29.7':
+    resolution: {integrity: sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==}
+    engines: {node: '>=6.9.0'}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -782,6 +852,10 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
+  json-schema-to-ts@3.1.1:
+    resolution: {integrity: sha512-+DWg8jCJG2TEnpy7kOm/7/AxaYoaRbjVB4LFZLySZlWn8exGs3A4OLJR966cVvU26N7X9TWxl+Jsw7dzAqKT6g==}
+    engines: {node: '>=16'}
+
   loupe@3.2.1:
     resolution: {integrity: sha512-CdzqowRJCeLU72bHvWqwRBBlLcMEtIvGrlvef74kMnV2AolS9Y8xUv1I0U/MNAWMhBlKIoyuEgoJ0t/bbwHbLQ==}
 
@@ -845,6 +919,9 @@ packages:
   tinyspy@3.0.2:
     resolution: {integrity: sha512-n1cw8k1k0x4pgA2+9XrOkFydTerNcJ1zWCO5Nn9scWHTD+5tp8dghT2x1uduQePZTZgd3Tupf+x9BxJjeJi77Q==}
     engines: {node: '>=14.0.0'}
+
+  ts-algebra@2.0.0:
+    resolution: {integrity: sha512-FPAhNPFMrkwz76P7cdjdmiShwMynZYN6SgOujD1urY4oNm80Ou9oMdmbR45LotcKOXoy7wSmHkRFE6Mxbrhefw==}
 
   turbo@2.10.7:
     resolution: {integrity: sha512-GHx6WExIFSKNJ5qMlzDpXBXlu9ApxaMjqxAVrCNcW94xf/+uqgIz41SAuRUMbXva2ExNAaY/h8V0q90SWSzmRw==}
@@ -925,6 +1002,12 @@ packages:
     hasBin: true
 
 snapshots:
+
+  '@anthropic-ai/sdk@0.68.0':
+    dependencies:
+      json-schema-to-ts: 3.1.1
+
+  '@babel/runtime@7.29.7': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
@@ -1193,6 +1276,11 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
+  json-schema-to-ts@3.1.1:
+    dependencies:
+      '@babel/runtime': 7.29.7
+      ts-algebra: 2.0.0
+
   loupe@3.2.1: {}
 
   magic-string@0.30.21:
@@ -1263,6 +1351,8 @@ snapshots:
   tinyrainbow@1.2.0: {}
 
   tinyspy@3.0.2: {}
+
+  ts-algebra@2.0.0: {}
 
   turbo@2.10.7:
     optionalDependencies:

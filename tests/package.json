@@ -24,7 +24,10 @@
     "@harmony/verification-engine": "workspace:*",
     "@harmony/expert-matching": "workspace:*",
     "@harmony/pricing-engine": "workspace:*",
-    "@harmony/deliverables": "workspace:*"
+    "@harmony/deliverables": "workspace:*",
+    "@brandora/database": "workspace:*",
+    "@brandora/auth": "workspace:*",
+    "@brandora/ai": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

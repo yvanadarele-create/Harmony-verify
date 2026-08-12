@@ -147,7 +147,35 @@ export function supplierCacheTtlMinutes(source: Env = env()): number {
 }
 
 export function publicBaseUrl(source: Env = env()): string {
-  return optional("PUBLIC_BASE_URL", "http://localhost:4173", source);
+  return optional("BRANDORA_PUBLIC_BASE_URL", "http://localhost:4100", source);
+}
+
+/* --- Persistence --------------------------------------------------------- */
+
+/**
+ * Where Brandora's database lives.
+ *
+ * Separate from Harmony's `DATABASE_PATH` so the two products cannot end up
+ * sharing a file: one schema's migration would corrupt the other's tables, and
+ * the failure would look like data loss rather than a configuration mistake.
+ */
+export function databasePath(source: Env = env()): string {
+  return optional("BRANDORA_DATABASE_PATH", "./data/brandora.db", source);
+}
+
+/**
+ * Signs session cookies.
+ *
+ * Required rather than defaulted: a development fallback here is a fallback
+ * that reaches production, and a known signing secret means anyone can mint a
+ * session for any account.
+ */
+export function authSecret(source: Env = env()): string {
+  return required(
+    "BRANDORA_AUTH_SECRET",
+    "Generate with: node -e \"console.log(require('crypto').randomBytes(32).toString('base64'))\"",
+    source,
+  );
 }
 
 /* --- Display ------------------------------------------------------------- */
