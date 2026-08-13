@@ -28,9 +28,9 @@
 (function () {
   "use strict";
 
-  /* The founder's Calendly link, e.g. "https://calendly.com/harmonyverify/demo".
-     Empty until it is supplied — see the fallback note above. */
-  var SCHEDULING_URL = "";
+  /* The founder's Calendly event: "30 Minute Meeting", hosted on Zoom.
+     One value, used by every control on the site — see the fallback note above. */
+  var SCHEDULING_URL = "https://calendly.com/yvanadarele/30min";
 
   var WIDGET_JS = "https://assets.calendly.com/assets/external/widget.js";
   var WIDGET_CSS = "https://assets.calendly.com/assets/external/widget.css";

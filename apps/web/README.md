@@ -46,7 +46,7 @@ These need real values. Each is a placeholder today.
 | --- | --- | --- |
 | Contact email | `contact.html`, `assets/js/main.js` | Currently `hello@harmonyverify.org` |
 | Domain | All pages — `<link rel="canonical">`, OG tags, `sitemap.xml`, `robots.txt` | Currently `harmonyverify.org` |
-| Calendly link | `assets/js/calendly.js` — `SCHEDULING_URL` | Empty. See below |
+| Calendly link | `assets/js/calendly.js` — `SCHEDULING_URL` | Set: the "30 Minute Meeting" event. See below |
 | Form backend | `contact.html` | See below |
 | Legal pages | Footer | Privacy policy and terms are not yet written |
 
@@ -56,12 +56,13 @@ Every "Book a demo" control on the site carries `data-book-demo`, and one file d
 
 ```js
 // assets/js/calendly.js
-var SCHEDULING_URL = "https://calendly.com/your-handle/demo";
+var SCHEDULING_URL = "https://calendly.com/yvanadarele/30min";
 ```
 
-Set it and each of those controls opens the Calendly scheduler in a modal, live against your real
-availability. Leave it empty and they behave as ordinary links to the contact page — the site never
-ships a button that opens an empty scheduler.
+That is the account's "30 Minute Meeting" event, hosted on Zoom. Every control opens it — header,
+hero, final CTA, the enterprise tier on pricing, and the footer — so there is one link to change,
+not nine. Empty it and they fall back to ordinary links to the contact page, which is what ships
+before a link is configured: the site never offers a button that opens an empty scheduler.
 
 Nothing about scheduling lives in this repository: no slots, no calendar, no confirmation email.
 Calendly owns the booking and the confirmation that follows it. Their script is fetched on the first
