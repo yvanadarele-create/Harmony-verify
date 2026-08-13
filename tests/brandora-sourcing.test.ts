@@ -18,6 +18,7 @@ import {
   parseSupplierAmount,
   recommend,
   scoreOffer,
+  SIGN_METHOD,
   signRequest,
   sourcingTier,
   toCustomerBreakdown,
@@ -254,7 +255,11 @@ describe("AliExpress adapter — normalisation", () => {
     await spy.search({ keywords: "cups", quantity: 30, currency: "XOF", destinationCountry: "CI" });
     assert.ok(capture.last?.get("sign"));
     assert.equal(capture.last?.get("app_key"), "test-key");
-    assert.equal(capture.last?.get("sign_method"), "sha256");
+    // The declared method must name the digest signRequest computes. `sha256`
+    // is not one of the platform's documented values, and a mismatch here fails
+    // every live request with "invalid signature".
+    assert.equal(capture.last?.get("sign_method"), SIGN_METHOD);
+    assert.equal(SIGN_METHOD, "hmac-sha256");
   });
 
   test("a supplier error inside a 200 response is still an error", async () => {

@@ -58,10 +58,12 @@ function renderOverview(payload) {
     node.integrations.appendChild(
       el('div', { class: 'card' }, [
         el('h3', { style: 'font-size:1.05rem', text: integration.name }),
-        el('p', {
-          class: `tag ${integration.connected ? 'tag--ok' : 'tag--unconfirmed'}`,
-          text: integration.connected ? 'Connected' : 'Not configured',
-        }),
+        el('p', {}, [
+          el('span', {
+            class: `tag ${integration.connected ? 'tag--ok' : 'tag--unconfirmed'}`,
+            text: integration.connected ? 'Connected' : 'Not configured',
+          }),
+        ]),
         el(
           'dl',
           { class: 'book-defs book-defs--tight' },

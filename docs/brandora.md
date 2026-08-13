@@ -52,6 +52,7 @@ second supplier is one new file rather than an audit of the codebase.
 | `@brandora/database` | SQLite schema and repositories; ownership lives in the query |
 | `@brandora/auth` | scrypt password hashing, session lifecycle, authorization policy |
 | `@brandora/ai` | The Anthropic-backed `StrategyProvider` and the generation flow |
+| `@brandora/server` | The HTTP layer, the authoritative price, payments, and every API route |
 | `@brandora/web` (`apps/brandora`) | The front end |
 
 Run everything:
@@ -59,9 +60,12 @@ Run everything:
 ```bash
 pnpm install
 pnpm build:brandora   # builds the packages, emits the front-end data, checks the site
-pnpm test             # 473 tests
-pnpm brandora         # serves apps/brandora on :4100
+pnpm test             # 543 tests
+pnpm brandora         # serves apps/brandora and /api/* on :4100
 ```
+
+`BRANDORA_AUTH_SECRET` is required and has no development fallback. See
+[`brandora-deployment.md`](./brandora-deployment.md).
 
 ## Decisions worth knowing
 
@@ -161,33 +165,93 @@ admin message. It does not fabricate a brand — a provider that invents a
 plausible name and story is exactly what makes a demo look finished and a launch
 fail.
 
+## The server
+
+One process serves the site and the API from one origin. That is what lets the
+session live in an HttpOnly cookie the page's JavaScript cannot read, rather
+than in `localStorage`, where any injected script can take it — and it removes
+CORS, preflights and a second deployment along the way.
+
+Three rules run through every route, and they are structural rather than
+procedural — there is no request shape that breaks them:
+
+**The session names the user.** No route reads a `userId` from a body or a query
+string. `requireUser` returns the row the cookie resolved to, and that id is
+what goes into the `WHERE` clause.
+
+**Ownership is a filter, not a check.** `findProject(id)` followed by
+`if (project.userId !== me) throw` is the shape that produces IDOR bugs, because
+the next person to add a route remembers the first line and forgets the second.
+Reads take an owner and put it in the query, so another customer's project is
+*not found* — and a cross-user read returns **404, not 403**, because a 403
+confirms the id is real.
+
+**Money is recomputed, never accepted.** `packages/brandora-server/src/pricing.ts`
+has no function that accepts a price, a subtotal or a total. A client sends
+product ids, quantities and a customisation choice — three facts about intent.
+Checkout reads the amount from the stored quote; verification refuses to settle
+when the provider reports a different figure, and marks the payment `mismatch`.
+
+`tests/brandora-server-security.test.ts` scans the route file and fails if any
+of those three ever stops being true, which is the part that survives the next
+twenty routes.
+
+## The browser holds nothing
+
+`localStorage` holds a theme, a locale, which project is on screen, and the
+interview while it is still being typed — the last of which is a half-filled
+form, not a record. Brands, packages, quotes and orders are fetched from the
+server on every load, so signing in on a different phone shows the same thing
+and clearing a browser loses nothing. A test enumerates every storage key the
+front end writes and fails on anything else.
+
+The browser also never does currency arithmetic. Money crosses the wire as an
+integer *and* a formatted string, because a front end that divides by 100 turns
+15 000 FCFA into 150.
+
+## Payments
+
+Env-based Paystack, with the amount read from the stored quote at every step.
+The `payments` row records what was charged at initialisation, and verification
+compares the provider's figure against it — a difference is a tampered payment,
+refused rather than reconciled. Paystack takes amounts in the currency's
+smallest unit, which is exactly what `Money.amount` holds, including for XOF
+where the smallest unit *is* the franc. There is no `× 100` anywhere in that
+file; it is the most expensive bug available in a West African checkout.
+
+With no key configured, Brandora does not fabricate a charge. The order is
+placed and sits at `pending` until an administrator confirms an arranged
+transfer — an honest state a business can operate in, and how a great many
+orders in this market are actually settled.
+
 ## What is not built yet
 
 Stated plainly, because a specification section with no code behind it is not a
 feature:
 
-- **The HTTP server and API routes.** The database, auth and AI packages are
-  built and tested, but nothing yet wires them into `/api/*` endpoints, and the
-  front end still uses `localStorage` rather than talking to a server. This is
-  the next piece of work, and until it exists the customer journey is not
-  end-to-end.
-- **Payments.** No Paystack integration, no webhook handler, no server-side
-  verification. The order model has a `payment_status` column and nothing sets
-  it to `paid`.
-- **The admin dashboard.** The authorization rules and the admin-scoped
-  repository reads exist; the screens do not.
-- **The visualizer and brand-kit download.** The kit manifest and the guidelines
-  document are generated; no image is rendered and no zip is produced.
-- **Live AliExpress calls.** The adapter is written against the documented shape
-  and tested against recorded payloads. **The signing scheme must be verified
-  against current AliExpress documentation before the first live call** — the
-  platform has shipped more than one, and the wrong one fails every request with
-  "invalid signature". `signRequest` is exported so it can be checked against a
-  known-good signature from the console.
-- **Image and video generation.** The logo brief is generated and is written to
-  be handed to a designer or an image model; nothing calls one.
-- **Checkout and notifications.** The order lifecycle and the notification keys
-  are built; the screens and the delivery integration are not.
+- **Durable storage on serverless.** SQLite on a local disk is the right choice
+  for one long-lived process and the wrong one for Vercel's filesystem. See
+  [`brandora-deployment.md`](./brandora-deployment.md) — this needs a decision,
+  not a workaround.
+- **Live AliExpress calls.** The adapter is written against the platform's
+  published algorithm and tested against recorded payloads. **The signing scheme
+  has not been verified against AliExpress's own documentation** — the developer
+  portal was unreachable from the environment this was written in. Check
+  `signRequest` against a known-good signature from the console before the first
+  live call.
+- **The Paystack webhook route.** `paystackSignatureValid` is implemented and
+  tested; nothing yet mounts it as an endpoint. Payment is confirmed by the
+  customer's return to the order page, which verifies server-side — the webhook
+  would make that robust against a customer who closes the tab.
+- **Logo and image generation.** The logo brief is generated and written to be
+  handed to a designer or an image model. The brand book shows the monogram in
+  the brand's own typeface and colours, and says that is what it is. Nothing
+  calls an image model.
+- **The brand-kit download as a zip.** The guidelines document is generated and
+  downloadable as Markdown; the manifest lists what a full kit would contain.
+- **Notifications.** The keys and the order lifecycle are built; no email or
+  WhatsApp integration sends anything.
+- **Trends and social intelligence.** Not started.
 
 ## Deployment
 

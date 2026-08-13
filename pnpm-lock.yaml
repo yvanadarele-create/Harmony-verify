@@ -21,7 +21,11 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@22.20.1)
 
-  apps/brandora: {}
+  apps/brandora:
+    dependencies:
+      '@brandora/server':
+        specifier: workspace:*
+        version: link:../../packages/brandora-server
 
   apps/web: {}
 

@@ -7,5 +7,9 @@
     "dev": "node ../../packages/brandora-server/dist/bin/serve.js",
     "build": "echo 'static site \u2014 data is emitted by the engine packages' && exit 0",
     "test": "node ../../scripts/check-brandora.mjs"
+  },
+  "type": "module",
+  "dependencies": {
+    "@brandora/server": "workspace:*"
   }
 }

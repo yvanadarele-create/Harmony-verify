@@ -70,15 +70,27 @@ export interface AliExpressOptions {
  * as `key + value` with no separators, and take an uppercase hex HMAC-SHA256 of
  * that string using the app secret.
  *
- * ⚠️ Verify this against the current AliExpress documentation for the specific
- * gateway and API version before the first live call. The platform has shipped
- * more than one signing scheme (an MD5 variant that wraps the payload in the
- * secret, and this HMAC one) and picking the wrong one fails every request with
- * an unhelpful "invalid signature". The shape of this function — parameters in,
- * signature out, no I/O — is what makes that a one-line correction rather than
- * a rewrite, and `signRequest` is exported so it can be checked against a known
- * signature from the AliExpress console.
+ * ⚠️ **Not verified against the live documentation.** The AliExpress developer
+ * portal is unreachable from the environment this was written in, so this is
+ * built from the platform's published algorithm as described in secondary
+ * sources: parameters sorted by key, concatenated as `key + value`, HMAC-SHA256
+ * with the app secret, uppercase hex, declared as `sign_method=hmac-sha256`.
+ *
+ * The platform has shipped more than one scheme — an MD5 variant that wraps the
+ * payload in the secret (`secret + payload + secret`), an HMAC-MD5 one, and this
+ * one — and picking the wrong one fails every request with an unhelpful
+ * "invalid signature". **Check this against a known-good signature from the
+ * AliExpress console before the first live call.** The shape of this function —
+ * parameters in, signature out, no I/O — is what makes that a one-line
+ * correction rather than a rewrite, and it is exported so it can be checked
+ * directly.
  */
+/**
+ * The value sent as `sign_method`, kept beside the function that implements it
+ * so the declaration and the algorithm cannot drift apart.
+ */
+export const SIGN_METHOD = "hmac-sha256";
+
 export function signRequest(params: Record<string, string>, appSecret: string): string {
   const payload = Object.keys(params)
     .filter((key) => params[key] !== undefined && params[key] !== "")
@@ -188,7 +200,11 @@ export class AliExpressAdapter implements SupplierAdapter {
       method,
       access_token: accessToken,
       timestamp: formatTimestamp(this.now()),
-      sign_method: "sha256",
+      // The value must name the algorithm `signRequest` actually uses. The
+      // platform documents `md5`, `hmac` (HMAC-MD5) and `hmac-sha256`; plain
+      // `sha256` is not one of them, so a gateway that validated it at all
+      // would validate it against a different digest than we computed.
+      sign_method: SIGN_METHOD,
       format: "json",
       v: "2.0",
     };
