@@ -163,6 +163,7 @@ export const es: Catalogue = {
   "error.quote.expired": "Este presupuesto ha caducado. Podemos preparar uno nuevo.",
   "error.order.not-found": "No hemos encontrado ese pedido.",
   "error.auth.required": "Inicia sesión para continuar.",
+  "error.auth.weak-password": "Elige una contraseña más larga: al menos 10 caracteres.",
   "error.auth.forbidden": "No tienes acceso a esto.",
   "error.input.invalid": "Algo en el formulario no está bien. Revísalo e inténtalo de nuevo.",
   "error.rate.limited": "Son muchas peticiones. Espera un momento e inténtalo de nuevo.",

@@ -140,6 +140,7 @@
   "error.quote.expired": "Ce devis a expiré. Nous pouvons en préparer un nouveau.",
   "error.order.not-found": "Nous n'avons pas trouvé cette commande.",
   "error.auth.required": "Connectez-vous pour continuer.",
+  "error.auth.weak-password": "Choisissez un mot de passe plus long — au moins 10 caractères.",
   "error.auth.forbidden": "Vous n'avez pas accès à cette page.",
   "error.input.invalid": "Un champ ne semble pas correct. Vérifiez et réessayez.",
   "error.rate.limited": "Cela fait beaucoup de requêtes. Patientez un instant et réessayez.",

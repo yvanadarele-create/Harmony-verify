@@ -1,0 +1,37 @@
+{
+  "name": "@brandora/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "brandora-server": "./dist/bin/serve.js"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json",
+    "dev": "node --env-file-if-exists=../../.env dist/bin/serve.js"
+  },
+  "dependencies": {
+    "@brandora/ai": "workspace:*",
+    "@brandora/auth": "workspace:*",
+    "@brandora/brand-engine": "workspace:*",
+    "@brandora/catalog": "workspace:*",
+    "@brandora/config": "workspace:*",
+    "@brandora/database": "workspace:*",
+    "@brandora/i18n": "workspace:*",
+    "@brandora/quotes": "workspace:*",
+    "@brandora/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2"
+  }
+}

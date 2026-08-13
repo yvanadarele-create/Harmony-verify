@@ -196,6 +196,43 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
+  packages/brandora-server:
+    dependencies:
+      '@brandora/ai':
+        specifier: workspace:*
+        version: link:../brandora-ai
+      '@brandora/auth':
+        specifier: workspace:*
+        version: link:../brandora-auth
+      '@brandora/brand-engine':
+        specifier: workspace:*
+        version: link:../brandora-brand-engine
+      '@brandora/catalog':
+        specifier: workspace:*
+        version: link:../brandora-catalog
+      '@brandora/config':
+        specifier: workspace:*
+        version: link:../brandora-config
+      '@brandora/database':
+        specifier: workspace:*
+        version: link:../brandora-database
+      '@brandora/i18n':
+        specifier: workspace:*
+        version: link:../brandora-i18n
+      '@brandora/quotes':
+        specifier: workspace:*
+        version: link:../brandora-quotes
+      '@brandora/shared':
+        specifier: workspace:*
+        version: link:../brandora-shared
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
   packages/brandora-shared:
     devDependencies:
       '@types/node':
@@ -400,6 +437,9 @@ importers:
       '@brandora/quotes':
         specifier: workspace:*
         version: link:../packages/brandora-quotes
+      '@brandora/server':
+        specifier: workspace:*
+        version: link:../packages/brandora-server
       '@brandora/shared':
         specifier: workspace:*
         version: link:../packages/brandora-shared

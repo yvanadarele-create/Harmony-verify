@@ -20,6 +20,7 @@ export const CUSTOMER_MESSAGES = {
   "quote.expired": "This quote has expired. We can prepare a fresh one for you.",
   "order.not-found": "We couldn't find that order.",
   "auth.required": "Please sign in to continue.",
+  "auth.weak-password": "Please choose a longer password — at least 10 characters.",
   "auth.forbidden": "You don't have access to this.",
   "input.invalid": "Something in that form didn't look right. Please check and try again.",
   "rate.limited": "That's a lot of requests. Please wait a moment and try again.",

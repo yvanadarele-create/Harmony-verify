@@ -166,6 +166,28 @@ export interface QuoteRowInternal extends QuoteRow {
   margin: Money;
 }
 
+export interface PackageItemRow {
+  id: string;
+  projectId: string;
+  productId: string;
+  quantity: number;
+  customizationMethod?: string;
+  createdAt: string;
+}
+
+export type PaymentStatusRow = "initialised" | "paid" | "failed" | "abandoned" | "mismatch";
+
+export interface PaymentRow {
+  id: string;
+  orderId: string;
+  provider: string;
+  reference: string;
+  amount: Money;
+  status: PaymentStatusRow;
+  verifiedAt?: string;
+  createdAt: string;
+}
+
 export type PaymentStatus = "unpaid" | "pending" | "paid" | "failed" | "refunded";
 export type FulfillmentStatus =
   | "pending"
@@ -192,6 +214,29 @@ export interface OrderRow {
   createdAt: string;
   updatedAt: string;
 }
+
+const toPackageItem = (row: Record<string, unknown>): PackageItemRow => {
+  const method = text(row["customization_method"]);
+  return {
+    id: text(row["id"]),
+    projectId: text(row["project_id"]),
+    productId: text(row["product_id"]),
+    quantity: int(row["quantity"]),
+    customizationMethod: method === "" ? undefined : method,
+    createdAt: text(row["created_at"]),
+  };
+};
+
+const toPayment = (row: Record<string, unknown>): PaymentRow => ({
+  id: text(row["id"]),
+  orderId: text(row["order_id"]),
+  provider: text(row["provider"]),
+  reference: text(row["reference"]),
+  amount: readMoney(row["amount"], row["currency"]),
+  status: text(row["status"]) as PaymentStatusRow,
+  verifiedAt: optionalText(row["verified_at"]),
+  createdAt: text(row["created_at"]),
+});
 
 function toQuote(row: Record<string, unknown>): QuoteRow {
   const currency = text(row["currency"]) as CurrencyCode;
@@ -287,6 +332,29 @@ export interface Repositories {
     findForProject(projectId: string): IdentityRow | null;
   };
 
+  packages: {
+    /** Adds, or increases the quantity of an identical existing line. */
+    add(projectId: string, productId: string, quantity: number, method?: string): PackageItemRow;
+    setQuantity(projectId: string, itemId: string, quantity: number): void;
+    remove(projectId: string, itemId: string): void;
+    clear(projectId: string): void;
+    listForProject(projectId: string): PackageItemRow[];
+  };
+
+  payments: {
+    create(input: {
+      orderId: string;
+      provider: string;
+      reference: string;
+      amount: number;
+      currency: CurrencyCode;
+    }): PaymentRow;
+    findByReference(reference: string): PaymentRow | null;
+    markPaid(reference: string, verifiedAt?: string): void;
+    markStatus(reference: string, status: PaymentStatusRow): void;
+    listForOrder(orderId: string): PaymentRow[];
+  };
+
   quotes: {
     create(input: {
       projectId: string;
@@ -303,7 +371,17 @@ export interface Repositories {
     }): QuoteRow;
     findForOwner(id: string, userId: string): QuoteRow | null;
     listForOwner(userId: string): QuoteRow[];
+    listForProject(projectId: string, userId: string): QuoteRow[];
     setStatus(id: string, status: QuoteStatusRow): void;
+    /**
+     * The next number in a human-readable reference series.
+     *
+     * Advisory, not a guarantee: the UNIQUE index on `reference` is what
+     * actually prevents a collision, and the caller retries on one. A counter
+     * table would serialise every quote behind a single row for a number that
+     * only exists so someone can read it down a phone line.
+     */
+    nextSequence(referencePrefix: string): number;
     /** Returns margin. Admin surfaces only. */
     findAsAdmin(id: string): QuoteRowInternal | null;
     listAsAdmin(limit?: number): QuoteRowInternal[];
@@ -320,6 +398,8 @@ export interface Repositories {
     }): OrderRow;
     findForOwner(id: string, userId: string): OrderRow | null;
     listForOwner(userId: string): OrderRow[];
+    findByReference(reference: string): OrderRow | null;
+    nextSequence(referencePrefix: string): number;
     setPaymentStatus(id: string, status: PaymentStatus): void;
     setFulfillmentStatus(id: string, status: FulfillmentStatus): void;
     addEvent(orderId: string, kind: string, actor: string, detail?: string): void;
@@ -633,6 +713,108 @@ export function createRepositories(db: Db): Repositories {
       },
     },
 
+    packages: {
+      add(projectId, productId, quantity, method) {
+        const now = nowIso();
+        const key = method ?? "";
+        const existing = get(
+          `SELECT * FROM package_items WHERE project_id = ? AND product_id = ? AND customization_method = ?`,
+          projectId, productId, key,
+        );
+
+        if (existing) {
+          // Adding the same product twice raises the line rather than creating a
+          // second one — two lines of the same cup is not what a customer meant.
+          const next = int(existing["quantity"]) + quantity;
+          run(`UPDATE package_items SET quantity = ? WHERE id = ?`, next, text(existing["id"]));
+          return { ...toPackageItem(existing), quantity: next };
+        }
+
+        const id = newId("packageItem");
+        run(
+          `INSERT INTO package_items (id,project_id,product_id,quantity,customization_method,created_at)
+           VALUES (?,?,?,?,?,?)`,
+          id, projectId, productId, quantity, key, now,
+        );
+        return {
+          id, projectId, productId, quantity,
+          customizationMethod: key === "" ? undefined : key,
+          createdAt: now,
+        };
+      },
+
+      setQuantity(projectId, itemId, quantity) {
+        // Project-scoped, so an id from another customer's package updates nothing.
+        run(
+          `UPDATE package_items SET quantity = ? WHERE id = ? AND project_id = ?`,
+          quantity, itemId, projectId,
+        );
+      },
+
+      remove(projectId, itemId) {
+        run(`DELETE FROM package_items WHERE id = ? AND project_id = ?`, itemId, projectId);
+      },
+
+      clear(projectId) {
+        run(`DELETE FROM package_items WHERE project_id = ?`, projectId);
+      },
+
+      listForProject(projectId) {
+        return all(
+          `SELECT * FROM package_items WHERE project_id = ? ORDER BY created_at ASC`,
+          projectId,
+        ).map(toPackageItem);
+      },
+    },
+
+    payments: {
+      create(input) {
+        const now = nowIso();
+        const id = newId("payment");
+        run(
+          `INSERT INTO payments (id,order_id,provider,reference,amount,currency,status,created_at,updated_at)
+           VALUES (?,?,?,?,?,?,?,?,?)`,
+          id, input.orderId, input.provider, input.reference, input.amount,
+          input.currency, "initialised", now, now,
+        );
+        return {
+          id, orderId: input.orderId, provider: input.provider,
+          reference: input.reference,
+          amount: readMoney(input.amount, input.currency),
+          status: "initialised", createdAt: now,
+        };
+      },
+
+      findByReference(reference) {
+        const row = get(`SELECT * FROM payments WHERE reference = ?`, reference);
+        return row ? toPayment(row) : null;
+      },
+
+      markPaid(reference, verifiedAt = nowIso()) {
+        // Idempotent: a duplicate webhook for an already-paid reference changes
+        // nothing, which is what makes replayed deliveries harmless.
+        run(
+          `UPDATE payments SET status = 'paid', verified_at = ?, updated_at = ?
+           WHERE reference = ? AND status <> 'paid'`,
+          verifiedAt, nowIso(), reference,
+        );
+      },
+
+      markStatus(reference, status) {
+        run(
+          `UPDATE payments SET status = ?, updated_at = ? WHERE reference = ?`,
+          status, nowIso(), reference,
+        );
+      },
+
+      listForOrder(orderId) {
+        return all(
+          `SELECT * FROM payments WHERE order_id = ? ORDER BY created_at ASC`,
+          orderId,
+        ).map(toPayment);
+      },
+    },
+
     quotes: {
       create(input) {
         const now = nowIso();
@@ -659,8 +841,23 @@ export function createRepositories(db: Db): Repositories {
         return all(`SELECT * FROM quotes WHERE user_id = ? ORDER BY created_at DESC`, userId).map(toQuote);
       },
 
+      // The owner is in the WHERE clause alongside the project, so quoting
+      // another customer's project id returns nothing rather than their prices.
+      listForProject(projectId, userId) {
+        return all(
+          `SELECT * FROM quotes WHERE project_id = ? AND user_id = ? ORDER BY created_at DESC`,
+          projectId,
+          userId,
+        ).map(toQuote);
+      },
+
       setStatus(id, status) {
         run(`UPDATE quotes SET status = ? WHERE id = ?`, status, id);
+      },
+
+      nextSequence(referencePrefix) {
+        const row = get(`SELECT COUNT(*) AS n FROM quotes WHERE reference LIKE ?`, `${referencePrefix}%`);
+        return int(row?.["n"]) + 1;
       },
 
       findAsAdmin(id) {
@@ -701,6 +898,19 @@ export function createRepositories(db: Db): Repositories {
 
       listForOwner(userId) {
         return all(`SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC`, userId).map(toOrder);
+      },
+
+      // Unscoped by design: a payment provider's callback names an order by
+      // reference and carries no session. Every caller of this re-checks
+      // ownership before returning anything to a browser.
+      findByReference(reference) {
+        const row = get(`SELECT * FROM orders WHERE reference = ?`, reference);
+        return row ? toOrder(row) : null;
+      },
+
+      nextSequence(referencePrefix) {
+        const row = get(`SELECT COUNT(*) AS n FROM orders WHERE reference LIKE ?`, `${referencePrefix}%`);
+        return int(row?.["n"]) + 1;
       },
 
       setPaymentStatus(id, status) {

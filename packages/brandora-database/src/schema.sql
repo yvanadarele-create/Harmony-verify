@@ -138,6 +138,25 @@ CREATE TABLE IF NOT EXISTS products (
   UNIQUE (supplier, external_id)
 );
 
+/* --- Packages -------------------------------------------------------------- */
+
+-- The customer's working basket, one row per line.
+--
+-- `customization_method` defaults to the empty string rather than NULL because
+-- SQLite treats NULLs as distinct in a UNIQUE index: with NULL, "add the same
+-- cup with no customisation twice" would create two rows instead of merging.
+CREATE TABLE IF NOT EXISTS package_items (
+  id                   TEXT PRIMARY KEY,
+  project_id           TEXT NOT NULL REFERENCES brand_projects(id) ON DELETE CASCADE,
+  product_id           TEXT NOT NULL,
+  quantity             INTEGER NOT NULL CHECK (quantity > 0),
+  customization_method TEXT NOT NULL DEFAULT '',
+  created_at           TEXT NOT NULL,
+  UNIQUE (project_id, product_id, customization_method)
+);
+
+CREATE INDEX IF NOT EXISTS idx_package_items_project ON package_items(project_id);
+
 /* --- Quotes and orders ---------------------------------------------------- */
 
 CREATE TABLE IF NOT EXISTS quotes (
@@ -181,6 +200,26 @@ CREATE TABLE IF NOT EXISTS orders (
 );
 
 CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(user_id);
+
+-- Payment attempts, one row per provider transaction.
+--
+-- `amount` is recorded at initialisation and compared against the provider's
+-- reported amount at verification: a mismatch is a tampered payment, not a
+-- rounding difference, and is refused.
+CREATE TABLE IF NOT EXISTS payments (
+  id            TEXT PRIMARY KEY,
+  order_id      TEXT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+  provider      TEXT NOT NULL,
+  reference     TEXT NOT NULL UNIQUE,
+  amount        INTEGER NOT NULL,
+  currency      TEXT NOT NULL,
+  status        TEXT NOT NULL CHECK (status IN ('initialised','paid','failed','abandoned','mismatch')),
+  verified_at   TEXT,
+  created_at    TEXT NOT NULL,
+  updated_at    TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id);
 
 -- Append-only. An order's history is evidence when a customer asks why their
 -- order sat for three days, so rows are never updated or deleted.

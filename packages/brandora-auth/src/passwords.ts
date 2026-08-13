@@ -17,6 +17,8 @@
 
 import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 
+import { BrandoraError } from "@brandora/shared";
+
 /**
  * scrypt cost. N=16384 is the widely recommended interactive-login setting:
  * roughly 50–100ms per hash on a small server, which is imperceptible to a
@@ -36,10 +38,17 @@ export interface PasswordRecord {
 /** Rejected before hashing — a rule the database cannot express. */
 export const MIN_PASSWORD_LENGTH = 10;
 
-export class WeakPasswordError extends Error {
-  readonly status = 400;
+/**
+ * A BrandoraError, not a bare Error.
+ *
+ * The distinction is not cosmetic: the HTTP layer maps `BrandoraError` to a
+ * status and a customer-safe sentence, and turns anything else into a 500
+ * "something went wrong on our side". A person who typed a six-character
+ * password must be told to type a longer one, not told the server broke.
+ */
+export class WeakPasswordError extends BrandoraError {
   constructor(reason: string) {
-    super(reason);
+    super("auth.weak-password", reason, 400);
     this.name = "WeakPasswordError";
   }
 }

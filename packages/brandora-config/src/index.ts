@@ -107,6 +107,38 @@ export const aiConfigured = (source: Env = env()): boolean => {
   return typeof v === "string" && v.trim() !== "";
 };
 
+/* --- Payments ------------------------------------------------------------ */
+
+const PAYSTACK_HINT =
+  "Set it in the deployment's encrypted environment settings. Paystack Dashboard → Settings → API Keys & Webhooks.";
+
+/**
+ * SECRET. Authorises charges and signs webhook verification.
+ *
+ * Never reaches the browser: checkout is initialised server-side and the
+ * customer is handed an authorization URL, not a key.
+ */
+export function paystackSecretKey(source: Env = env()): string {
+  return required("PAYSTACK_SECRET_KEY", PAYSTACK_HINT, source);
+}
+
+export function paystackEndpoint(source: Env = env()): string {
+  return optional("PAYSTACK_ENDPOINT", "https://api.paystack.co", source);
+}
+
+export function paystackConfigured(source: Env = env()): boolean {
+  const v = source["PAYSTACK_SECRET_KEY"];
+  return typeof v === "string" && v.trim() !== "";
+}
+
+export function paystackIntegrationStatus(source: Env = env()): IntegrationStatus {
+  return {
+    name: "Paystack",
+    connected: paystackConfigured(source),
+    fields: [{ label: "Secret Key", masked: maskCredential(source["PAYSTACK_SECRET_KEY"]) }],
+  };
+}
+
 /* --- Commercial settings ------------------------------------------------- */
 
 export function defaultCurrency(source: Env = env()): CurrencyCode {
@@ -138,6 +170,30 @@ export function sourcingThresholds(source: Env = env()): SourcingThresholds {
   return {
     smallMax: numeric("BRANDORA_SOURCING_SMALL_MAX", 50, source),
     mediumMax: numeric("BRANDORA_SOURCING_MEDIUM_MAX", 500, source),
+  };
+}
+
+/**
+ * Local delivery, in minor units of the default currency.
+ *
+ * Presented to the customer as Brandora's own delivery charge, never as a
+ * carrier's quoted price — no freight API has been called, and §38 forbids
+ * dressing an internal figure up as a published one.
+ */
+export interface DeliverySettings {
+  /** Flat charge per order. */
+  flat: number;
+  /** Additional charge per kilogram of shipped weight. */
+  perKg: number;
+  /** Round the customer's total up to a multiple of this. 0 disables. */
+  roundingStep: number;
+}
+
+export function deliverySettings(source: Env = env()): DeliverySettings {
+  return {
+    flat: numeric("BRANDORA_DELIVERY_FLAT", 3_000, source),
+    perKg: numeric("BRANDORA_DELIVERY_PER_KG", 1_200, source),
+    roundingStep: numeric("BRANDORA_ROUNDING_STEP", 100, source),
   };
 }
 
