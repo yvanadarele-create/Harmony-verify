@@ -2,7 +2,7 @@
   "name": "harmony-verify",
   "version": "0.1.0",
   "private": true,
-  "description": "Harmony Verify — clinical verification infrastructure for healthcare AI",
+  "description": "Harmony Verify \u2014 clinical verification infrastructure for healthcare AI",
   "packageManager": "pnpm@10.33.0",
   "engines": {
     "node": ">=20"
@@ -17,8 +17,8 @@
     "tokens": "pnpm --filter @harmony/design-system build",
     "build:web": "node scripts/site-urls.mjs && pnpm --filter @harmony/design-system build && node scripts/check-web.mjs",
     "site:urls": "node scripts/site-urls.mjs",
-    "brandora": "pnpm --filter @brandora/web dev",
-    "build:brandora": "pnpm --filter @brandora/shared --filter @brandora/config --filter @brandora/i18n --filter @brandora/brand-engine --filter @brandora/catalog --filter @brandora/sourcing --filter @brandora/quotes build && node scripts/check-brandora.mjs"
+    "brandora": "node packages/brandora-server/dist/bin/serve.js",
+    "build:brandora": "pnpm --filter @brandora/shared --filter @brandora/config --filter @brandora/i18n --filter @brandora/brand-engine --filter @brandora/catalog --filter @brandora/sourcing --filter @brandora/quotes --filter @brandora/database --filter @brandora/auth --filter @brandora/ai --filter @brandora/server build && node scripts/check-brandora.mjs"
   },
   "devDependencies": {
     "turbo": "^2.3.3",

@@ -1,235 +1,245 @@
 /**
- * The catalogue (§25, §35, §36).
+ * The catalogue (§34, §35, §36).
  *
- * Two rules from the spec are visible on this page rather than buried.
+ * Three rules the server enforces and this page has to *show*:
  *
- * §35: when you tell Brandora how many you need, anything that cannot be ordered
- * at that quantity leaves the main list and appears under a heading that says
- * why. It is not hidden — a founder who sees "available from 50" learns
- * something useful about their own order.
+ *   §35 — a product that cannot be ordered at the stated quantity is demoted,
+ *   not deleted. "This exists, from fifty" is useful; a product silently
+ *   vanishing teaches nothing.
  *
- * §36: a product only shows "customisation available" when that has actually
- * been confirmed. Everything else says "not confirmed", which is honest and
- * costs one word.
+ *   §36 — "carries your logo" is a claim, and it is only made where the
+ *   catalogue has confirmed it. Everything else says so in as many words.
+ *
+ *   §38 — no delivery date is shown, because none has been quoted by a carrier.
+ *
+ * Adding to a package writes to the server, against the project. The browser
+ * holds nothing but the id of the project being worked on.
  */
 
-(function () {
-  'use strict';
+import {
+  ApiError,
+  api,
+  clear,
+  currentProjectId,
+  el,
+  hideError,
+  mountAccountNav,
+  price,
+  projectUrl,
+  showError,
+} from './api.js';
 
-  var PACKAGE_KEY = 'brandora.package';
+const node = {
+  quantity: document.querySelector('[data-quantity]'),
+  category: document.querySelector('[data-category]'),
+  search: document.querySelector('[data-search]'),
+  customizable: document.querySelector('[data-customizable]'),
+  products: document.querySelector('[data-products]'),
+  nearMisses: document.querySelector('[data-near-misses]'),
+  nearWrap: document.querySelector('[data-near-wrap]'),
+  count: document.querySelector('[data-count]'),
+  banner: document.querySelector('[data-brand-banner]'),
+  error: document.querySelector('[data-error]'),
+};
 
-  var state = { products: [], quantity: 30, category: '', customizableOnly: false, search: '' };
+const state = {
+  projectId: currentProjectId(),
+  user: null,
+  brandName: null,
+  recommended: new Map(),
+};
 
-  var el = {
-    list: document.querySelector('[data-products]'),
-    near: document.querySelector('[data-near-misses]'),
-    nearWrap: document.querySelector('[data-near-wrap]'),
-    quantity: document.querySelector('[data-quantity]'),
-    category: document.querySelector('[data-category]'),
-    customizable: document.querySelector('[data-customizable]'),
-    search: document.querySelector('[data-search]'),
-    count: document.querySelector('[data-count]'),
-  };
+/* --- Rendering -------------------------------------------------------------- */
 
-  function money(amount) {
-    // FCFA has no minor unit, so the figure is the amount. `Intl` is told not to
-    // add decimals rather than being left to guess from the locale.
-    var locale = { en: 'en-GB', fr: 'fr-FR', es: 'es-ES' }[document.documentElement.lang] || 'en-GB';
-    return new Intl.NumberFormat(locale, { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount) + ' FCFA';
-  }
+function customizationTag(product) {
+  const info = product.customization;
+  return el('span', {
+    class: `tag ${info.canCarryLogo ? 'tag--ok' : 'tag--unconfirmed'}`,
+    text: info.label,
+  });
+}
 
-  function escapeHtml(value) {
-    return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
-    });
-  }
+function productCard(product, orderable, quantity) {
+  const reason = state.recommended.get(product.id);
 
-  function t(key, fallback, vars) {
-    var translated = window.brandoraTranslate ? window.brandoraTranslate(key, vars) : null;
-    return translated == null ? fallback : translated;
-  }
+  const actions = orderable
+    ? [
+        el('button', {
+          class: 'btn btn--primary btn--small',
+          type: 'button',
+          'data-add': product.id,
+          text: 'Add to my package',
+        }),
+      ]
+    : [
+        el('p', {
+          class: 'product__meta',
+          text: `Minimum order ${product.minimumQuantity}. Raise your quantity to add it.`,
+        }),
+      ];
 
-  /** Mirrors `satisfiesQuantity` in @brandora/catalog. */
-  function satisfiesQuantity(product, quantity) {
-    return product.minimumQuantity <= quantity && product.availableQuantity >= quantity;
-  }
+  return el('article', { class: 'card' }, [
+    el('h3', { text: product.name }),
+    el('p', { class: 'product__meta', text: `${product.category} · ${product.subcategory}` }),
+    el('p', { text: product.description }),
+    reason ? el('p', { class: 'product__reason', text: `Recommended: ${reason}` }) : null,
+    el('p', { class: 'product__price', text: `${price(product.unitPrice)} per unit` }),
+    el('p', { class: 'product__meta' }, [
+      customizationTag(product),
+      el('span', { text: ` Minimum ${product.minimumQuantity}` }),
+    ]),
+    // §38 in the interface, not only in the data.
+    el('p', { class: 'product__meta', text: 'Delivery estimate available once your order is confirmed.' }),
+    ...actions,
+  ]);
+}
 
-  /** Mirrors `isCustomizable` — `unknown` is never treated as yes (§36). */
-  function isCustomizable(product) {
-    return product.customization.confidence === 'verified' || product.customization.confidence === 'reported';
-  }
+function render(payload, quantity) {
+  clear(node.products);
+  clear(node.nearMisses);
 
-  function normalise(value) {
-    return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  }
+  payload.products.forEach((product) => {
+    node.products.appendChild(productCard(product, true, quantity));
+  });
 
-  function matchesSearch(product, term) {
-    var needle = normalise(term);
-    return [product.name, product.description, product.subcategory, product.material || ''].some(function (field) {
-      return normalise(field).indexOf(needle) !== -1;
-    });
-  }
+  const near = payload.nearMisses || [];
+  near.forEach((product) => {
+    node.nearMisses.appendChild(productCard(product, false, quantity));
+  });
 
-  function card(product, orderable) {
-    var custom = product.customization;
-    var tag =
-      custom.confidence === 'verified'
-        ? '<span class="tag tag--ok">' + t('catalog.customizable', 'Customisation available') + '</span>'
-        : custom.confidence === 'reported'
-          ? '<span class="tag tag--ok">Customisation reported</span>'
-          : '<span class="tag tag--unconfirmed">' + t('catalog.customization.unknown', 'Customisation not confirmed') + '</span>';
+  node.nearWrap.hidden = near.length === 0;
 
-    var action = orderable
-      ? '<button type="button" class="btn btn--primary btn--small" data-add="' + escapeHtml(product.id) + '">' +
-        t('catalog.add', 'Add to Brand Package') +
-        '</button>'
-      : '<span class="product__meta">' + t('catalog.moq', 'From {min} units', { min: product.minimumQuantity }) + '</span>';
+  node.count.textContent = `${payload.products.length} of ${payload.total} products can be ordered at ${quantity} units.`;
 
-    return (
-      '<article class="card">' +
-      '<h3 style="font-size:1.05rem">' + escapeHtml(product.name) + '</h3>' +
-      '<p class="product__meta">' + escapeHtml(product.subcategory) + (product.material ? ' &middot; ' + escapeHtml(product.material) : '') + '</p>' +
-      '<p style="font-size:0.92rem;color:var(--ink-muted)">' + escapeHtml(product.description) + '</p>' +
-      '<p>' + tag + '</p>' +
-      '<p class="product__price">' + money(product.indicativeUnitPrice.amount) + ' <span class="product__meta">/ unit</span></p>' +
-      '<p class="product__meta">' + t('catalog.moq', 'From {min} units', { min: product.minimumQuantity }) + '</p>' +
-      action +
-      '</article>'
+  if (payload.products.length === 0 && near.length === 0) {
+    node.products.appendChild(
+      el('p', { class: 'notice', text: 'Nothing matches that yet. Try a different category or quantity.' }),
     );
   }
+}
 
-  function render() {
-    var quantity = state.quantity;
+/* --- Loading ----------------------------------------------------------------- */
 
-    var eligible = state.products.filter(function (product) {
-      if (product.status !== 'active') return false;
-      if (state.category && product.category !== state.category) return false;
-      if (state.customizableOnly && !isCustomizable(product)) return false;
-      if (state.search && !matchesSearch(product, state.search)) return false;
-      return true;
+function currentQuantity() {
+  const parsed = Number(node.quantity.value);
+  return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : 30;
+}
+
+async function load() {
+  const quantity = currentQuantity();
+  const params = new URLSearchParams();
+  params.set('quantity', String(quantity));
+  if (node.category.value) params.set('category', node.category.value);
+  if (node.search.value.trim()) params.set('q', node.search.value.trim());
+  if (node.customizable.checked) params.set('customizable', 'true');
+
+  try {
+    render(await api.catalog(params.toString()), quantity);
+  } catch (err) {
+    showError(node.error, err);
+  }
+}
+
+/**
+ * Rank the catalogue for the brand on screen.
+ *
+ * The ranking never filters: it annotates. A founder browsing the catalogue is
+ * allowed to buy whatever they like, and "Recommended for your brand" is a
+ * suggestion with a reason attached, not a gate.
+ */
+async function loadRecommendations() {
+  if (!state.projectId || !state.user) return;
+  try {
+    const [project, recommendations] = await Promise.all([
+      api.project(state.projectId),
+      api.recommendations(state.projectId, currentQuantity()),
+    ]);
+
+    state.brandName = project.strategy ? project.strategy.name : null;
+    recommendations.recommendations.forEach((entry) => {
+      state.recommended.set(entry.product.id, entry.reasons[0] || '');
     });
 
-    var matches = [];
-    var nearMisses = [];
-    eligible.forEach(function (product) {
-      if (!quantity || satisfiesQuantity(product, quantity)) matches.push(product);
-      else nearMisses.push(product);
-    });
-
-    el.list.innerHTML = matches.length
-      ? matches
-          .map(function (product) {
-            return card(product, true);
-          })
-          .join('')
-      : '<p class="notice">' + t('catalog.empty', 'Nothing here yet.') + '</p>';
-
-    if (nearMisses.length) {
-      el.nearWrap.hidden = false;
-      el.near.innerHTML = nearMisses
-        .map(function (product) {
-          return card(product, false);
-        })
-        .join('');
-    } else {
-      el.nearWrap.hidden = true;
-      el.near.innerHTML = '';
+    if (state.brandName) {
+      node.banner.textContent = `Browsing for ${state.brandName}. Products we recommend for it are marked.`;
+      node.banner.hidden = false;
     }
+  } catch (err) {
+    // No brand yet, or not this customer's project. The catalogue is still a
+    // catalogue; it just does not recommend anything.
+  }
+}
 
-    el.count.textContent = matches.length + (matches.length === 1 ? ' product' : ' products');
+/* --- Adding ------------------------------------------------------------------ */
+
+async function add(productId, button) {
+  hideError(node.error);
+
+  if (!state.user) {
+    window.location.href = `login.html?next=${encodeURIComponent('/catalog')}`;
+    return;
   }
 
-  /* --- Adding to the package --------------------------------------------- */
-
-  function readPackage() {
-    try {
-      var raw = localStorage.getItem(PACKAGE_KEY);
-      return raw ? JSON.parse(raw) : { items: [] };
-    } catch (err) {
-      return { items: [] };
-    }
+  if (!state.projectId) {
+    // A package belongs to a brand. Rather than inventing an anonymous basket,
+    // send them to the one screen that produces a project.
+    showError(node.error, new ApiError(400, 'no-project', 'Create your brand first, then add products to it.'));
+    return;
   }
 
-  function addToPackage(productId) {
-    var product = state.products.find(function (candidate) {
-      return candidate.id === productId;
-    });
-    if (!product) return;
+  button.disabled = true;
+  const original = button.textContent;
+  button.textContent = 'Adding…';
 
-    // The same clamp the package builder applies server-side: a quantity below
-    // the product's minimum becomes the minimum rather than an error.
-    var quantity = Math.max(state.quantity || product.minimumQuantity, product.minimumQuantity);
-
-    var pkg = readPackage();
-    var existing = pkg.items.find(function (item) {
-      return item.productId === productId;
+  try {
+    const result = await api.addItem(state.projectId, {
+      productId,
+      quantity: currentQuantity(),
     });
 
-    if (existing) existing.quantity += quantity;
-    else pkg.items.push({ productId: productId, name: product.name, quantity: quantity });
+    const adjusted = (result.adjustments || []).find((entry) => entry.productId === productId);
+    button.textContent = adjusted
+      ? `Added ${adjusted.charged} (its minimum)`
+      : `Added ${currentQuantity()}`;
 
-    try {
-      localStorage.setItem(PACKAGE_KEY, JSON.stringify(pkg));
-    } catch (err) {
-      return;
-    }
-
-    var button = document.querySelector('[data-add="' + productId + '"]');
-    if (button) {
-      var original = button.textContent;
-      button.textContent = 'Added ✓';
-      button.disabled = true;
-      window.setTimeout(function () {
-        button.textContent = original;
-        button.disabled = false;
-      }, 1400);
-    }
+    setTimeout(() => {
+      button.textContent = original;
+      button.disabled = false;
+    }, 2500);
+  } catch (err) {
+    button.textContent = original;
+    button.disabled = false;
+    showError(node.error, err);
   }
+}
 
-  /* --- Wiring ------------------------------------------------------------- */
+/* --- Wiring ------------------------------------------------------------------ */
 
-  document.addEventListener('click', function (event) {
-    var add = event.target.closest ? event.target.closest('[data-add]') : null;
-    if (add) addToPackage(add.getAttribute('data-add'));
+let debounce = null;
+const reload = () => {
+  window.clearTimeout(debounce);
+  debounce = window.setTimeout(() => void load(), 180);
+};
+
+[node.quantity, node.category, node.customizable].forEach((control) =>
+  control.addEventListener('change', reload),
+);
+node.search.addEventListener('input', reload);
+
+document.addEventListener('click', (event) => {
+  const button = event.target.closest ? event.target.closest('[data-add]') : null;
+  if (button) void add(button.getAttribute('data-add'), button);
+});
+
+async function boot() {
+  state.user = await mountAccountNav();
+
+  document.querySelectorAll('[data-package-link], .site-nav a[href="package.html"]').forEach((link) => {
+    link.setAttribute('href', projectUrl('package.html', state.projectId));
   });
 
-  document.addEventListener('input', function (event) {
-    if (event.target === el.quantity) {
-      var parsed = parseInt(event.target.value, 10);
-      state.quantity = Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
-      render();
-    }
-    if (event.target === el.search) {
-      state.search = event.target.value.trim();
-      render();
-    }
-  });
+  await loadRecommendations();
+  await load();
+}
 
-  document.addEventListener('change', function (event) {
-    if (event.target === el.category) {
-      state.category = event.target.value;
-      render();
-    }
-    if (event.target === el.customizable) {
-      state.customizableOnly = event.target.checked;
-      render();
-    }
-  });
-
-  document.addEventListener('brandora:locale', function () {
-    if (state.products.length) render();
-  });
-
-  fetch('data/catalog.json')
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      state.products = data.products;
-      render();
-    })
-    .catch(function () {
-      el.list.innerHTML =
-        '<p class="notice">We could not load the catalogue just now. Please refresh the page.</p>';
-    });
-})();
+void boot();

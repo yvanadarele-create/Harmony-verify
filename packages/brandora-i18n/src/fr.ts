@@ -160,6 +160,34 @@ export const fr: Catalogue = {
   "settings.save": "Enregistrer",
   "settings.saved": "Enregistré",
 
+  /* Compte et tableau de bord */
+  "nav.admin": "Administration",
+  "auth.eyebrow": "Votre compte",
+  "auth.email": "E-mail",
+  "auth.password": "Mot de passe",
+  "auth.password.hint":
+    "Au moins 10 caractères. Une phrase dont vous vous souviendrez vaut mieux qu'un mot de passe court plein de symboles.",
+  "auth.name": "Votre nom",
+  "auth.country": "Pays",
+  "auth.login.title": "Bon retour",
+  "auth.login.lede": "Vos marques, vos paquets et vos commandes sont là où vous les avez laissés.",
+  "auth.login.submit": "Se connecter",
+  "auth.login.alt": "Nouveau sur Brandora ?",
+  "auth.signup.title": "Créer un compte",
+  "auth.signup.lede": "Un seul compte pour toutes vos marques, vos devis et vos commandes.",
+  "auth.signup.submit": "Créer mon compte",
+  "auth.signup.alt": "Vous avez déjà un compte ?",
+
+  "dashboard.title": "Votre travail",
+  "dashboard.brands": "Mes marques",
+  "dashboard.quotes": "Mes devis",
+  "dashboard.orders": "Mes commandes",
+
+  "builder.generate": "Créer ma marque",
+  "builder.step.review": "Prêt",
+  "package.quote": "Obtenir mon devis",
+  "package.recommended": "Recommandé pour votre marque",
+
   "error.sourcing.unavailable":
     "Nous n'arrivons pas à récupérer ce produit pour le moment. Essayez une autre option.",
   "error.sourcing.no-results":

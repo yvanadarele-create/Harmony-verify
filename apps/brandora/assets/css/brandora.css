@@ -268,6 +268,9 @@ a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset:
 }
 .control:hover { color: var(--ink); border-color: var(--border-strong); }
 
+/* A two-word control must stay on one line; "Log / out" reads as a broken button. */
+.control { white-space: nowrap; }
+
 select.control { padding-inline-end: var(--s2); appearance: none; }
 
 /* --- Surfaces ------------------------------------------------------------- */
@@ -566,3 +569,271 @@ input:focus, textarea:focus, select:focus { border-color: var(--accent); }
 .site-footer a { color: var(--ink-muted); text-decoration: none; }
 .site-footer a:hover { color: var(--ink); }
 .site-footer__row { display: flex; flex-wrap: wrap; gap: var(--s5); align-items: center; }
+
+/* ==========================================================================
+   The connected product: account, brand book, package lines, dashboards.
+
+   The brand book is the one place on the site that is deliberately *not* in
+   Brandora's colours. It paints itself in the customer's palette, because a
+   brand book showing Brandora's purple is a document about Brandora.
+   ========================================================================== */
+
+.wrap--narrow { width: min(100% - 2.5rem, 44rem); margin-inline: auto; }
+
+/* --- Forms ---------------------------------------------------------------- */
+
+.input,
+.field textarea,
+.field input,
+.field select {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  min-height: 44px;
+}
+
+.input:focus, .field textarea:focus, .field input:focus, .field select:focus { border-color: var(--accent); }
+.input--compact { width: 6rem; min-height: 40px; padding: 0.4rem 0.6rem; }
+.field textarea { min-height: 7rem; resize: vertical; }
+.field__optional { color: var(--ink-faint); font-weight: 400; }
+
+.auth-panel { width: min(100% - 2.5rem, 27rem); margin-inline: auto; }
+.auth-alt { color: var(--ink-muted); font-size: 0.92rem; margin-top: var(--s5); }
+
+/* --- The brand book ------------------------------------------------------- */
+
+/*
+ * Every colour below is a custom property set from the customer's stored
+ * palette by brand.js. The fallbacks exist only so the layout is inspectable
+ * with no data — they are never what a customer sees.
+ */
+[data-book] {
+  --brand-primary: var(--accent-strong);
+  --brand-surface: var(--surface-raised);
+  --brand-ink: var(--ink);
+  --brand-accent: var(--accent);
+  --brand-muted: var(--ink-muted);
+  --brand-heading-font: var(--font);
+  --brand-body-font: var(--font);
+}
+
+.book-cover {
+  background: var(--brand-surface);
+  color: var(--brand-ink);
+  padding-block: clamp(4rem, 14vw, 9rem);
+  border-bottom: 1px solid var(--border);
+}
+
+.book-cover__eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  margin-bottom: var(--s5);
+}
+
+.book-cover__name {
+  font-family: var(--brand-heading-font);
+  font-size: clamp(2.6rem, 9vw, 6rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  margin: 0 0 var(--s4);
+  color: var(--brand-ink);
+}
+
+.book-cover__slogan {
+  font-family: var(--brand-body-font);
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  color: var(--brand-ink);
+  opacity: 0.82;
+  max-width: 34ch;
+}
+
+/* A single hairline in the brand's primary. The whole cover's only ornament. */
+.book-cover__rule {
+  width: 4.5rem;
+  height: 2px;
+  background: var(--brand-primary);
+  margin: var(--s6) 0 var(--s5);
+}
+
+.book-cover__meta {
+  font-size: 0.9rem;
+  color: var(--brand-ink);
+  opacity: 0.6;
+  text-transform: lowercase;
+}
+
+/* Label in the margin, content in the column — the shape of a printed manual. */
+.book-grid { display: grid; gap: var(--s5); align-items: start; }
+@media (min-width: 55rem) {
+  .book-grid { grid-template-columns: 14rem 1fr; gap: var(--s7); }
+}
+.book-grid__label h2 { font-size: 1.1rem; letter-spacing: 0.01em; margin-bottom: var(--s2); }
+.book-grid__body { min-width: 0; }
+
+.book-lead { font-size: 1.2rem; line-height: 1.55; color: var(--ink); }
+
+.book-defs { display: grid; gap: var(--s3) var(--s5); margin: var(--s5) 0; }
+@media (min-width: 40rem) { .book-defs { grid-template-columns: 9rem 1fr; } }
+.book-defs dt {
+  font-size: 0.76rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-faint); padding-top: 0.25rem;
+}
+.book-defs dd { margin: 0; color: var(--ink); }
+.book-defs--tight { gap: var(--s2) var(--s4); margin: var(--s4) 0 0; }
+
+.book-brief {
+  border-inline-start: 2px solid var(--brand-primary);
+  padding-inline-start: var(--s4);
+  color: var(--ink-muted);
+}
+
+.book-actions { display: flex; flex-wrap: wrap; gap: var(--s3); }
+
+.chips--static { list-style: none; padding: 0; margin: var(--s5) 0 0; }
+.chip--static { cursor: default; }
+
+/* --- Palette -------------------------------------------------------------- */
+
+.palette-strip { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s4); }
+@media (min-width: 48rem) { .palette-strip { grid-template-columns: repeat(2, 1fr); } }
+
+.palette-strip__item { display: flex; gap: var(--s4); align-items: flex-start; }
+.palette-strip__chip {
+  width: 4.5rem; height: 4.5rem; flex: none;
+  border-radius: var(--radius-sm); border: 1px solid var(--border);
+}
+.palette-strip__text { min-width: 0; }
+.palette-strip__name { margin: 0; font-weight: 500; }
+.palette-strip__hex {
+  margin: 0; font-size: 0.8rem; color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+.palette-strip__why { margin: var(--s2) 0 0; font-size: 0.88rem; color: var(--ink-muted); }
+
+.swatches--tight { gap: var(--s2); margin-bottom: var(--s3); }
+.swatch--mini { width: 1.6rem; }
+.swatch--mini .swatch__chip { height: 1.6rem; }
+
+/* --- Typography specimen -------------------------------------------------- */
+
+.specimen {
+  font-family: var(--brand-heading-font);
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--s3);
+}
+.specimen__scale { font-size: 0.9rem; color: var(--ink-faint); }
+
+/* --- The mark ------------------------------------------------------------- */
+
+.mark-row { display: flex; flex-wrap: wrap; gap: var(--s4); margin-bottom: var(--s5); }
+.mark-tile {
+  width: 8.5rem; height: 8.5rem;
+  display: grid; place-items: center;
+  border-radius: var(--radius);
+  background: var(--brand-primary);
+  color: #fff;
+  font-family: var(--brand-heading-font);
+  font-size: 3rem;
+  letter-spacing: -0.04em;
+}
+.mark-tile--light { background: #fff; color: var(--brand-primary); border: 1px solid var(--border); }
+
+/* --- Applications ---------------------------------------------------------- */
+
+/*
+ * Drawn, not photographed. A photograph of a cup nobody has printed is a
+ * picture of a promise; these are honestly the palette and the letterforms
+ * applied to the silhouettes of catalogue products.
+ */
+/*
+ * A fixed row height rather than a fixed cell width.
+ *
+ * The silhouettes have different proportions on purpose — a business card is
+ * not a sticker — so sizing them by cell width left every row ragged and the
+ * captions on five different baselines. Sizing by height lines the row up and
+ * lets each shape keep its own proportion, which is the thing being shown.
+ */
+.applications {
+  display: grid;
+  gap: var(--s5) var(--s4);
+  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+}
+
+.application { margin: 0; display: grid; justify-items: center; align-content: start; }
+.application__object {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 0.2rem;
+  height: 7.5rem;
+  aspect-ratio: 1 / 1;
+  max-width: 100%;
+  background: var(--brand-primary);
+  color: #fff;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.application__mark {
+  font-family: var(--brand-heading-font);
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.application__word {
+  font-family: var(--brand-body-font);
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  max-width: 90%;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.application__caption { font-size: 0.8rem; color: var(--ink-faint); margin-top: var(--s2); text-align: center; }
+
+/* The silhouettes. Shape only — the colour is always the brand's. */
+.app-cup { border-radius: 0 0 34% 34%; }
+.app-box { border-radius: 4px; }
+.app-bag { border-radius: 2px 2px 10px 10px; }
+.app-card { aspect-ratio: 85 / 55; border-radius: 6px; }
+.app-label { aspect-ratio: 3 / 4; border-radius: 40% / 12%; }
+.app-sticker { border-radius: 50%; }
+
+/* --- Package lines --------------------------------------------------------- */
+
+.line-controls { display: flex; align-items: center; gap: var(--s3); margin-top: var(--s3); }
+.product__reason { font-size: 0.85rem; color: var(--accent); margin: 0 0 var(--s2); }
+
+/* --- Timeline -------------------------------------------------------------- */
+
+.timeline { list-style: none; padding: 0; margin: 0; }
+.timeline__item {
+  display: grid; gap: 0.15rem;
+  padding: var(--s3) 0 var(--s3) var(--s5);
+  border-inline-start: 1px solid var(--border);
+  position: relative;
+}
+.timeline__item::before {
+  content: ''; position: absolute; inset-inline-start: -4px; top: 1.35rem;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+}
+.timeline__when { font-size: 0.78rem; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.timeline__what { color: var(--ink); }
+
+/* --- Dashboards ------------------------------------------------------------ */
+
+.stat__value {
+  font-size: 2rem; font-weight: 500; margin: 0;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.masked { font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }

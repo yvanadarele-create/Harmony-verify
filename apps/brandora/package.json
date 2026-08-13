@@ -2,10 +2,10 @@
   "name": "@brandora/web",
   "version": "0.1.0",
   "private": true,
-  "description": "Brandora — static front end. Data and locales are generated from the TypeScript packages.",
+  "description": "Brandora \u2014 the front end. Served by @brandora/server, which also answers /api/*.",
   "scripts": {
-    "dev": "python3 -m http.server 4100",
-    "build": "echo 'static site — data is emitted by the engine packages' && exit 0",
+    "dev": "node ../../packages/brandora-server/dist/bin/serve.js",
+    "build": "echo 'static site \u2014 data is emitted by the engine packages' && exit 0",
     "test": "node ../../scripts/check-brandora.mjs"
   }
 }

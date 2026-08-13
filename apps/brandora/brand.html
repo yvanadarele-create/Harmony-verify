@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your brand book — Brandora</title>
+<meta name="description" content="Your brand: name, positioning, palette, typography, voice and applications.">
+<meta name="theme-color" content="#050507">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/brandora.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand-lockup" href="index.html">
+      <img src="assets/img/logo-b-solid.svg" alt="" width="20" height="26">
+      <span class="brand-lockup__word">BRANDORA</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      <a href="create.html" data-i18n="nav.create">Create my brand</a>
+      <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+      <a href="package.html" data-i18n="nav.package">My package</a>
+      <a href="dashboard.html" data-when-signed-in hidden data-i18n="nav.dashboard">Dashboard</a>
+      <a href="admin.html" data-when-admin hidden data-i18n="nav.admin">Admin</a>
+    </nav>
+
+    <div class="header-tools">
+      <a class="btn btn--small btn--ghost" href="login.html" data-when-signed-out hidden data-i18n="nav.login">Log in</a>
+      <button class="control" type="button" data-logout data-when-signed-in hidden data-i18n="nav.logout">Log out</button>
+      <label class="visually-hidden" for="locale">Language</label>
+      <select class="control" id="locale" data-locale-switch>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+      <button class="control" type="button" data-theme-toggle aria-pressed="false">
+        <span aria-hidden="true">◐</span>
+        <span data-theme-label>Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!--
+    The brand book.
+
+    Every value on this page comes from `GET /api/projects/:id/brand` — the
+    strategy the model wrote and the identity the engine derived, as stored.
+    There is no placeholder brand in this markup: with no data, the page says so
+    rather than showing a convincing brand belonging to nobody.
+  -->
+  <div data-book hidden>
+
+    <section class="book-cover" data-cover>
+      <div class="wrap">
+        <p class="book-cover__eyebrow" data-brand-industry></p>
+        <h1 class="book-cover__name" data-brand-name></h1>
+        <p class="book-cover__slogan" data-brand-slogan></p>
+        <div class="book-cover__rule" aria-hidden="true"></div>
+        <p class="book-cover__meta"><span data-brand-positioning></span> &middot; <span data-brand-audience></span></p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="essence">
+      <div class="wrap book-grid">
+        <div class="book-grid__label"><h2 id="essence">The brand</h2></div>
+        <div class="book-grid__body">
+          <p class="book-lead" data-brand-description></p>
+          <dl class="book-defs">
+            <dt>Promise</dt><dd data-brand-promise></dd>
+            <dt>Mission</dt><dd data-brand-mission></dd>
+            <dt>Vision</dt><dd data-brand-vision></dd>
+          </dl>
+          <ul class="chips chips--static" data-brand-personality></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="palette">
+      <div class="wrap book-grid">
+        <div class="book-grid__label">
+          <h2 id="palette">Colour</h2>
+          <p class="product__meta">Derived from your answers, then checked for contrast before you saw it.</p>
+        </div>
+        <div class="book-grid__body">
+          <ul class="palette-strip" data-brand-palette></ul>
+          <div class="hero__actions">
+            <button class="btn btn--ghost btn--small" type="button" data-regenerate-palette>Show another palette</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="type">
+      <div class="wrap book-grid">
+        <div class="book-grid__label"><h2 id="type">Typography</h2></div>
+        <div class="book-grid__body">
+          <p class="specimen" data-type-specimen></p>
+          <p class="specimen__scale" data-type-scale></p>
+          <p data-type-rationale></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="voice">
+      <div class="wrap book-grid">
+        <div class="book-grid__label"><h2 id="voice">Voice</h2></div>
+        <div class="book-grid__body">
+          <p class="book-lead" data-brand-tone></p>
+          <p data-brand-story></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="mark">
+      <div class="wrap book-grid">
+        <div class="book-grid__label">
+          <h2 id="mark">The mark</h2>
+          <p class="product__meta">A direction, written to be handed to a designer or an image model.</p>
+        </div>
+        <div class="book-grid__body">
+          <div class="mark-row">
+            <div class="mark-tile" data-mark-dark aria-hidden="true"></div>
+            <div class="mark-tile mark-tile--light" data-mark-light aria-hidden="true"></div>
+          </div>
+          <p class="book-brief" data-logo-brief></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="applications">
+      <div class="wrap book-grid">
+        <div class="book-grid__label">
+          <h2 id="applications">In the world</h2>
+          <p class="product__meta">Your colours and letterforms on the things a customer actually holds.</p>
+        </div>
+        <div class="book-grid__body">
+          <div class="applications" data-applications></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="book-actions">
+          <a class="btn btn--primary" href="catalog.html" data-continue>Choose your products</a>
+          <a class="btn btn--ghost" href="#" data-download-guidelines>Download brand guidelines</a>
+          <a class="btn btn--quiet" href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="section" data-empty hidden>
+    <div class="wrap wrap--narrow">
+      <h1>No brand here yet</h1>
+      <p class="lede" data-empty-message>Answer the interview and Brandora will build one.</p>
+      <p><a class="btn btn--primary" href="create.html" data-i18n="hero.cta.primary">Create My Brand</a></p>
+    </div>
+  </section>
+
+  <section class="section" data-loading>
+    <div class="wrap wrap--narrow"><p class="lede">Loading your brand…</p></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__row">
+    <span>Brandora</span>
+    <a href="create.html" data-i18n="nav.create">Create my brand</a>
+    <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+    <a href="package.html" data-i18n="nav.package">My package</a>
+    <a href="dashboard.html" data-when-signed-in hidden data-i18n="nav.dashboard">Dashboard</a>
+  </div>
+</footer>
+
+<script src="assets/js/app.js" defer></script>
+<script type="module" src="assets/js/brand.js"></script>
+</body>
+</html>

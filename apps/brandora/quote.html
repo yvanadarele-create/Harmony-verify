@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My package — Brandora</title>
-<meta name="description" content="Combine products into a brand package, adjust quantities, and see the estimated total before Brandora prepares your quote.">
+<title>Your quote — Brandora</title>
+<meta name="description" content="Your Brandora quote.">
 <meta name="theme-color" content="#050507">
+<meta name="robots" content="noindex">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -47,47 +48,39 @@
   </div>
 </header>
 
-<main id="main" class="section">
-  <div class="wrap">
+<main id="main">
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <p class="eyebrow" data-i18n="nav.quote">Quote</p>
+      <h1 data-quote-reference>Your quote</h1>
+      <p class="lede" data-quote-validity></p>
 
-    <h1 data-i18n="package.title">Brand package</h1>
+      <p class="notice" data-error hidden role="alert"></p>
 
-    <div data-identity style="margin-bottom:2rem"></div>
+      <div class="scroll-x">
+        <table class="totals" data-quote-lines>
+          <caption class="visually-hidden">Quote lines</caption>
+          <thead>
+            <tr><th scope="col">Item</th><th scope="col">Qty</th><th scope="col">Total</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
-    <div class="grid grid--2" style="align-items:start">
-      <section>
-        <h2 style="font-size:1.15rem">Your products</h2>
-        <div class="grid" data-lines></div>
-        <p class="notice" data-empty hidden>
-          <span data-i18n="package.empty">Your package is empty. Add a product to begin.</span>
-          <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
-        </p>
-      </section>
+      <table class="totals" data-quote-totals style="margin-top:2rem">
+        <caption class="visually-hidden">Quote totals</caption>
+        <tbody></tbody>
+      </table>
 
-      <section>
-        <h2 style="font-size:1.15rem" data-i18n="package.total">Estimated total</h2>
-        <div class="card" data-totals></div>
-        <p class="notice" data-error hidden role="alert"></p>
-        <div class="hero__actions">
-          <button class="btn btn--primary" type="button" data-request-quote hidden data-i18n="package.quote">Get my quote</button>
-          <a class="btn btn--ghost" href="catalog.html" data-catalog-link data-i18n="package.add">Add product</a>
-        </div>
-      </section>
+      <p class="product__meta" data-delivery-note></p>
+
+      <div class="hero__actions">
+        <button class="btn btn--primary" type="button" data-checkout>Place this order</button>
+        <a class="btn btn--ghost" href="package.html" data-package-link data-i18n="nav.package">My package</a>
+      </div>
     </div>
+  </section>
 
-    <section style="margin-top:3rem" data-recommended-wrap hidden>
-      <h2 style="font-size:1.15rem" data-i18n="package.recommended">Recommended for your brand</h2>
-      <p class="lede">Ranked for what you told us, not sorted by price. Every one of these
-        can be ordered at the quantity you need.</p>
-      <div class="grid grid--3" data-recommended></div>
-    </section>
-
-    <noscript>
-      <div class="notice">The package builder needs JavaScript. Please enable it, or
-        <a href="catalog.html">browse the catalogue</a>.</div>
-    </noscript>
-
-  </div>
 </main>
 
 <footer class="site-footer">
@@ -101,6 +94,6 @@
 </footer>
 
 <script src="assets/js/app.js" defer></script>
-<script type="module" src="assets/js/package.js"></script>
+<script type="module" src="assets/js/quote.js"></script>
 </body>
 </html>

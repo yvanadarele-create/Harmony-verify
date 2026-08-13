@@ -165,6 +165,34 @@ export const en = {
   "settings.save": "Save changes",
   "settings.saved": "Saved",
 
+  /* Account and dashboard */
+  "nav.admin": "Admin",
+  "auth.eyebrow": "Your account",
+  "auth.email": "Email",
+  "auth.password": "Password",
+  "auth.password.hint":
+    "At least 10 characters. A phrase you will remember beats a short password with symbols in it.",
+  "auth.name": "Your name",
+  "auth.country": "Country",
+  "auth.login.title": "Welcome back",
+  "auth.login.lede": "Your brands, packages and orders are waiting where you left them.",
+  "auth.login.submit": "Log in",
+  "auth.login.alt": "New to Brandora?",
+  "auth.signup.title": "Create an account",
+  "auth.signup.lede": "One account holds every brand you build, every quote and every order.",
+  "auth.signup.submit": "Create my account",
+  "auth.signup.alt": "Already have an account?",
+
+  "dashboard.title": "Your work",
+  "dashboard.brands": "My brands",
+  "dashboard.quotes": "My quotes",
+  "dashboard.orders": "My orders",
+
+  "builder.generate": "Build my brand",
+  "builder.step.review": "Ready",
+  "package.quote": "Get my quote",
+  "package.recommended": "Recommended for your brand",
+
   /* Errors — mirrors CUSTOMER_MESSAGES in @brandora/shared */
   "error.sourcing.unavailable":
     "We couldn't retrieve this product right now. Please try another option.",

@@ -153,6 +153,34 @@ export const es: Catalogue = {
   "settings.save": "Guardar cambios",
   "settings.saved": "Guardado",
 
+  /* Cuenta y panel */
+  "nav.admin": "Administración",
+  "auth.eyebrow": "Tu cuenta",
+  "auth.email": "Correo electrónico",
+  "auth.password": "Contraseña",
+  "auth.password.hint":
+    "Al menos 10 caracteres. Una frase que recuerdes vale más que una contraseña corta llena de símbolos.",
+  "auth.name": "Tu nombre",
+  "auth.country": "País",
+  "auth.login.title": "Bienvenido de nuevo",
+  "auth.login.lede": "Tus marcas, paquetes y pedidos están donde los dejaste.",
+  "auth.login.submit": "Iniciar sesión",
+  "auth.login.alt": "¿Nuevo en Brandora?",
+  "auth.signup.title": "Crear una cuenta",
+  "auth.signup.lede": "Una cuenta para cada marca que construyas, cada presupuesto y cada pedido.",
+  "auth.signup.submit": "Crear mi cuenta",
+  "auth.signup.alt": "¿Ya tienes una cuenta?",
+
+  "dashboard.title": "Tu trabajo",
+  "dashboard.brands": "Mis marcas",
+  "dashboard.quotes": "Mis presupuestos",
+  "dashboard.orders": "Mis pedidos",
+
+  "builder.generate": "Crear mi marca",
+  "builder.step.review": "Listo",
+  "package.quote": "Obtener mi presupuesto",
+  "package.recommended": "Recomendado para tu marca",
+
   "error.sourcing.unavailable":
     "No hemos podido obtener este producto ahora mismo. Prueba con otra opción.",
   "error.sourcing.no-results":

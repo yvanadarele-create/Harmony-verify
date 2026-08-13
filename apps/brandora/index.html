@@ -32,9 +32,13 @@
       <a href="create.html" data-i18n="nav.create">Create my brand</a>
       <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
       <a href="package.html" data-i18n="nav.package">My package</a>
+      <a href="dashboard.html" data-when-signed-in hidden data-i18n="nav.dashboard">Dashboard</a>
+      <a href="admin.html" data-when-admin hidden data-i18n="nav.admin">Admin</a>
     </nav>
 
     <div class="header-tools">
+      <a class="btn btn--small btn--ghost" href="login.html" data-when-signed-out hidden data-i18n="nav.login">Log in</a>
+      <button class="control" type="button" data-logout data-when-signed-in hidden data-i18n="nav.logout">Log out</button>
       <label class="visually-hidden" for="locale">Language</label>
       <select class="control" id="locale" data-locale-switch>
         <option value="en">English</option>
@@ -211,9 +215,11 @@
     <a href="create.html" data-i18n="nav.create">Create my brand</a>
     <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
     <a href="package.html" data-i18n="nav.package">My package</a>
+    <a href="dashboard.html" data-when-signed-in hidden data-i18n="nav.dashboard">Dashboard</a>
   </div>
 </footer>
 
 <script src="assets/js/app.js" defer></script>
+<script type="module" src="assets/js/landing.js"></script>
 </body>
 </html>

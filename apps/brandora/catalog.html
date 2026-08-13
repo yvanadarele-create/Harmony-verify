@@ -21,12 +21,18 @@
       <img src="assets/img/logo-b-solid.svg" alt="" width="20" height="26">
       <span class="brand-lockup__word">BRANDORA</span>
     </a>
+
     <nav class="site-nav" aria-label="Main">
       <a href="create.html" data-i18n="nav.create">Create my brand</a>
       <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
       <a href="package.html" data-i18n="nav.package">My package</a>
+      <a href="dashboard.html" data-when-signed-in hidden data-i18n="nav.dashboard">Dashboard</a>
+      <a href="admin.html" data-when-admin hidden data-i18n="nav.admin">Admin</a>
     </nav>
+
     <div class="header-tools">
+      <a class="btn btn--small btn--ghost" href="login.html" data-when-signed-out hidden data-i18n="nav.login">Log in</a>
+      <button class="control" type="button" data-logout data-when-signed-in hidden data-i18n="nav.logout">Log out</button>
       <label class="visually-hidden" for="locale">Language</label>
       <select class="control" id="locale" data-locale-switch>
         <option value="en">English</option>
@@ -34,7 +40,8 @@
         <option value="es">Español</option>
       </select>
       <button class="control" type="button" data-theme-toggle aria-pressed="false">
-        <span aria-hidden="true">◐</span><span data-theme-label>Dark</span>
+        <span aria-hidden="true">◐</span>
+        <span data-theme-label>Dark</span>
       </button>
     </div>
   </div>
@@ -76,6 +83,8 @@
       </div>
     </form>
 
+    <p class="notice notice--accent" data-brand-banner hidden></p>
+    <p class="notice" data-error hidden role="alert"></p>
     <p class="product__meta" data-count aria-live="polite"></p>
 
     <div class="grid grid--3" data-products></div>
@@ -101,12 +110,14 @@
 <footer class="site-footer">
   <div class="wrap site-footer__row">
     <span>Brandora</span>
-    <a href="index.html" data-i18n="nav.home">Home</a>
+    <a href="create.html" data-i18n="nav.create">Create my brand</a>
+    <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
     <a href="package.html" data-i18n="nav.package">My package</a>
+    <a href="dashboard.html" data-when-signed-in hidden data-i18n="nav.dashboard">Dashboard</a>
   </div>
 </footer>
 
 <script src="assets/js/app.js" defer></script>
-<script src="assets/js/catalog.js" defer></script>
+<script type="module" src="assets/js/catalog.js"></script>
 </body>
 </html>

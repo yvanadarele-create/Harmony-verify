@@ -290,8 +290,10 @@ describe("brandora api", () => {
       assert.equal(out.status, 200);
       assert.equal(client.hasSession, false);
 
+      // The probe still answers — with nobody. See the route's comment.
       const after = await client.get("/api/auth/me");
-      assert.equal(after.status, 401);
+      assert.equal(after.status, 200);
+      assert.equal(after.json["user"], null);
     });
 
     it("never returns a password hash", async () => {
@@ -341,7 +343,15 @@ describe("brandora api", () => {
       const response = await fetch(`${h.base}/api/auth/me`, {
         headers: { Cookie: "brandora_session=forged.forgedsignature" },
       });
-      assert.equal(response.status, 401);
+      assert.equal(response.status, 200);
+      const probe = (await response.json()) as Record<string, unknown>;
+      assert.equal(probe["user"], null, "a forged cookie resolved to a user");
+
+      // And a route that needs a user still refuses one.
+      const projects = await fetch(`${h.base}/api/projects`, {
+        headers: { Cookie: "brandora_session=forged.forgedsignature" },
+      });
+      assert.equal(projects.status, 401);
     });
   });
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Create my brand — Brandora</title>
-<meta name="description" content="Answer a few questions and Brandora builds your brand — positioning, personality, colour palette, typography and a logo direction you can hand to a designer.">
+<meta name="description" content="Answer a few questions and Brandora builds your brand — positioning, personality, colour palette, typography and a logo direction.">
 <meta name="theme-color" content="#050507">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="site.webmanifest">
@@ -21,12 +21,18 @@
       <img src="assets/img/logo-b-solid.svg" alt="" width="20" height="26">
       <span class="brand-lockup__word">BRANDORA</span>
     </a>
+
     <nav class="site-nav" aria-label="Main">
       <a href="create.html" data-i18n="nav.create">Create my brand</a>
       <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
       <a href="package.html" data-i18n="nav.package">My package</a>
+      <a href="dashboard.html" data-when-signed-in hidden data-i18n="nav.dashboard">Dashboard</a>
+      <a href="admin.html" data-when-admin hidden data-i18n="nav.admin">Admin</a>
     </nav>
+
     <div class="header-tools">
+      <a class="btn btn--small btn--ghost" href="login.html" data-when-signed-out hidden data-i18n="nav.login">Log in</a>
+      <button class="control" type="button" data-logout data-when-signed-in hidden data-i18n="nav.logout">Log out</button>
       <label class="visually-hidden" for="locale">Language</label>
       <select class="control" id="locale" data-locale-switch>
         <option value="en">English</option>
@@ -34,47 +40,53 @@
         <option value="es">Español</option>
       </select>
       <button class="control" type="button" data-theme-toggle aria-pressed="false">
-        <span aria-hidden="true">◐</span><span data-theme-label>Dark</span>
+        <span aria-hidden="true">◐</span>
+        <span data-theme-label>Dark</span>
       </button>
     </div>
   </div>
 </header>
 
-<main id="main" class="section">
-  <div class="wrap" style="max-width:44rem">
+<main id="main">
+  <section class="section">
+    <div class="wrap wrap--narrow">
 
-    <p class="eyebrow" data-i18n="builder.step.interview">Interview</p>
-    <h1 data-i18n="builder.title">Let's build your brand.</h1>
-    <p class="lede">You do not need a name, a logo, or any idea what &ldquo;positioning&rdquo; means.
-      Answer what you can, and tap <em>I don't know — help me</em> on anything that stumps you.</p>
+      <p class="eyebrow" data-i18n="builder.step.interview">Interview</p>
+      <h1 data-i18n="builder.title">Let's build your brand.</h1>
+      <p class="lede">You do not need a name, a logo, or any idea what &ldquo;positioning&rdquo; means.
+        Answer what you can, and tap <em>I don't know — help me</em> on anything that stumps you.</p>
 
-    <div class="progress" data-progress role="img" aria-label="Progress"></div>
+      <div class="progress" data-progress role="img" aria-label="Progress"></div>
 
-    <!-- The interview renders here. -->
-    <section data-question aria-live="polite"></section>
+      <!-- The interview renders here. -->
+      <section data-question aria-live="polite"></section>
 
-    <!-- The generated identity renders here. -->
-    <section data-result tabindex="-1" aria-live="polite" hidden></section>
+      <!-- The review and the Build button render here. -->
+      <section data-result tabindex="-1" aria-live="polite" hidden></section>
 
-    <noscript>
-      <div class="notice">
-        The brand builder needs JavaScript to run the interview. You can still
-        <a href="catalog.html">browse the catalogue</a> without it.
-      </div>
-    </noscript>
+      <noscript>
+        <div class="notice">
+          The brand builder needs JavaScript to run the interview. You can still
+          <a href="catalog.html">browse the catalogue</a> without it.
+        </div>
+      </noscript>
 
-  </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
   <div class="wrap site-footer__row">
     <span>Brandora</span>
-    <a href="index.html" data-i18n="nav.home">Home</a>
+    <a href="create.html" data-i18n="nav.create">Create my brand</a>
     <a href="catalog.html" data-i18n="nav.catalog">Catalogue</a>
+    <a href="package.html" data-i18n="nav.package">My package</a>
+    <a href="dashboard.html" data-when-signed-in hidden data-i18n="nav.dashboard">Dashboard</a>
   </div>
 </footer>
 
 <script src="assets/js/app.js" defer></script>
-<script src="assets/js/builder.js" type="module"></script>
+<script type="module" src="assets/js/builder.js"></script>
 </body>
 </html>

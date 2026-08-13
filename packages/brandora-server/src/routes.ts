@@ -91,6 +91,7 @@ import {
 import {
   SESSION_COOKIE,
   type SessionContext,
+  currentUser,
   publicUser,
   requireAdmin,
   requireUser,
@@ -339,9 +340,18 @@ export function createRouter(deps: ServerDeps): Router {
     return json(200, { ok: true }, { cookies: [{ name: SESSION_COOKIE, value: "", clear: true }] });
   });
 
+  /**
+   * Who is signed in — including "nobody".
+   *
+   * Deliberately 200 with a null user rather than 401. Every page asks this on
+   * load to decide what to put in the header, and a 401 there is not a failure:
+   * it is the answer. Returning an error status made a browser log a console
+   * error on every page a signed-out visitor opened, which buries the errors
+   * that do matter. Routes that actually need a user still answer 401.
+   */
   router.get("/api/auth/me", (ctx) => {
-    const user = requireUser(ctx, session);
-    return json(200, { user: publicUser(user) });
+    const user = currentUser(ctx, session);
+    return json(200, { user: user ? publicUser(user) : null });
   });
 
   router.get("/api/auth/password-policy", () =>
