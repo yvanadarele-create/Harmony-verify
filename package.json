@@ -15,8 +15,10 @@
     "lint": "turbo run lint",
     "web": "pnpm --filter @harmony/web dev",
     "tokens": "pnpm --filter @harmony/design-system build",
-    "build:web": "node scripts/site-urls.mjs && pnpm --filter @harmony/design-system build && node scripts/check-web.mjs",
-    "site:urls": "node scripts/site-urls.mjs"
+    "build:web": "node scripts/i18n/build.mjs && node scripts/site-urls.mjs && pnpm --filter @harmony/design-system build && node scripts/check-web.mjs",
+    "site:urls": "node scripts/site-urls.mjs",
+    "i18n": "node scripts/i18n/build.mjs",
+    "i18n:missing": "I18N_REPORT=1 node scripts/i18n/build.mjs"
   },
   "devDependencies": {
     "turbo": "^2.3.3",

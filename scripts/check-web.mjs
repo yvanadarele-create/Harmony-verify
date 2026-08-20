@@ -21,7 +21,21 @@ const webRoot = resolve(here, "../apps/web");
  */
 const PENDING_ASSETS = new Map();
 
-const pages = readdirSync(webRoot).filter((f) => f.endsWith(".html"));
+/* Every page, English at the root and each generated language beneath it.
+   Paths are kept relative to apps/web ("fr/pricing.html") so a reference can be
+   resolved from the directory the page actually sits in. */
+const LANG_DIRS = ["fr", "es"];
+const pages = [
+  ...readdirSync(webRoot).filter((f) => f.endsWith(".html")),
+  ...LANG_DIRS.flatMap((dir) => {
+    const abs = join(webRoot, dir);
+    if (!existsSync(abs)) return [];
+    return readdirSync(abs).filter((f) => f.endsWith(".html")).map((f) => `${dir}/${f}`);
+  }),
+];
+
+/** Pages generated from an English original; their metadata is checked differently. */
+const isLocalized = (page) => LANG_DIRS.some((dir) => page.startsWith(`${dir}/`));
 const problems = [];
 const warnings = [];
 
@@ -55,10 +69,12 @@ for (const page of pages) {
     if (!pathPart) continue;
     const clean = pathPart.split("?")[0];
 
-    // 404.html uses root-absolute paths; everything else is page-relative.
+    // 404.html uses root-absolute paths; everything else resolves from the
+    // directory of the page holding the reference, which is not the web root
+    // once a page lives under fr/ or es/.
     const target = clean.startsWith("/")
       ? join(webRoot, clean.slice(1))
-      : resolve(webRoot, clean);
+      : resolve(join(webRoot, page), "..", clean);
 
     if (!existsSync(target)) {
       const rel = relative(webRoot, target).split("\\").join("/");
@@ -156,16 +172,23 @@ for (const page of pages) {
   const description = /<meta name="description" content="([^"]+)"/.exec(html)?.[1]?.trim();
   const canonical = /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1];
 
+  /* Uniqueness is judged within a language. The same title in English and in
+     French is not a duplicate — hreflang says they are the same page in two
+     languages. An untranslated title shows up in the i18n coverage report
+     instead, which is where it belongs. */
+  const lang = LANG_DIRS.find((dir) => page.startsWith(`${dir}/`)) ?? "en";
+  const scoped = (value) => `${lang}\u0000${value}`;
+
   if (title) {
-    if (titles.has(title)) problems.push(`${where}: duplicate <title> shared with ${titles.get(title)}`);
-    else titles.set(title, where);
+    if (titles.has(scoped(title))) problems.push(`${where}: duplicate <title> shared with ${titles.get(scoped(title))}`);
+    else titles.set(scoped(title), where);
     if (title.length > 65) warnings.push(`${where}: title is ${title.length} chars — Google truncates near 60`);
   }
 
   if (description) {
-    if (descriptions.has(description)) {
-      problems.push(`${where}: duplicate meta description shared with ${descriptions.get(description)}`);
-    } else descriptions.set(description, where);
+    if (descriptions.has(scoped(description))) {
+      problems.push(`${where}: duplicate meta description shared with ${descriptions.get(scoped(description))}`);
+    } else descriptions.set(scoped(description), where);
     if (description.length > 165) {
       warnings.push(`${where}: meta description is ${description.length} chars — truncated near 160`);
     }
@@ -263,8 +286,19 @@ if (!existsSync(sitemapPath)) {
   const siteHost = [...hosts][0];
 
   for (const page of pages) {
-    if (page === "404.html") continue;
-    const expected = page === "index.html" ? "/" : cleanUrls ? `/${page.replace(/\.html$/, "")}` : `/${page}`;
+    // "fr/pricing.html" -> dir "fr", leaf "pricing.html"
+    const slash = page.lastIndexOf("/");
+    const dir = slash === -1 ? "" : page.slice(0, slash);
+    const leaf = slash === -1 ? page : page.slice(slash + 1);
+    if (leaf === "404.html") continue; // noindex, in every language
+
+    const prefix = dir ? `/${dir}` : "";
+    const expected =
+      leaf === "index.html"
+        ? `${prefix}/`
+        : cleanUrls
+          ? `${prefix}/${leaf.replace(/\.html$/, "")}`
+          : `${prefix}/${leaf}`;
     if (!locs.some((loc) => new URL(loc).pathname === expected)) {
       problems.push(`apps/web/sitemap.xml: ${page} is not listed (expected ${expected})`);
     }

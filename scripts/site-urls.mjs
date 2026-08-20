@@ -147,19 +147,43 @@ const sorted = [
 
 const lastmod = new Date().toISOString().slice(0, 10);
 
+/* Languages the site is generated into. Each English page has a counterpart
+   under /fr/ and /es/, and every entry declares all three so a crawler that
+   finds one finds the set — that is what stops them being read as duplicates
+   of each other. */
+const LANG_DIRS = ["fr", "es"];
+const localeDirs = LANG_DIRS.filter((dir) => existsSync(join(webRoot, dir)));
+
+/** Prefix a canonical URL with a language directory. */
+const localized = (url, dir) => {
+  const rest = url.slice(base.length);
+  return `${base}/${dir}${rest === "/" ? "/" : rest}`;
+};
+
 const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n` +
-  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+  `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n` +
+  `        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
   sorted
-    .map((page) => {
+    .flatMap((page) => {
       const [priority, changefreq] = PRIORITY[page] ?? ["0.5", "monthly"];
-      return (
-        `  <url>\n` +
-        `    <loc>${canonicalFor(base, page)}</loc>\n` +
-        `    <lastmod>${lastmod}</lastmod>\n` +
-        `    <changefreq>${changefreq}</changefreq>\n` +
-        `    <priority>${priority}</priority>\n` +
-        `  </url>\n`
+      const english = canonicalFor(base, page);
+      const all = [["en", english], ...localeDirs.map((dir) => [dir, localized(english, dir)])];
+      const alternates =
+        all
+          .map(([code, href]) => `    <xhtml:link rel="alternate" hreflang="${code}" href="${href}"/>\n`)
+          .join("") +
+        `    <xhtml:link rel="alternate" hreflang="x-default" href="${english}"/>\n`;
+
+      return all.map(
+        ([, href]) =>
+          `  <url>\n` +
+          `    <loc>${href}</loc>\n` +
+          alternates +
+          `    <lastmod>${lastmod}</lastmod>\n` +
+          `    <changefreq>${changefreq}</changefreq>\n` +
+          `    <priority>${priority}</priority>\n` +
+          `  </url>\n`,
       );
     })
     .join("") +

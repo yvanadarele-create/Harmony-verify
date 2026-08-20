@@ -495,7 +495,7 @@ p {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: clamp(18px, 2vw, 30px);
+  gap: clamp(14px, 1.5vw, 28px);
   list-style: none;
   padding: 0;
 }
@@ -538,6 +538,109 @@ p {
 .nav-links a:not(.btn):hover::after,
 .nav-links a:not(.btn)[aria-current="page"]::after {
   transform: scaleX(1);
+}
+
+/* --- Language switcher ---------------------------------------------------- */
+
+.lang {
+  position: relative;
+}
+
+/* The wordmark is a fixed thing, not a column that gives way: without this the
+   nav row steals width from it and "Clinical AI Assurance" wraps under itself. */
+.nav > .brand {
+  flex: 0 0 auto;
+}
+
+.nav > .brand .brand-sub {
+  white-space: nowrap;
+}
+
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  color: var(--text-2);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+/* flex: 0 0 auto because an inline SVG has no intrinsic width to defend
+   itself with — as a flex item it shrinks to nothing and the globe vanishes. */
+.lang-btn svg {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+}
+
+.lang-code {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+}
+
+.lang-btn:hover,
+.lang-btn[aria-expanded="true"] {
+  color: var(--gold);
+  border-color: var(--border-gold);
+}
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 10;
+  min-width: 150px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--navy-deep);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  box-shadow: 0 18px 46px rgba(3, 8, 20, 0.6);
+}
+
+.lang-menu[hidden] {
+  display: none;
+}
+
+.lang-menu a {
+  display: block;
+  padding: 9px 12px;
+  font-size: 0.84rem;
+  color: var(--text-2);
+  text-decoration: none;
+  border-radius: 2px;
+  transition: color 0.18s var(--ease), background-color 0.18s var(--ease);
+}
+
+.lang-menu a:hover {
+  color: var(--foreground);
+  background: rgba(212, 175, 55, 0.08);
+}
+
+/* The language you are already reading, marked without relying on colour. */
+.lang-menu a[aria-current="true"] {
+  color: var(--gold);
+}
+
+.lang-menu a[aria-current="true"]::before {
+  content: "\2713";
+  margin-right: 8px;
+  font-size: 0.78rem;
+}
+
+.lang-menu a:not([aria-current="true"]) {
+  padding-left: 30px;
+}
+
+.lang-menu a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
 }
 
 .nav-toggle {
@@ -2013,11 +2116,16 @@ td:first-child {
   }
 }
 
-/* Eight sections plus two call-to-action buttons need roughly 1200px before the
-   row stops fitting beside the wordmark. Past that the list was being clipped
-   by the fixed header rather than wrapping, so the menu takes over earlier than
-   a phone breakpoint would suggest. */
-@media (max-width: 1180px) {
+/* Eight sections, a language switcher and two call-to-action buttons need a
+   wide header. Measured at the point each language stops fitting beside the
+   wordmark: English 1280px, Spanish 1340px, French 1400px — French because
+   "Réserver une démo" is simply longer than "Book a demo".
+   
+   One breakpoint for all three rather than three, so the header does not
+   restructure itself when a reader changes language. Past it the list was being
+   clipped by the fixed header rather than wrapping, so the menu takes over well
+   above a phone width. */
+@media (max-width: 1400px) {
   .nav-toggle {
     display: flex;
   }
@@ -2083,6 +2191,29 @@ td:first-child {
     padding: 15px 20px;
     font-size: 0.813rem;
   }
+
+  /* In the collapsed panel the switcher is a row like any other, and its menu
+     opens in flow — a floating panel inside a scrolling sheet ends up half
+     off-screen on a short phone. */
+  .nav-links .lang {
+    border-bottom: 0;
+    padding-top: 14px;
+  }
+
+  .lang-btn {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 12px 0;
+  }
+
+  .lang-menu {
+    position: static;
+    min-width: 0;
+    margin-top: 4px;
+    box-shadow: none;
+  }
+
 }
 
 @media (max-width: 680px) {

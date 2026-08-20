@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-site-verification" content="m7moxTM7wLgXMcrGesAe1I2GB8P-8WBYwZYY35fkDfY">
+<title>Trust, security &amp; privacy — Harmony Verify</title>
+<meta name="description" content="How Harmony Verify handles protected health information, secures the platform, credentials its reviewers — and which claims we deliberately do not make.">
+<link rel="canonical" href="https://harmonyverify.org/fr/trust">
+<link rel="alternate" hreflang="en" href="https://harmonyverify.org/fr/trust">
+<link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/fr/trust">
+<link rel="alternate" hreflang="es" href="https://harmonyverify.org/fr/es/trust">
+<link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/fr/trust">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Harmony Verify">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Trust, security &amp; privacy — Harmony Verify">
+<meta property="og:description" content="Data handling, security posture, reviewer credentialing, regulatory context, and a plain statement of what we do and do not claim.">
+<meta property="og:url" content="https://harmonyverify.org/fr/trust">
+<meta property="og:image" content="https://harmonyverify.org/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="icon" href="../assets/img/icon-96.png" type="image/png" sizes="96x96">
+<link rel="icon" href="../assets/img/icon-48.png" type="image/png" sizes="48x48">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<meta name="theme-color" content="#0A1325">
+
+<link rel="preload" href="../assets/fonts/cinzel-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://harmonyverify.org/fr/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Confiance",
+      "item": "https://harmonyverify.org/fr/trust"
+    }
+  ]
+}
+</script>
+<script src="../assets/js/lang.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<header class="nav">
+  <a class="brand" href="index.html"><img src="../assets/img/mark.svg" alt="Harmony Verify" width="30" height="30">
+    <span class="brand-name">Harmony <b>Verify</b>
+      <span class="brand-sub">Assurance clinique de l'IA</span>
+    </span></a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="platform.html">Plateforme</a></li>
+    <li><a href="solutions.html">Solutions</a></li>
+    <li><a href="pricing.html">Tarifs</a></li>
+    <li><a href="experts.html">Experts</a></li>
+    <li><a href="partners.html">Partenaires</a></li>
+    <li><a href="investors.html">Investisseurs</a></li>
+    <li><a href="trust.html" aria-current="page">Trust</a></li>
+    <li><a href="company.html">Entreprise</a></li>
+    <li><a class="btn btn--ghost btn--sm" href="request-verification.html">Vérification</a></li>
+    <li><a class="btn btn--gold btn--sm" href="contact.html" data-book-demo>Réserver une démo</a></li>
+  </ul>
+</header>
+
+<main id="main">
+
+  <section class="page-head field">
+    <div class="wrap">
+      <p class="crumbs"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Trust</p>
+      <h1>We ask you to trust us. Here is the basis.</h1>
+      <p class="lede">
+        A company selling verification has to be verifiable itself. This page states how data is
+        handled, how reviewers are credentialed, where we sit in the regulatory picture, and — in
+        plain words — what we do not yet claim.
+      </p>
+    </div>
+  </section>
+
+  <!-- Data handling -->
+  <section class="section field" id="data">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Data handling</p>
+        <h2>The best protection is not holding it.</h2>
+        <p>
+          Reviewers need clinical context to judge an output. They almost never need to know who the
+          patient is. Our default posture is to minimise identifiable data at the boundary rather
+          than to secure it after collection.
+        </p>
+      </div>
+
+      <div class="grid grid--3">
+        <div class="card" data-reveal="0">
+          <span class="ref">Principle 01</span>
+          <h3>Minimise at source</h3>
+          <p>
+            Integrations are designed so direct identifiers are tokenised or removed before
+            submission. Where a field is not needed for clinical judgement, the correct amount to
+            collect is none.
+          </p>
+        </div>
+        <div class="card" data-reveal="1">
+          <span class="ref">Principle 02</span>
+          <h3>Least privilege</h3>
+          <p>
+            A reviewer sees only the case assigned to them, only while it is assigned, and only the
+            fields that case requires. Access is logged and attributable.
+          </p>
+        </div>
+        <div class="card" data-reveal="2">
+          <span class="ref">Principle 03</span>
+          <h3>Bounded retention</h3>
+          <p>
+            Clinical content is retained for the period set in your agreement and then deleted. The
+            verification record can outlive the content it refers to — that is the point of a record.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-scroll" style="margin-top:40px" data-reveal="0">
+        <table>
+          <caption class="visually-hidden">Data handling commitments</caption>
+          <thead>
+            <tr><th scope="col">Area</th><th scope="col">Position</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Business associate agreement</td><td>Available for engagements where PHI is processed</td></tr>
+            <tr><td>Encryption</td><td>In transit and at rest</td></tr>
+            <tr><td>Access control</td><td>Role-based, least privilege, logged and attributable</td></tr>
+            <tr><td>Reviewer confidentiality</td><td>Contractual obligations and confidentiality terms for every reviewer</td></tr>
+            <tr><td>Model training on your data</td><td>Not used to train models for other customers</td></tr>
+            <tr><td>Sub-processors</td><td>Disclosed on request, with notice of material change</td></tr>
+            <tr><td>Data residency</td><td>Discussed per engagement — tell us your requirement</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviewer integrity -->
+  <section class="section section--mid section--line" id="reviewers">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Reviewer integrity</p>
+        <h2>The reviewers are the product.</h2>
+        <p>
+          Nothing else on this page matters if the clinician reading your output is not who they say
+          they are, or is not competent in the area they are judging.
+        </p>
+      </div>
+
+      <div class="grid grid--2">
+        <div class="card" data-reveal="0">
+          <span class="ref">Control 01</span>
+          <h3>Credentials verified at source</h3>
+          <p>
+            Licence status and board certification are checked against primary sources before a
+            reviewer is activated, and re-verified on a schedule. Expired or restricted licences
+            deactivate the reviewer automatically.
+          </p>
+        </div>
+        <div class="card" data-reveal="1">
+          <span class="ref">Control 02</span>
+          <h3>Conflicts declared and enforced</h3>
+          <p>
+            Reviewers declare financial and professional relationships. Routing excludes reviewers
+            with a conflict relevant to the case, the customer or the product under review.
+          </p>
+        </div>
+        <div class="card" data-reveal="2">
+          <span class="ref">Control 03</span>
+          <h3>Quality is measured, not assumed</h3>
+          <p>
+            Inter-reviewer agreement is tracked continuously and reviewers periodically receive cases
+            with established answers. Persistent drift results in recalibration or removal.
+          </p>
+        </div>
+        <div class="card" data-reveal="3">
+          <span class="ref">Control 04</span>
+          <h3>Attribution, always</h3>
+          <p>
+            Every verdict carries the identity and credentials of the clinician who reached it. There
+            is no anonymous sign-off, because an unattributable judgement is not accountability.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Regulatory -->
+  <section class="section field" id="regulatory">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Regulatory context</p>
+        <h2>Where this sits in the rules.</h2>
+        <p>
+          Healthcare AI regulation is moving. The direction of travel is consistent: transparency
+          about how outputs are produced, meaningful human oversight, and evidence that a system
+          performs as claimed.
+        </p>
+      </div>
+
+      <div class="cols cols--2">
+        <div data-reveal="0">
+          <h3>What the direction of travel demands</h3>
+          <p style="color:var(--text-2);margin-top:12px">
+            Across jurisdictions, the same three obligations recur — and each is a documentation
+            problem before it is a technology problem.
+          </p>
+          <ul class="checklist">
+            <li><b>Transparency</b> — the basis on which an output was produced can be described</li>
+            <li><b>Human oversight</b> — a qualified person can review and override</li>
+            <li><b>Evidence</b> — performance claims are supported by something other than assertion</li>
+          </ul>
+          <p style="color:var(--text-2);margin-top:18px">
+            Verification records are built to be usable as that evidence: attributable, timestamped,
+            source-linked and exportable.
+          </p>
+        </div>
+        <div data-reveal="1">
+          <div class="record">
+            <div class="record-bar">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="ref">Scope boundary</span>
+            </div>
+            <div class="record-body">
+              <h3 style="margin-bottom:12px">What we are, precisely</h3>
+              <p style="color:var(--text-2);font-size:0.938rem">
+                Harmony Verify is a clinical quality assurance and verification service provided to
+                the organisations that build healthcare AI. We do not generate clinical
+                recommendations, we do not practise medicine, and we do not establish a
+                clinician–patient relationship.
+              </p>
+              <p style="color:var(--text-2);font-size:0.938rem;margin-top:12px">
+                Whether your product is a regulated medical device, and what obligations follow,
+                depends on its intended use and your markets. That determination is yours. Our
+                records are designed to support the evidence you will need for it — they do not
+                replace your regulatory strategy, your quality management system or your counsel.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Claims discipline -->
+  <section class="section section--mid section--line" id="claims">
+    <div class="wrap">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">Claims discipline</p>
+        <h2>What we do not claim.</h2>
+        <p>
+          Healthcare software marketing is full of certifications implied rather than held and
+          accuracy figures with no stated denominator. We would rather be the company that states
+          the boundary plainly.
+        </p>
+      </div>
+
+      <div class="grid grid--2">
+        <div class="card" data-reveal="0">
+          <span class="ref">Boundary 01</span>
+          <h3>We name certifications only once held</h3>
+          <p>
+            Where a formal certification or attestation is in progress rather than complete, we say
+            so and give the stage it is at. Ask us directly and you will get the current status in
+            writing, not a badge.
+          </p>
+        </div>
+        <div class="card" data-reveal="1">
+          <span class="ref">Boundary 02</span>
+          <h3>We do not publish accuracy figures we cannot source</h3>
+          <p>
+            A detection rate without a defined dataset, task and denominator is decoration. Any
+            performance figure we give you will arrive with the conditions that produced it.
+          </p>
+        </div>
+        <div class="card" data-reveal="2">
+          <span class="ref">Boundary 03</span>
+          <h3>Verification is not a guarantee</h3>
+          <p>
+            Expert review substantially reduces the risk of an incorrect output reaching a clinician.
+            It does not reduce it to zero, and any vendor implying otherwise is selling something
+            that does not exist.
+          </p>
+        </div>
+        <div class="card" data-reveal="3">
+          <span class="ref">Boundary 04</span>
+          <h3>Clinical responsibility stays with the clinician</h3>
+          <p>
+            The treating clinician remains responsible for clinical decisions. Harmony Verify
+            improves the evidence available to them; it does not assume their duty of care.
+          </p>
+        </div>
+      </div>
+
+      <p class="form-note" style="margin-top:30px" data-reveal="0">
+        Running diligence on us? Ask for the security questionnaire, sub-processor list and current
+        certification status — <a href="contact.html" style="color:var(--gold)">request them here</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- Incidents -->
+  <section class="section field">
+    <div class="wrap wrap-narrow">
+      <div class="section-head" data-reveal="0">
+        <p class="eyebrow">When something goes wrong</p>
+        <h2>Failure handling, stated in advance.</h2>
+      </div>
+      <div class="faq" data-reveal="0">
+        <details>
+          <summary>A reviewer approved an output that was wrong</summary>
+          <div>
+            <p>
+              The record identifies who reviewed it, against which rubric and on what evidence — so
+              the failure can be located rather than inferred. We notify you, re-review the case,
+              examine the reviewer's recent decisions for a pattern, and record the outcome. Systemic
+              issues result in recalibration, routing changes or removal from the network.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>A security incident affects data you sent us</summary>
+          <div>
+            <p>
+              Notification obligations and timelines are set out in your agreement and business
+              associate agreement, and we will meet them. Practically: we tell you what happened,
+              what data was involved, what we have done and what we are changing — early, in plain
+              language, and without waiting for a complete picture before making contact.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>You disagree with a verification result</summary>
+          <div>
+            <p>
+              Dispute it. Contested records go to independent re-review, and if the original verdict
+              was wrong the record is amended with both the original and the correction preserved.
+              Records are not silently rewritten — an audit trail that can be edited without trace is
+              not an audit trail.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>You want your data deleted</summary>
+          <div>
+            <p>
+              Request it and we will delete clinical content within the timeframe in your agreement
+              and confirm in writing. Verification records may be retained in a form stripped of
+              clinical content where we are contractually or legally required to keep evidence that
+              a review occurred.
+            </p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta field">
+    <div class="wrap">
+      <img class="cta-mark" src="../assets/img/mark.svg" alt="" width="62" height="62" data-reveal="0">
+      <p class="eyebrow" data-reveal="0">Diligence</p>
+      <h2 data-reveal="1">Ask us the hard questions.</h2>
+      <p data-reveal="2">
+        Security review, data protection assessment, clinical governance questionnaire — send it
+        over. We would rather answer early than at the end of a procurement cycle.
+      </p>
+      <div class="btn-row" data-reveal="3">
+        <a class="btn btn--gold" href="contact.html">Contact us</a>
+        <a class="btn btn--ghost" href="platform.html">How verification works</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html"><img src="../assets/img/mark.svg" alt="Harmony Verify" width="30" height="30">
+          <span class="brand-name">Harmony <b>Verify</b>
+            <span class="brand-sub">Assurance clinique de l'IA</span>
+          </span></a>
+        <p>L'infrastructure de vérification clinique pour l'IA en santé.</p>
+      </div>
+      <div>
+        <h3>Produit</h3>
+        <ul>
+          <li><a href="platform.html">Plateforme</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+          <li><a href="request-verification.html">Demander une vérification</a></li>
+          <li><a href="platform.html#rubric">Grille d'évaluation</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Entreprise</h3>
+        <ul>
+          <li><a href="company.html">À propos</a></li>
+          <li><a href="founder.html">Fondatrice</a></li>
+          <li><a href="experts.html">Réseau d'experts</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="contact.html" data-book-demo>Réserver une démo</a></li>
+          <li><a href="support.html">Assistance</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Confiance</h3>
+        <ul>
+          <li><a href="trust.html">Sécurité et confidentialité</a></li>
+          <li><a href="privacy.html">Avis de confidentialité</a></li>
+          <li><a href="terms.html">Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; <span data-year>2026</span> Harmony Verify. Tous droits réservés.</span>
+      <span>Harmony Verify n'exerce pas la médecine et ne fournit aucun avis médical.</span>
+      <button class="footer-link" type="button" data-consent-open>Préférences de cookies</button>
+    </div>
+  </div>
+</footer>
+
+<div data-assistant hidden></div>
+
+<script src="../assets/js/consent.js"></script>
+<script src="../assets/js/main.js" defer></script>
+<script src="../assets/js/calendly.js" defer></script>
+<script src="../assets/js/knowledge.js" defer></script>
+<script src="../assets/js/assistant.js" defer></script>
+<script src="../assets/js/chat.js" defer></script>
+</body>
+</html>

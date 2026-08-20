@@ -1,98 +1,483 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://harmonyverify.org/</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/platform</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/platform"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/platform"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/platform"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/platform"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/platform</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/platform"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/platform"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/platform"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/platform"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/platform</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/platform"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/platform"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/platform"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/platform"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/solutions</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/solutions"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/solutions"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/solutions"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/solutions"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/solutions</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/solutions"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/solutions"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/solutions"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/solutions"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/solutions</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/solutions"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/solutions"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/solutions"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/solutions"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/pricing</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/pricing"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/pricing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/pricing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/pricing"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/pricing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/pricing"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/pricing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/pricing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/pricing"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/pricing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/pricing"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/pricing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/pricing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/pricing"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/request-verification</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/request-verification"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/request-verification"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/request-verification"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/request-verification"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/request-verification</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/request-verification"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/request-verification"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/request-verification"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/request-verification"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/request-verification</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/request-verification"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/request-verification"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/request-verification"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/request-verification"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/experts</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/experts"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/experts"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/experts"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/experts"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/experts</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/experts"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/experts"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/experts"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/experts"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/experts</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/experts"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/experts"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/experts"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/experts"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/partners</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/partners"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/partners"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/partners"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/partners"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/partners</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/partners"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/partners"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/partners"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/partners"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/partners</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/partners"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/partners"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/partners"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/partners"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/investors</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/investors"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/investors"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/investors"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/investors"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/investors</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/investors"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/investors"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/investors"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/investors"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/investors</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/investors"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/investors"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/investors"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/investors"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/founder</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/founder"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/founder"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/founder"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/founder"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/founder</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/founder"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/founder"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/founder"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/founder"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/founder</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/founder"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/founder"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/founder"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/founder"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/trust</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/trust"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/trust"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/trust"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/trust"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/trust</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/trust"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/trust"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/trust"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/trust"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/trust</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/trust"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/trust"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/trust"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/trust"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/contact</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/contact"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/contact"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/contact"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/contact"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/contact"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/contact"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/company</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/company"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/company"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/company"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/company"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/company</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/company"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/company"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/company"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/company"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/company</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/company"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/company"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/company"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/company"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/privacy</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/privacy"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/privacy"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/privacy"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/terms</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/terms"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/terms</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/terms"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/terms</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/terms"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/experts-apply</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/experts-apply"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/experts-apply"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/experts-apply"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/experts-apply"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/experts-apply</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/experts-apply"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/experts-apply"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/experts-apply"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/experts-apply"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/experts-apply</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/experts-apply"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/experts-apply"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/experts-apply"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/experts-apply"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://harmonyverify.org/support</loc>
-    <lastmod>2026-08-06</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/support"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/support"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/support"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/support"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/fr/support</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/support"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/support"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/support"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/support"/>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://harmonyverify.org/es/support</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://harmonyverify.org/support"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://harmonyverify.org/fr/support"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://harmonyverify.org/es/support"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harmonyverify.org/support"/>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

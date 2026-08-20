@@ -23,3 +23,6 @@ Thumbs.db
 
 # test output
 coverage/
+
+# i18n: generated report, not source
+apps/web/i18n/missing.*.json
