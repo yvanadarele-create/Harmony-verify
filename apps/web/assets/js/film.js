@@ -34,7 +34,11 @@
     // playing | paused | ended — CSS decides what the button looks like in each.
     stage.dataset.state = state;
     if (!label) return;
-    label.textContent = state === "ended" ? "Replay" : state === "playing" ? "Pause" : "Play";
+    var t = window.HarmonyText || function (_k, english) { return english; };
+    label.textContent =
+      state === "ended" ? t("film.replay", "Replay")
+        : state === "playing" ? t("film.pause", "Pause")
+          : t("film.play", "Play");
   }
 
   function start() {

@@ -64,6 +64,10 @@
       .replace(/"/g, "&quot;");
   };
 
+  function t(key, english, vars) {
+    return window.HarmonyText ? window.HarmonyText(key, english, vars) : english;
+  }
+
   function build(context) {
     var wrap = document.createElement("div");
     wrap.className = "chat-panel";
@@ -77,30 +81,40 @@
     wrap.innerHTML =
       '<div class="chat-head">' +
       BUBBLE +
-      "<div><h2>Chat with the team</h2>" +
+      "<div><h2>" + t("chat.title", "Chat with the team") + "</h2>" +
       '<p class="chat-status" data-state="' +
       (live ? "online" : "offline") +
       '"><i></i>' +
-      (live ? "Someone is here" : "Outside working hours") +
+      (live ? t("chat.online", "Someone is here") : t("chat.offline", "Outside working hours")) +
       "</p></div>" +
-      '<button class="assist-close" type="button" aria-label="Close chat">&times;</button>' +
+      '<button class="assist-close" type="button" aria-label="' + t("chat.close", "Close chat") + '">&times;</button>' +
       "</div>" +
       '<div class="chat-body">' +
       (live
-        ? "<p>A colleague picks these up during the working day. Tell us what you are trying to do and what is in the way — the more concrete, the faster this goes.</p>"
-        : "<p>Nobody is at the desk right now. Send it anyway and it will be waiting" +
-          (opens ? " — the next working window starts <b>" + escapeHtml(opens) + "</b> your time." : ".") +
+        ? "<p>" +
+          t("chat.live", "A colleague picks these up during the working day. Tell us what you are trying to do and what is in the way — the more concrete, the faster this goes.") +
+          "</p>"
+        : "<p>" +
+          t("chat.away", "Nobody is at the desk right now. Send it anyway and it will be waiting") +
+          (opens
+            ? t("chat.away.next", " — the next working window starts <b>{when}</b> your time.", { when: escapeHtml(opens) })
+            : ".") +
           "</p>") +
-      '<p class="muted">This reaches a person, not the assistant. Please do not include patient identifiers or passwords.</p>' +
+      '<p class="muted">' +
+      t("chat.note", "This reaches a person, not the assistant. Please do not include patient identifiers or passwords.") +
+      "</p>" +
       "</div>" +
       '<form class="assist-form" style="flex-direction:column;align-items:stretch;gap:10px">' +
-      '<label class="sr-only" for="chat-email">Your email</label>' +
-      '<input id="chat-email" type="email" required placeholder="Your email so we can reply">' +
-      '<label class="sr-only" for="chat-message">Your message</label>' +
-      '<input id="chat-message" type="text" required placeholder="What do you need?">' +
-      '<button class="btn btn--gold btn--sm" type="submit">Send to the team</button>' +
+      '<label class="sr-only" for="chat-email">' + t("chat.yourEmail", "Your email") + "</label>" +
+      '<input id="chat-email" type="email" required placeholder="' +
+      t("chat.email", "Your email so we can reply") + '">' +
+      '<label class="sr-only" for="chat-message">' + t("chat.yourMessage", "Your message") + "</label>" +
+      '<input id="chat-message" type="text" required placeholder="' +
+      t("chat.message", "What do you need?") + '">' +
+      '<button class="btn btn--gold btn--sm" type="submit">' +
+      t("chat.send", "Send to the team") + "</button>" +
       "</form>" +
-      '<p class="assist-note">Prefer email? <a href="mailto:' +
+      '<p class="assist-note">' + t("chat.prefer", "Prefer email?") + ' <a href="mailto:' +
       INBOX +
       '">' +
       INBOX +
@@ -170,7 +184,7 @@
   launcher.type = "button";
   launcher.className = "chat-launch";
   launcher.setAttribute("aria-label", "Chat with the Harmony Verify team");
-  launcher.innerHTML = BUBBLE + "<span>Chat with a person</span>";
+  launcher.innerHTML = BUBBLE + "<span>" + (window.HarmonyText || function (_k, e) { return e; })("chat.launch", "Chat with a person") + "</span>";
   launcher.addEventListener("click", function () {
     open(null);
   });

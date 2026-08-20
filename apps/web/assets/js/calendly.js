@@ -140,6 +140,10 @@
   var modal = null;
   var lastFocus = null;
 
+  function t(key, english) {
+    return window.HarmonyText ? window.HarmonyText(key, english) : english;
+  }
+
   function build() {
     var wrap = document.createElement("div");
     wrap.className = "cal-overlay";
@@ -148,15 +152,17 @@
     wrap.innerHTML =
       '<div class="cal-modal" role="dialog" aria-modal="true" aria-labelledby="cal-title">' +
       '<div class="cal-head">' +
-      '<div><h2 class="cal-title" id="cal-title">Book a demo</h2>' +
-      '<p class="cal-sub">Pick a time that suits you. Scheduling is handled by Calendly, ' +
-      "which loads in the panel below and sets its own cookies.</p></div>" +
-      '<button class="cal-close" type="button" aria-label="Close the booking panel">&times;</button>' +
+      '<div><h2 class="cal-title" id="cal-title">' + t("cal.title", "Book a demo") + "</h2>" +
+      '<p class="cal-sub">' +
+      t("cal.sub", "Pick a time that suits you. Scheduling is handled by Calendly, which loads in the panel below and sets its own cookies.") +
+      "</p></div>" +
+      '<button class="cal-close" type="button" aria-label="' +
+      t("cal.close", "Close the booking panel") + '">&times;</button>' +
       "</div>" +
       '<div class="cal-body"><div class="cal-mount" data-cal-mount></div>' +
       '<div class="cal-state" data-cal-state>' +
       '<div class="cal-skel" aria-hidden="true"><span></span><span></span><span></span></div>' +
-      '<p class="cal-state-text">Opening live availability…</p></div></div>' +
+      '<p class="cal-state-text">' + t("cal.loading", "Opening live availability…") + "</p></div></div>" +
       "</div>";
 
     wrap.querySelector(".cal-close").addEventListener("click", close);
@@ -179,7 +185,7 @@
       '"' +
       (SCHEDULING_URL ? ' target="_blank" rel="noopener"' : "") +
       ">" +
-      (SCHEDULING_URL ? "Open the scheduler in a new tab" : "Use the contact form instead") +
+      (SCHEDULING_URL ? t("cal.newTab", "Open the scheduler in a new tab") : t("cal.contact", "Use the contact form instead")) +
       "</a>.";
   }
 
@@ -217,7 +223,7 @@
         if (state) state.hidden = true;
       })
       .catch(function () {
-        fail("Calendly did not load.");
+        fail(t("cal.failed", "Calendly did not load."));
       });
   }
 

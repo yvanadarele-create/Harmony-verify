@@ -84,11 +84,12 @@
     var items = Array.prototype.slice.call(recordSteps.querySelectorAll("li"));
     var note = document.querySelector("[data-note]");
     var chip = document.querySelector("[data-chip]");
+    var t = window.HarmonyText || function (_key, english) { return english; };
     var chipStates = [
-      { cls: "chip chip--review", text: "Awaiting review" },
-      { cls: "chip chip--review", text: "In review" },
-      { cls: "chip chip--flagged", text: "Correction issued" },
-      { cls: "chip chip--verified", text: "Verified" }
+      { cls: "chip chip--review", text: t("chip.awaiting", "Awaiting review") },
+      { cls: "chip chip--review", text: t("chip.review", "In review") },
+      { cls: "chip chip--flagged", text: t("chip.corrected", "Correction issued") },
+      { cls: "chip chip--verified", text: t("chip.verified", "Verified") }
     ];
     var index = 0;
     var timer = null;
@@ -197,7 +198,7 @@
       });
 
       if (firstInvalid) {
-        say("err", "Please complete the highlighted fields.");
+        say("err", (window.HarmonyText || function (_k, e) { return e; })("form.check", "Please complete the highlighted fields."));
         firstInvalid.focus();
         return;
       }
@@ -218,7 +219,7 @@
           "&body=" +
           encodeURIComponent(lines.join("\n"));
         window.location.href = mailto;
-        say("ok", "Opening your email client to send this request.");
+        say("ok", (window.HarmonyText || function (_k, e) { return e; })("form.sending", "Opening your email client to send this request."));
         return;
       }
 
@@ -236,7 +237,7 @@
         .then(function (res) {
           if (!res.ok) throw new Error("Request failed");
           form.reset();
-          say("ok", "Thank you — we have your request and will reply within two business days.");
+          say("ok", (window.HarmonyText || function (_k, e) { return e; })("form.sent", "Thank you — we have your request and will reply within two business days."));
         })
         .catch(function () {
           say(

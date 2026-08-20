@@ -54,7 +54,13 @@
           clearError(field);
           return;
         }
-        showError(field, field.validity.valueMissing ? "Required" : "Check this value");
+        var t = window.HarmonyText || function (_k, english) { return english; };
+        showError(
+          field,
+          field.validity.valueMissing
+            ? t("form.required.short", "Required")
+            : t("form.invalid.short", "Check this value")
+        );
         if (!firstInvalid) firstInvalid = field;
       });
       if (firstInvalid) firstInvalid.focus();

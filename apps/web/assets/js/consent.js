@@ -21,6 +21,12 @@
 (function () {
   "use strict";
 
+  /* consent.js runs before the deferred scripts, so it cannot assume the string
+     table is there yet; the English default carries it if it is not. */
+  function t(key, english) {
+    return window.HarmonyText ? window.HarmonyText(key, english) : english;
+  }
+
   var STORE_KEY = "hv.consent.v1";
   var VERSION = 1;
 
@@ -30,24 +36,30 @@
   var CATEGORIES = [
     {
       id: "essential",
-      name: "Strictly necessary",
+      name: t("consent.essential", "Strictly necessary"),
       required: true,
-      description:
+      description: t(
+        "consent.essential.desc",
         "Keeps you signed in, balances load across our servers, and remembers this cookie choice. The site cannot work without these, so they cannot be switched off."
+      )
     },
     {
       id: "analytics",
-      name: "Analytics",
+      name: t("consent.analytics", "Analytics"),
       required: false,
-      description:
+      description: t(
+        "consent.analytics.desc",
         "Aggregated, de-identified measurement of which pages are read and where visitors leave. Never linked to a clinical submission and never sold."
+      )
     },
     {
       id: "marketing",
-      name: "Marketing",
+      name: t("consent.marketing", "Marketing"),
       required: false,
-      description:
+      description: t(
+        "consent.marketing.desc",
         "Measures whether a campaign led to a demo request. Off unless you turn it on."
+      )
     }
   ];
 
@@ -188,9 +200,9 @@
   }
 
   function buildBanner() {
-    var accept = el("button", { class: "btn btn--gold btn--sm", type: "button", text: "Accept all" });
-    var reject = el("button", { class: "btn btn--ghost btn--sm", type: "button", text: "Reject all" });
-    var manage = el("button", { class: "btn btn--ghost btn--sm", type: "button", text: "Preferences" });
+    var accept = el("button", { class: "btn btn--gold btn--sm", type: "button", text: t("consent.accept", "Accept all") });
+    var reject = el("button", { class: "btn btn--ghost btn--sm", type: "button", text: t("consent.reject", "Reject all") });
+    var manage = el("button", { class: "btn btn--ghost btn--sm", type: "button", text: t("consent.manage", "Preferences") });
 
     accept.addEventListener("click", function () {
       acceptAll();
@@ -207,16 +219,18 @@
       {
         class: "consent",
         role: "region",
-        "aria-label": "Cookie choices",
+        "aria-label": t("consent.region", "Cookie choices"),
         "data-consent-banner": ""
       },
       [
         el("div", { class: "consent-inner" }, [
           el("div", { class: "consent-copy" }, [
-            el("h2", { class: "consent-title", text: "Cookies on this site" }),
+            el("h2", { class: "consent-title", text: t("consent.title", "Cookies on this site") }),
             el("p", {
-              text:
+              text: t(
+                "consent.body",
                 "We use strictly necessary cookies to keep the site working. Analytics and marketing cookies are off until you turn them on, and you can change your mind at any time."
+              )
             })
           ]),
           el("div", { class: "consent-actions" }, [accept, reject, manage])
@@ -238,17 +252,17 @@
           el("span", { class: "consent-switch" }, [input, el("span", { class: "consent-track" })])
         ]),
         el("p", { class: "consent-row-desc", text: c.description }),
-        c.required ? el("p", { class: "consent-row-note", text: "Always active" }) : el("span", {})
+        c.required ? el("p", { class: "consent-row-note", text: t("consent.always", "Always active") }) : el("span", {})
       ]);
     });
 
-    var save = el("button", { class: "btn btn--gold btn--sm", type: "button", text: "Save choices" });
-    var allow = el("button", { class: "btn btn--ghost btn--sm", type: "button", text: "Accept all" });
-    var none = el("button", { class: "btn btn--ghost btn--sm", type: "button", text: "Reject all" });
+    var save = el("button", { class: "btn btn--gold btn--sm", type: "button", text: t("consent.save", "Save choices") });
+    var allow = el("button", { class: "btn btn--ghost btn--sm", type: "button", text: t("consent.accept", "Accept all") });
+    var none = el("button", { class: "btn btn--ghost btn--sm", type: "button", text: t("consent.reject", "Reject all") });
     var close = el("button", {
       class: "consent-close",
       type: "button",
-      "aria-label": "Close cookie preferences",
+      "aria-label": t("consent.close", "Close cookie preferences"),
       html: "&times;"
     });
 
@@ -283,17 +297,23 @@
       },
       [
         close,
-        el("h2", { class: "consent-dialog-title", id: "consent-dialog-title", text: "Cookie preferences" }),
+        el("h2", {
+          class: "consent-dialog-title",
+          id: "consent-dialog-title",
+          text: t("consent.dialogTitle", "Cookie preferences")
+        }),
         el("p", {
           class: "consent-dialog-intro",
-          text:
+          text: t(
+            "consent.dialogIntro",
             "Choose what this site may store. Clinical material you submit is never used for advertising and is never shared with an analytics provider."
+          )
         }),
         el("div", { class: "consent-rows" }, rows),
         el("div", { class: "consent-dialog-actions" }, [save, allow, none]),
         el("p", { class: "consent-dialog-foot" }, [
           (function () {
-            var link = el("a", { href: "privacy.html", text: "Read the privacy notice" });
+            var link = el("a", { href: "privacy.html", text: t("consent.privacy", "Read the privacy notice") });
             return link;
           })()
         ])

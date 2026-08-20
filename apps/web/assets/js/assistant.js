@@ -27,6 +27,11 @@
 (function () {
   "use strict";
 
+  /** Reader-facing text, in the language the page was generated in. */
+  function t(key, english) {
+    return window.HarmonyText ? window.HarmonyText(key, english) : english;
+  }
+
   var mount = document.querySelector("[data-assistant]");
   var KB = window.HarmonyKnowledge;
   if (!mount || !KB) return;
@@ -310,8 +315,8 @@
     var button = document.createElement("button");
     button.type = "button";
     button.textContent = window.HarmonyChat.online()
-      ? "Talk to a person now"
-      : "Leave this with a person";
+      ? t("assist.humanNow", "Talk to a person now")
+      : t("assist.human", "Leave this with a person");
     button.addEventListener("click", function () {
       close();
       window.HarmonyChat.open(question);
@@ -319,7 +324,7 @@
 
     var support = document.createElement("button");
     support.type = "button";
-    support.textContent = "See all contact routes";
+    support.textContent = t("assist.routes", "See all contact routes");
     support.addEventListener("click", function () {
       window.location.href = "support.html";
     });
@@ -339,16 +344,21 @@
     wrap.innerHTML =
       '<div class="assist-head">' +
       ROBOT +
-      "<div><h2>Harmony assistant</h2><p>Answers about the platform, not about medicine.</p></div>" +
-      '<button class="assist-close" type="button" aria-label="Close assistant">&times;</button>' +
+      "<div><h2>" + t("assist.title", "Harmony assistant") + "</h2><p>" +
+      t("assist.sub", "Answers about the platform, not about medicine.") + "</p></div>" +
+      '<button class="assist-close" type="button" aria-label="' +
+      t("assist.close", "Close assistant") + '">&times;</button>' +
       "</div>" +
       '<div class="assist-log" role="log" aria-live="polite"></div>' +
       '<form class="assist-form">' +
-      '<label class="sr-only" for="assist-input">Your question</label>' +
-      '<input id="assist-input" type="text" autocomplete="off" placeholder="Ask about pricing, turnaround, security…">' +
-      '<button type="submit">Send</button>' +
+      '<label class="sr-only" for="assist-input">' + t("assist.question", "Your question") + "</label>" +
+      '<input id="assist-input" type="text" autocomplete="off" placeholder="' +
+      t("assist.input", "Ask about pricing, turnaround, security…") + '">' +
+      "<button type=\"submit\">" + t("assist.send", "Send") + "</button>" +
       "</form>" +
-      '<p class="assist-note">This assistant does not give medical advice and does not see your submissions. Nothing you type here is stored.</p>';
+      '<p class="assist-note">' +
+      t("assist.note", "This assistant does not give medical advice and does not see your submissions. Nothing you type here is stored.") +
+      "</p>";
 
     log = wrap.querySelector(".assist-log");
 
@@ -374,7 +384,10 @@
 
     say(
       "bot",
-      "Hello. I can explain how verification works, what it costs, how fast it is, who reviews your output and how your data is handled. What would be useful?"
+      t(
+        "assist.hello",
+        "Hello. I can explain how verification works, what it costs, how fast it is, who reviews your output and how your data is handled. What would be useful?"
+      )
     );
     offer(KB.starters);
 
@@ -406,7 +419,7 @@
   launcher.type = "button";
   launcher.className = "assist-launch";
   launcher.setAttribute("aria-expanded", "false");
-  launcher.innerHTML = ROBOT + "<span>Ask Harmony</span>";
+  launcher.innerHTML = ROBOT + "<span>" + t("assist.launch", "Ask Harmony") + "</span>";
   launcher.addEventListener("click", open);
   document.body.appendChild(launcher);
 
