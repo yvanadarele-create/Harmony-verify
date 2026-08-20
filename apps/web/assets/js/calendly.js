@@ -13,12 +13,15 @@
  *    close button, the focus trap, the scroll lock and the escape key behave the
  *    same as every other modal on this site.
  *
- * 2. Calendly's script is not in the page markup. It is fetched on the first
- *    click and never again — a third party that a visitor has not asked for does
- *    not get to run, set cookies, or cost them a request on page load. That is
- *    the same rule consent.js enforces for tags; this one enforces it by never
- *    being a tag in the first place. The dialog says so in a line of text, so
- *    the handoff to a third party is disclosed rather than silent.
+ * 2. Calendly's script is not in the page markup. It is fetched the first time a
+ *    visitor reaches toward a booking control and never again — a third party
+ *    that nobody has asked for does not get to run, set cookies, or cost a
+ *    request on page load. That is the same rule consent.js enforces for tags;
+ *    this one enforces it by never being a tag in the first place. The dialog
+ *    says so in a line of text, so the handoff is disclosed rather than silent.
+ *
+ *    "Reaches toward" rather than "clicks" because the click is too late: see
+ *    warm() for the three serial round trips it hides.
  *
  * Configuration: SCHEDULING_URL below is the only place the link lives. While it
  * is empty every "Book a demo" control quietly falls back to its href — the
@@ -67,6 +70,33 @@
   /* --- Loading Calendly once -------------------------------------------- */
 
   var loading = null;
+  var warmed = false;
+
+  /* Three round trips stand between the click and a visible calendar: fetch
+     widget.js, open a connection to calendly.com, then load the scheduler inside
+     the iframe. They happen in that order and none can start early on its own,
+     which is why the panel used to sit empty for a beat.
+
+     Pointing at the button is intent enough to start the first two. By the time
+     the click lands the script is in cache and the socket to calendly.com is
+     already open, leaving only the iframe to wait for. Nothing is fetched for a
+     visitor who never reaches toward booking. */
+  function warm() {
+    if (warmed || !configured) return;
+    warmed = true;
+
+    ["https://assets.calendly.com", "https://calendly.com"].forEach(function (origin) {
+      var link = document.createElement("link");
+      link.rel = "preconnect";
+      link.href = origin;
+      link.crossOrigin = "";
+      document.head.appendChild(link);
+    });
+
+    loadWidget().catch(function () {
+      /* A failed warm-up is not an error yet — the click reports it. */
+    });
+  }
 
   function loadWidget() {
     // Memoised: every later click reuses this promise, so the script and the
@@ -124,7 +154,9 @@
       '<button class="cal-close" type="button" aria-label="Close the booking panel">&times;</button>' +
       "</div>" +
       '<div class="cal-body"><div class="cal-mount" data-cal-mount></div>' +
-      '<p class="cal-state" data-cal-state>Loading live availability…</p></div>' +
+      '<div class="cal-state" data-cal-state>' +
+      '<div class="cal-skel" aria-hidden="true"><span></span><span></span><span></span></div>' +
+      '<p class="cal-state-text">Opening live availability…</p></div></div>' +
       "</div>";
 
     wrap.querySelector(".cal-close").addEventListener("click", close);
@@ -254,8 +286,20 @@
     }
   };
 
+  /* Anything that reads as "about to book": the pointer arriving, a finger
+     landing, or the keyboard reaching the control. Passive, capture-phase and
+     delegated, so it costs nothing and covers controls added later. */
+  function onIntent(e) {
+    var target = e.target;
+    if (!target || !target.closest || !target.closest("[data-book-demo]")) return;
+    warm();
+  }
+
   function boot() {
     document.addEventListener("click", onClick);
+    ["pointerenter", "touchstart", "focusin"].forEach(function (type) {
+      document.addEventListener(type, onIntent, { capture: true, passive: true });
+    });
     // Tell CSS whether the buttons are live, so nothing has to guess in markup.
     document.documentElement.dataset.demoBooking = configured ? "calendly" : "fallback";
   }

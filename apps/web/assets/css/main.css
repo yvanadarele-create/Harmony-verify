@@ -3330,12 +3330,15 @@ body[data-consent-open="true"] {
   border: 0;
 }
 
+/* Held under the scheduler rather than in place of it, so the panel has shape
+   from the first frame instead of a blank rectangle and a line of text. */
 .cal-state {
   position: absolute;
   inset: 0;
   display: grid;
   place-content: center;
-  gap: 6px;
+  justify-items: center;
+  gap: 22px;
   margin: 0;
   padding: 24px;
   text-align: center;
@@ -3345,6 +3348,56 @@ body[data-consent-open="true"] {
 
 .cal-state a {
   color: var(--gold);
+}
+
+.cal-state-text {
+  margin: 0;
+}
+
+/* Three bars on a staggered pulse: the shape a calendar resolves into, not a
+   spinner that says only "something is happening". */
+.cal-skel {
+  display: grid;
+  gap: 10px;
+  width: min(280px, 60vw);
+}
+
+.cal-skel span {
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(212, 175, 55, 0.06),
+    rgba(212, 175, 55, 0.2),
+    rgba(212, 175, 55, 0.06)
+  );
+  background-size: 220% 100%;
+  animation: cal-shimmer 1.4s var(--ease) infinite;
+}
+
+.cal-skel span:nth-child(2) {
+  width: 78%;
+  animation-delay: 0.16s;
+}
+
+.cal-skel span:nth-child(3) {
+  width: 52%;
+  animation-delay: 0.32s;
+}
+
+@keyframes cal-shimmer {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cal-skel span {
+    animation: none;
+  }
 }
 
 /* Full-bleed on a phone: a scheduler in a letterboxed card leaves too little
